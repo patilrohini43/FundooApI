@@ -1,22 +1,37 @@
-package com.bridgelabz.model;
+package com.bridgelabz.fundoo.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;;
+import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;;
 @Entity
 public class User {
 	
 	@Id
 	//@GeneratedValue(strategy = GenerationType.AUTO)
 	@GeneratedValue(strategy=GenerationType.IDENTITY) 
+	@Column(name = "Id")
 	private Long id;
+	@Column(name = "UserName")
+	@NotEmpty(message = "Please provide your UserName")
 	private String username;
+	@Column(name = "Password")
+	@NotEmpty(message = "Please provide your password")
 	private String password;
+	@Column(name = "ConfirmPassword")
+	@NotEmpty(message = "Please provide your ConfirmPawword")
 	private String confirmpassword;
+	@Column(name = "Email")
+	@NotEmpty(message = "Please provide your Email")
 	private String email;
+	@Column(name = "Mobile")
+	@NotEmpty(message = "Please provide your Mobile")
 	private String mobilenumber;
 	
+	@Column(name = "confirmation_token")
+	private String confirmationToken;
 
 	public User()
 	{
@@ -25,6 +40,18 @@ public class User {
 	
 
 	
+	public String getConfirmationToken() {
+		return confirmationToken;
+	}
+
+
+
+	public void setConfirmationToken(String confirmationToken) {
+		this.confirmationToken = confirmationToken;
+	}
+
+
+
 	public String getConfirmpassword() {
 		return confirmpassword;
 	}
