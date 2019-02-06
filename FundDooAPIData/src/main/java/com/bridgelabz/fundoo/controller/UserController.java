@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -21,15 +22,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bridgelabz.fundoo.dto.LoginDto;
 import com.bridgelabz.fundoo.dto.UserDto;
+import com.bridgelabz.fundoo.exception.UserException;
 import com.bridgelabz.fundoo.model.*;
 import com.bridgelabz.fundoo.service.UserService;
+import com.bridgelabz.fundoo.util.EmailUtil;
 @RestController
 public class UserController {
 	
 	
 	@Autowired
 	private UserService userService;
+
 	
 	static Logger logger=LoggerFactory.getLogger(UserController.class);
 	
@@ -51,7 +56,7 @@ public class UserController {
 	
 	
 	@RequestMapping(value = "/registers", method = RequestMethod.POST)
-	public ResponseEntity<String> processRegistrationForm(@Valid @RequestBody UserDto userDto, BindingResult bindingResult, HttpServletRequest request) 
+	public ResponseEntity<String> processRegistrationForm(@Valid @RequestBody UserDto userDto, BindingResult bindingResult, HttpServletRequest request)  
 
 	{
 		if(bindingResult.hasErrors()) {
@@ -68,14 +73,21 @@ public class UserController {
 		else
 		{
 			 userService.registerUser1(userDto);
-			// EmailUtil.sendEmail(user.getEmail(),"Successful", getBody(request, user));
+			 EmailUtil.sendEmail(userDto.getEmail(), "Successfully send", "Howdy");
 			 System.out.println("successfully registered");
 		}
 		return new ResponseEntity<String>(HttpStatus.OK);
 	
 		
 	}
-	
 
+	@RequestMapping(value = "/Login", method = RequestMethod.POST)
+	public ResponseEntity<String> loginForm(@Valid @RequestBody LoginDto loginDto ,BindingResult bindingResult, HttpServletRequest request) throws UserException
+	{
+		userService.login(loginDto);
+		System.out.println("Login SuccessFully");
+		return new ResponseEntity<String>(HttpStatus.OK);
+		
+	}
 
 }

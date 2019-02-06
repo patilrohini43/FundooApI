@@ -10,9 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.bridgelabz.fundoo.dto.LoginDto;
 import com.bridgelabz.fundoo.dto.UserDto;
+import com.bridgelabz.fundoo.exception.UserException;
 import com.bridgelabz.fundoo.model.*;
 import com.bridgelabz.fundoo.repository.UserRepository;
+import com.bridgelabz.fundoo.util.UserToken;
+
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -59,8 +63,49 @@ public class UserServiceImpl implements UserService{
 	
 		
 	}
-
-
+	
+	
+	public String login(LoginDto loginDto) throws UserException
+	{
+		return userRepository.findUserByEmail(loginDto.getEmail())
+				.map(fromDBUser-> {
+					try {
+						return this.validUser(fromDBUser, loginDto.getPassword());
+					} catch (UserException e) {
+						new UserException(100,"Please Verify Your mail"); 
+						e.printStackTrace();
+					}
+					return null;
+				})
+           .orElseThrow(()-> new UserException(100,"Not valid User"));
+				
+		
+		
+	}
+	
+	
+	
+	
+	
+	private String validUser(User fromDBUser, String password) throws UserException {
+		boolean isValid =passwordEncoder.matches(password, fromDBUser.getPassword());
+		if(isValid){ 
+			return UserToken.generateToken(fromDBUser.getId());
+		}
+		throw new UserException(100,"Not valid User");
+}
+	
+	
+	
+	//public String validUser(User fromdbUser,String password)
+	//{
+	//	boolean isvalid=passwordEncoder.matches(password, fromdbUser.getPassword());
+	//	
+	//	if(isvalid)
+	//	{
+		 
+	//	}
+	//	return password;
 
 /**
 	@Override
@@ -78,5 +123,8 @@ public class UserServiceImpl implements UserService{
 
 
 	**/
-
+				 
 }
+	
+
+

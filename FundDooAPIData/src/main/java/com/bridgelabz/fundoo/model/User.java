@@ -15,50 +15,24 @@ public class User {
 	@Column(name = "Id")
 	private Long id;
 	@Column(name = "UserName")
-	
 	private String username;
+	
 	@Column(name = "Password")
-
-	private String password;
-	@Column(name = "ConfirmPassword")
-
-	private String confirmpassword;
+    private String password;
+	
 	@Column(name = "Email")
-	
 	private String email;
-	@Column(name = "Mobile")
-
-	private String mobilenumber;
 	
-	@Column(name = "confirmation_token")
-	private String confirmationToken;
+	@Column(name = "Mobile")
+      private String mobilenumber;
+	
+	
 
 	public User()
 	{
 		
 	}
-	
 
-	
-	public String getConfirmationToken() {
-		return confirmationToken;
-	}
-
-
-
-	public void setConfirmationToken(String confirmationToken) {
-		this.confirmationToken = confirmationToken;
-	}
-
-
-
-	public String getConfirmpassword() {
-		return confirmpassword;
-	}
-
-	public void setConfirmpassword(String confirmpassword) {
-		this.confirmpassword = confirmpassword;
-	}
 
 	public String getEmail() {
 		return email;
@@ -76,10 +50,7 @@ public class User {
 		this.mobilenumber = mobilenumber;
 	}
 
-	
-	
-	
-	
+
 	public Long getId() {
 		return id;
 	}

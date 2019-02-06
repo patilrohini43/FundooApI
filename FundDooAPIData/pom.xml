@@ -40,10 +40,14 @@
 			<version>3.2.0</version>
 		</dependency>
 		
+		
+		
 		<dependency>
-			<groupId>com.sun.mail</groupId>
-			<artifactId>javax.mail</artifactId>
-			<version>1.5.5</version><!--$NO-MVN-MAN-VER$-->
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-mail</artifactId>
+    
+   
+
 </dependency>
 
 		<dependency>
