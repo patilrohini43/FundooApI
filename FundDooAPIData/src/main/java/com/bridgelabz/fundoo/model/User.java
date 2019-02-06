@@ -15,19 +15,19 @@ public class User {
 	@Column(name = "Id")
 	private Long id;
 	@Column(name = "UserName")
-	@NotEmpty(message = "Please provide your UserName")
+	
 	private String username;
 	@Column(name = "Password")
-	@NotEmpty(message = "Please provide your password")
+
 	private String password;
 	@Column(name = "ConfirmPassword")
-	@NotEmpty(message = "Please provide your ConfirmPawword")
+
 	private String confirmpassword;
 	@Column(name = "Email")
-	@NotEmpty(message = "Please provide your Email")
+	
 	private String email;
 	@Column(name = "Mobile")
-	@NotEmpty(message = "Please provide your Mobile")
+
 	private String mobilenumber;
 	
 	@Column(name = "confirmation_token")

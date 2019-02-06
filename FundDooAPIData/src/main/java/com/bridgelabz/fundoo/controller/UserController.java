@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bridgelabz.fundoo.dto.UserDto;
 import com.bridgelabz.fundoo.model.*;
 import com.bridgelabz.fundoo.service.UserService;
 @RestController
@@ -50,13 +51,13 @@ public class UserController {
 	
 	
 	@RequestMapping(value = "/registers", method = RequestMethod.POST)
-	public ResponseEntity<String> processRegistrationForm(@Valid @RequestBody User user, BindingResult bindingResult, HttpServletRequest request) 
+	public ResponseEntity<String> processRegistrationForm(@Valid @RequestBody UserDto userDto, BindingResult bindingResult, HttpServletRequest request) 
 
 	{
 		if(bindingResult.hasErrors()) {
 			logger.error("Error in Binding The User Details");
 	}
-		User userExist=userService.findByEmail(user.getEmail());
+		User userExist=userService.findByEmail(userDto.getEmail());
 		System.out.println(userExist);
 		
 		if (userExist != null) {
@@ -66,7 +67,8 @@ public class UserController {
 	
 		else
 		{
-			 userService.registerUser(user);
+			 userService.registerUser1(userDto);
+			// EmailUtil.sendEmail(user.getEmail(),"Successful", getBody(request, user));
 			 System.out.println("successfully registered");
 		}
 		return new ResponseEntity<String>(HttpStatus.OK);
@@ -74,8 +76,6 @@ public class UserController {
 		
 	}
 	
-	
-	
-	
+
 
 }

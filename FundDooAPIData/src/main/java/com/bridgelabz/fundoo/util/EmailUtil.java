@@ -1,4 +1,4 @@
-package com.bridgelabz.fundoo.util;
+/**package com.bridgelabz.fundoo.util;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
@@ -50,3 +50,4 @@ catch (MessagingException | UnsupportedEncodingException e) {
 	}
 }
 }
+**/
