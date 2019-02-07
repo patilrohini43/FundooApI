@@ -34,7 +34,6 @@ public static void sendEmail(String toEmail, String subject, String body) {
 			return new PasswordAuthentication("fundoodata413@gmail.com", "fundoo@123!");
 			}
 		};
-		//toEmail="patilrohini43@gmail.com";
 		Session session=Session.getInstance(props, auth);
 		try
 	    {
@@ -46,7 +45,7 @@ public static void sendEmail(String toEmail, String subject, String body) {
 	      msg.setContent(body, "text/html");
 	      System.out.println("Message is ready");
     	  Transport.send(msg);  
-	      System.out.println("EMail Sent Successfully!!");
+	      System.out.println("Email Sent Successfully!!");
 	    }
 	    catch (MessagingException | UnsupportedEncodingException e) {
 	      e.printStackTrace();

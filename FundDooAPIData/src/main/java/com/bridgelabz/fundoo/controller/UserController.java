@@ -4,23 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.mail.MessagingException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.apache.catalina.connector.Response;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
+
 
 import com.bridgelabz.fundoo.dto.LoginDto;
 import com.bridgelabz.fundoo.dto.UserDto;
@@ -28,12 +29,20 @@ import com.bridgelabz.fundoo.exception.UserException;
 import com.bridgelabz.fundoo.model.*;
 import com.bridgelabz.fundoo.service.UserService;
 import com.bridgelabz.fundoo.util.EmailUtil;
+
+
 @RestController
 public class UserController {
 	
 	
 	@Autowired
 	private UserService userService;
+	
+	///@Autowired
+//	JwtTokenProvider jwtTokenProvider;
+	
+	// @Autowired
+	// AuthenticationManager authenticationManager;
 
 	
 	static Logger logger=LoggerFactory.getLogger(UserController.class);
@@ -82,12 +91,30 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/Login", method = RequestMethod.POST)
-	public ResponseEntity<String> loginForm(@Valid @RequestBody LoginDto loginDto ,BindingResult bindingResult, HttpServletRequest request) throws UserException
+	public String loginForm(@Valid @RequestBody LoginDto loginDto ,BindingResult bindingResult, HttpServletRequest request) throws UserException
 	{
-		userService.login(loginDto);
 		System.out.println("Login SuccessFully");
-		return new ResponseEntity<String>(HttpStatus.OK);
+		return userService.Login(loginDto);
+		
+		//return new ResponseEntity<String>(HttpStatus.OK);
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+              
+               
+      
+    
 
-}
+      
+    }
+
+
+

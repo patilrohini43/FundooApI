@@ -1,12 +1,11 @@
 package com.bridgelabz.fundoo.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 
+import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -65,6 +64,93 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	
+	@Override
+	public String Login(LoginDto loginDto) throws UserException
+	{
+		//extract user details by using emailid 
+		User validUser = userRepository.findByEmail(loginDto.getEmail());
+		//match user password by logindto password 
+	boolean passwordStaus=passwordEncoder.matches(loginDto.getPassword(), validUser.getPassword());
+		if(passwordStaus == true)
+		{
+		return "login successfully";
+	
+	}
+		throw new UserException("invalid emailid or password");
+		
+		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+/**
+	
 	public String login(LoginDto loginDto) throws UserException
 	{
 		return userRepository.findUserByEmail(loginDto.getEmail())
@@ -96,34 +182,9 @@ public class UserServiceImpl implements UserService{
 }
 	
 	
-	
-	//public String validUser(User fromdbUser,String password)
-	//{
-	//	boolean isvalid=passwordEncoder.matches(password, fromdbUser.getPassword());
-	//	
-	//	if(isvalid)
-	//	{
-		 
-	//	}
-	//	return password;
-
-/**
-	@Override
-	public User findByConfirmationToken(String confirmationToken) {
-		// TODO Auto-generated method stub
-		return userRepository.findByConfirmationToken(confirmationToken);
-	}
-
-
-	@Override
-	public void userVerify(String token) throws Exception {
-		// TODO Auto-generated method stub
-		long userId = UserToken.tokenVerify(token);
-	}
-
-
 	**/
-				 
+	
+	 
 }
 	
 

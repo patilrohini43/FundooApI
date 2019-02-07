@@ -1,11 +1,13 @@
 package com.bridgelabz.fundoo.model;
 
+
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotEmpty;;
+
 @Entity
 public class User {
 	
@@ -76,7 +78,6 @@ public class User {
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + "]";
 	}
-	
 	
 	
 	

@@ -13,8 +13,8 @@ public interface UserService {
 	public List<User> getAll();
 	public void registerUser(User user);
     public User findByEmail(String email);
-	//public User findByConfirmationToken(String confirmationToken);
 	public User registerUser1(UserDto userDto);
-	public String login(LoginDto loginDto) throws UserException;
+	//public String login(LoginDto loginDto) throws UserException;
 	//public void userVerify(String token) throws Exception;
+	public String Login(LoginDto loginDto) throws UserException;
 }
