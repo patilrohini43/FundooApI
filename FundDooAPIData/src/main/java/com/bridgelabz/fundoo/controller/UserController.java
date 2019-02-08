@@ -6,6 +6,7 @@ import java.util.Optional;
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 
@@ -16,7 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.validation.BindingResult;
-
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,6 +29,7 @@ import com.bridgelabz.fundoo.dto.UserDto;
 import com.bridgelabz.fundoo.exception.UserException;
 import com.bridgelabz.fundoo.model.*;
 import com.bridgelabz.fundoo.service.UserService;
+import com.bridgelabz.fundoo.service.UserServiceImpl;
 import com.bridgelabz.fundoo.util.EmailUtil;
 
 
@@ -65,7 +67,7 @@ public class UserController {
 	
 	
 	@RequestMapping(value = "/registers", method = RequestMethod.POST)
-	public ResponseEntity<String> processRegistrationForm(@Valid @RequestBody UserDto userDto, BindingResult bindingResult, HttpServletRequest request)  
+	public ResponseEntity<String> processRegistrationForm(@Valid @RequestBody UserDto userDto, BindingResult bindingResult, HttpServletRequest request) throws UserException  
 
 	{
 		if(bindingResult.hasErrors()) {
@@ -82,7 +84,7 @@ public class UserController {
 		else
 		{
 			 userService.registerUser1(userDto);
-			 EmailUtil.sendEmail(userDto.getEmail(), "Successfully send", "Howdy");
+		//	 EmailUtil.sendEmail(userDto.getEmail(), "Successfully send", "Howdy");
 			 System.out.println("successfully registered");
 		}
 		return new ResponseEntity<String>(HttpStatus.OK);
@@ -91,30 +93,45 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/Login", method = RequestMethod.POST)
-	public String loginForm(@Valid @RequestBody LoginDto loginDto ,BindingResult bindingResult, HttpServletRequest request) throws UserException
+	public ResponseEntity<String> loginForm(@Valid @RequestBody LoginDto loginDto ,BindingResult bindingResult, HttpServletRequest request) throws UserException
 	{
+		
+
+		{
+			if(bindingResult.hasErrors()) {
+				logger.error("Error in Binding The User Details");
+		}
 		System.out.println("Login SuccessFully");
-		return userService.Login(loginDto);
+		userService.Login(loginDto);
 		
-		//return new ResponseEntity<String>(HttpStatus.OK);
+		return new ResponseEntity<String>(HttpStatus.OK);
 		
+	}
+	
+	      
 	}
 	
 	
 	
-	
-	
-	
-	
-	
-	
-              
-               
-      
-    
+	@RequestMapping(value = "verifyEmail/{token}", method = RequestMethod.GET)
+	public ResponseEntity<String> verifyEmail(@PathVariable String token, HttpServletResponse response) throws UserException
+	{
+		logger.info("User Verify");
+		try
+		{
+			userService.verifyToken(token);
+			System.out.println("Verify Successfully");
+		}
+		catch(Exception e)
+		{
+			throw new UserException(100,"Invalid Verification Link");
+		}
+			
+		return new ResponseEntity<String>(HttpStatus.OK);
+  
+}
 
-      
-    }
+}
 
 
 

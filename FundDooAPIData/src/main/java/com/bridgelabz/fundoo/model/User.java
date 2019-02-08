@@ -28,12 +28,44 @@ public class User {
 	@Column(name = "Mobile")
       private String mobilenumber;
 	
-	
+	@Column(name="Verification")
+	private Boolean isVerify;
 
 	public User()
 	{
 		
 	}
+
+	
+	
+
+	
+
+
+
+
+	public Boolean getIsVerify() {
+		return isVerify;
+	}
+
+
+
+
+
+
+
+
+
+	public void setIsVerify(Boolean isVerify) {
+		this.isVerify = isVerify;
+	}
+
+
+
+
+
+
+
 
 
 	public String getEmail() {

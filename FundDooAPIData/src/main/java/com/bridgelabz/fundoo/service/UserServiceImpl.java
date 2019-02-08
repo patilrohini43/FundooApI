@@ -3,6 +3,8 @@ package com.bridgelabz.fundoo.service;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,6 +16,7 @@ import com.bridgelabz.fundoo.dto.UserDto;
 import com.bridgelabz.fundoo.exception.UserException;
 import com.bridgelabz.fundoo.model.*;
 import com.bridgelabz.fundoo.repository.UserRepository;
+import com.bridgelabz.fundoo.util.EmailUtil;
 import com.bridgelabz.fundoo.util.UserToken;
 
 
@@ -53,11 +56,12 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	
-	public User registerUser1(UserDto userDto)
+	public User registerUser1(UserDto userDto) throws UserException
 	{
 		
 		User user=modelMapper.map(userDto, User.class);
 		user.setPassword( passwordEncoder.encode(user.getPassword()));
+		 EmailUtil.sendEmail(userDto.getEmail(), "Successfully send", getBody(user));
 		return userRepository.save(user);
 	
 		
@@ -71,15 +75,19 @@ public class UserServiceImpl implements UserService{
 		User validUser = userRepository.findByEmail(loginDto.getEmail());
 		//match user password by logindto password 
 	boolean passwordStaus=passwordEncoder.matches(loginDto.getPassword(), validUser.getPassword());
-		if(passwordStaus == true)
-		{
-		return "login successfully";
-	
+	if(passwordStaus){ 
+		return UserToken.createToken(validUser.getId());
 	}
-		throw new UserException("invalid emailid or password");
+	return "invalid user and password";
+   
 		
 		}
 	
+
+	private String getBody( User user) throws UserException{
+
+		return ("http://localhost:8081"+UserToken.createToken(user.getId()));
+      }
 	
 	
 	
@@ -115,76 +123,23 @@ public class UserServiceImpl implements UserService{
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-/**
-	
-	public String login(LoginDto loginDto) throws UserException
+	public Long verifyToken(String token) throws Exception
 	{
-		return userRepository.findUserByEmail(loginDto.getEmail())
-				.map(fromDBUser-> {
-					try {
-						return this.validUser(fromDBUser, loginDto.getPassword());
-					} catch (UserException e) {
-						new UserException(100,"Please Verify Your mail"); 
-						e.printStackTrace();
-					}
-					return null;
-				})
-           .orElseThrow(()-> new UserException(100,"Not valid User"));
-				
+	  long userId=UserToken.tokenVerify(token);
+	   User user=userRepository.findById(userId)
+			   .orElseThrow(() -> new UserException(400, "Token is not valid........."));
+
+		user.setIsVerify(true);
+		userRepository.save(user);
 		
+		return user.getId();
 		
-	}
+   }
 	
 	
 	
 	
 	
-	private String validUser(User fromDBUser, String password) throws UserException {
-		boolean isValid =passwordEncoder.matches(password, fromDBUser.getPassword());
-		if(isValid){ 
-			return UserToken.generateToken(fromDBUser.getId());
-		}
-		throw new UserException(100,"Not valid User");
-}
-	
-	
-	**/
-	
-	 
 }
 	
 
