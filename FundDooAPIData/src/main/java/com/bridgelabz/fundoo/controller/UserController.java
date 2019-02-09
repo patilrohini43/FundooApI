@@ -1,36 +1,29 @@
 package com.bridgelabz.fundoo.controller;
 
-import java.util.ArrayList;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
-import java.util.Optional;
-
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 
 import com.bridgelabz.fundoo.dto.LoginDto;
 import com.bridgelabz.fundoo.dto.UserDto;
 import com.bridgelabz.fundoo.exception.UserException;
-import com.bridgelabz.fundoo.model.*;
+import com.bridgelabz.fundoo.model.User;
 import com.bridgelabz.fundoo.service.UserService;
-import com.bridgelabz.fundoo.service.UserServiceImpl;
-import com.bridgelabz.fundoo.util.EmailUtil;
 
 
 @RestController
@@ -39,12 +32,7 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
-	
-	///@Autowired
-//	JwtTokenProvider jwtTokenProvider;
-	
-	// @Autowired
-	// AuthenticationManager authenticationManager;
+
 
 	
 	static Logger logger=LoggerFactory.getLogger(UserController.class);
@@ -67,7 +55,7 @@ public class UserController {
 	
 	
 	@RequestMapping(value = "/registers", method = RequestMethod.POST)
-	public ResponseEntity<String> processRegistrationForm(@Valid @RequestBody UserDto userDto, BindingResult bindingResult, HttpServletRequest request) throws UserException  
+	public ResponseEntity<String> processRegistrationForm(@Valid @RequestBody UserDto userDto, BindingResult bindingResult, HttpServletRequest request) throws UserException, UnsupportedEncodingException  
 
 	{
 		if(bindingResult.hasErrors()) {
@@ -84,7 +72,6 @@ public class UserController {
 		else
 		{
 			 userService.registerUser1(userDto);
-		//	 EmailUtil.sendEmail(userDto.getEmail(), "Successfully send", "Howdy");
 			 System.out.println("successfully registered");
 		}
 		return new ResponseEntity<String>(HttpStatus.OK);
@@ -113,23 +100,43 @@ public class UserController {
 	
 	
 	
-	@RequestMapping(value = "verifyEmail/{token}", method = RequestMethod.GET)
-	public ResponseEntity<String> verifyEmail(@PathVariable String token, HttpServletResponse response) throws UserException
+	@RequestMapping(value = "/verify/{token}", method = RequestMethod.GET)
+	public ResponseEntity<String> verifyEmail(@PathVariable String token) throws Exception
 	{
 		logger.info("User Verify");
-		try
-		{
+		
 			userService.verifyToken(token);
 			System.out.println("Verify Successfully");
-		}
-		catch(Exception e)
-		{
-			throw new UserException(100,"Invalid Verification Link");
-		}
+	
 			
 		return new ResponseEntity<String>(HttpStatus.OK);
   
 }
+	
+	@RequestMapping(value = "/forgot", method = RequestMethod.GET)
+	public ResponseEntity<String> forgotPassword(@RequestParam String email) throws Exception, UserException
+	{
+		logger.info("Forgot Password");
+		
+		userService.forgotPassword(email);
+		
+		return  new ResponseEntity<String>(HttpStatus.OK);
+		
+	}
+	
+	
+
+	@RequestMapping(value = "/reset/{token}", method = RequestMethod.GET)
+	public ResponseEntity<String> resetPassword(@PathVariable String token,@RequestParam String password) throws Exception, UserException
+	{
+		logger.info("resetPassword");
+		
+		userService.resetPassword(token, password);
+		
+		System.out.println("Reset SuccessFully");
+		return  new ResponseEntity<String>(HttpStatus.OK);
+		
+	} 
 
 }
 

@@ -11,10 +11,11 @@ import javax.persistence.Id;
 @Entity
 public class User {
 	
-	@Id
+	
 	//@GeneratedValue(strategy = GenerationType.AUTO)
-	@GeneratedValue(strategy=GenerationType.IDENTITY) 
+	@Id
 	@Column(name = "Id")
+	@GeneratedValue(strategy=GenerationType.AUTO) 
 	private Long id;
 	@Column(name = "UserName")
 	private String username;
