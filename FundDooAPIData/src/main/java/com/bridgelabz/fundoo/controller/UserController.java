@@ -9,6 +9,8 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -27,13 +29,15 @@ import com.bridgelabz.fundoo.service.UserService;
 
 
 @RestController
+@PropertySource("classpath:message.properties")
 public class UserController {
 	
 	
 	@Autowired
 	private UserService userService;
 
-
+	@Autowired
+	private Environment environment;
 	
 	static Logger logger=LoggerFactory.getLogger(UserController.class);
 	
@@ -74,7 +78,7 @@ public class UserController {
 			 userService.registerUser1(userDto);
 			 System.out.println("successfully registered");
 		}
-		return new ResponseEntity<String>(HttpStatus.OK);
+		return new ResponseEntity<String>(environment.getProperty("a"),HttpStatus.OK);
 	
 		
 	}

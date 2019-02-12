@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService{
 		
 		Long userID = UserToken.tokenVerify(token);
 	
-	   User user=userRepository.findById(userID)
+    	   User user=userRepository.findById(userID)
 			   .orElseThrow(() -> new UserException(400, "Token is not valid........."));
 
 		user.setIsVerify(true);
