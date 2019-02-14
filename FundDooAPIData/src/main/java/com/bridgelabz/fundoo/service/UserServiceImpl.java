@@ -45,12 +45,31 @@ public class UserServiceImpl implements UserService{
 	}
 	
 
-	public void registerUser(User user)
+	public void registerUser(UserDto userDto) throws UnsupportedEncodingException, UserException
 	{
+		
+		User userExist=userRepository.findByEmail(userDto.getEmail());
+		System.out.println(userExist);
+		
+		if (userExist != null) {
+			
+			System.out.println("already registered ");
+		}
+		else
+		{
+		User user=modelMapper.map(userDto, User.class);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		userRepository.save(user);
+		EmailUtil.sendEmail(userDto.getEmail(), "Successfully send", getBody(user));
 		
 	}
+		}
+	
+
+	
+
+
+		
 	
 
 	public User findByEmail(String email) {
@@ -72,22 +91,47 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	
-	@Override
+
 	public String Login(LoginDto loginDto) throws UserException
 	{
 		//extract user details by using emailid 
-		User validUser = userRepository.findByEmail(loginDto.getEmail());
+	Optional<User> validUser =userRepository.findUserByEmail(loginDto.getEmail());
+	
 		//match user password by logindto password 
-	boolean passwordStaus=passwordEncoder.matches(loginDto.getPassword(), validUser.getPassword());
+	boolean passwordStaus=passwordEncoder.matches(loginDto.getPassword(), validUser.get().getPassword());
 	if(passwordStaus){ 
 		
 		return "login succesfully";
-		//return UserToken.createToken(validUser.getId());
+		//return UserToken.createToken(validUser.getId()); 
 	}
 	return "invalid user and password";
    
 		
-		}
+	}
+	
+	
+	
+	
+	
+//	
+//	public String Login1(LoginDto loginDto) throws UserException
+//	{
+//		
+//		//extract user details by using emailid 
+//		
+//		String emailId = loginDto.getEmail();
+//		User validUser = userRepository.findUserByEmail(emailId).orElseThrow(()-> new UserException("Email not found"));
+//		//matche user password by logindto password 
+//		boolean passwordStaus=passwordEncoder.matches(loginDto.getPassword(), validUser.getPassword());
+//		if(passwordStaus == true)
+//		{
+//			return "login successfully";
+//	
+//		}
+//			throw new UserException("invalid emailid or password");
+//	
+//		
+//	}
 	
 
 	private String getBody(User user) throws UserException, UnsupportedEncodingException{
