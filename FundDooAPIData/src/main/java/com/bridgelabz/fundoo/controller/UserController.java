@@ -122,13 +122,12 @@ public class UserController {
 }
 	
 	@RequestMapping(value = "/forgot", method = RequestMethod.GET)
-	public ResponseEntity<String> forgotPassword(@RequestParam String email) throws Exception, UserException
+	public ResponseEntity<String> forgotPassword(@RequestParam("email") String email) throws Exception, UserException
 	{
 		logger.info("Forgot Password");
 		
 		userService.forgotPassword(email);
-		
-		return  new ResponseEntity<String>(HttpStatus.OK);
+		return  new ResponseEntity<String>("SuccessFully",HttpStatus.OK);
 		
 	}
 	

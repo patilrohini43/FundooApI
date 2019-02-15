@@ -26,6 +26,7 @@ public static void sendEmail(String toEmail, String subject, String body) {
 		props.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
 		props.put("mail.smtp.host", "smtp.gmail.com"); //SMTP Host
 		props.put("mail.smtp.port", "587"); //TLS Port
+	
 		
 		javax.mail.Authenticator auth = new javax.mail.Authenticator() 
 		{

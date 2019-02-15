@@ -175,7 +175,6 @@ public class UserServiceImpl implements UserService{
 		
     	EmailUtil.sendEmail(user.getEmail(),"reset your password",getBody1(user,"reset"));
 		
-		
 		return false;
 	}
 	
