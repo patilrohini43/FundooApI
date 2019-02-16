@@ -173,7 +173,8 @@ public class UserServiceImpl implements UserService{
 			System.out.println("already registered ");
 		}
 		
-    	EmailUtil.sendEmail(user.getEmail(),"reset your password",getBody1(user,"reset"));
+		String url =this.getUrl("forgetVerify", user.getId());
+    	EmailUtil.sendEmail(user.getEmail(),"reset your password","click on link "+ url);
 		
 		return false;
 	}
@@ -206,13 +207,23 @@ public class UserServiceImpl implements UserService{
    }
 	
 
-	
-private String getBody1(User user,String link) throws UserException, UnsupportedEncodingException{
+//	
+//private String getBody1(User user,String link) throws UserException, UnsupportedEncodingException{
+//
+//		
+//		return "http://localhost:8081/verify/" 
+//				  + UserToken.createToken(user.getId());
+//      }
 
-		
-		return "http://localhost:8081/verify/" 
-				  + UserToken.createToken(user.getId());
-      }
+
+
+public String getUrl(String service, Long id) throws UserException, UnsupportedEncodingException {
+	
+	return "http://localhost:4200/" + service 
+			+ "/" + UserToken.createToken(id);
+
+}
+	
 	
 	
 }
