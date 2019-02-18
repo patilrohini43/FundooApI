@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bridgelabz.fundoo.dto.LoginDto;
 import com.bridgelabz.fundoo.dto.UserDto;
 import com.bridgelabz.fundoo.exception.UserException;
+import com.bridgelabz.fundoo.model.Response;
 import com.bridgelabz.fundoo.model.User;
 import com.bridgelabz.fundoo.service.UserService;
 
@@ -40,6 +41,8 @@ public class UserController {
 
 	@Autowired
 	private Environment environment;
+	
+	private Response response;
 	
 	static Logger logger=LoggerFactory.getLogger(UserController.class);
 	
@@ -64,7 +67,8 @@ public class UserController {
 	
 	
 	
-	@RequestMapping(value = "/register", method = RequestMethod.POST)	public ResponseEntity<String> registerUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult, HttpServletRequest request) throws UserException, UnsupportedEncodingException  
+	@RequestMapping(value = "/register", method = RequestMethod.POST)	
+	public ResponseEntity<String> registerUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult, HttpServletRequest request) throws UserException, UnsupportedEncodingException  
 
        {
 	    if(bindingResult.hasErrors())
@@ -93,6 +97,7 @@ public class UserController {
 		userService.Login(loginDto);
 		System.out.println("Login SuccessFully");
 		return new ResponseEntity<String>(environment.getProperty("a"),HttpStatus.OK);
+		
 		}
 	}
 	
@@ -117,7 +122,7 @@ public class UserController {
 			System.out.println("Verify Successfully");
 	
 			
-		return new ResponseEntity<String>(HttpStatus.OK);
+		return new ResponseEntity<String>("Account Verified",HttpStatus.OK);
   
 }
 	

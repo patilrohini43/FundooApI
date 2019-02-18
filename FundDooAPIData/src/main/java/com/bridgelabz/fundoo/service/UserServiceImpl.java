@@ -60,7 +60,10 @@ public class UserServiceImpl implements UserService{
 		User user=modelMapper.map(userDto, User.class);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		userRepository.save(user);
-		EmailUtil.sendEmail(userDto.getEmail(), "Successfully send", getBody(user));
+		String url =this.getUrl("loginVerify", user.getId());
+   	    EmailUtil.sendEmail(userDto.getEmail(),"Successfully send","click on link "+ url);
+		//EmailUtil.sendEmail(userDto.getEmail(), "Successfully send", getBody(user));
+		
 		
 	}
 		}
@@ -140,6 +143,10 @@ public class UserServiceImpl implements UserService{
 		return "http://localhost:8081/verify/" 
 				  + UserToken.createToken(user.getId());
       }
+	
+
+
+	
 	
 	
 	
