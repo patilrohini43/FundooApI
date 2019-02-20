@@ -94,24 +94,22 @@ public class UserController {
 			logger.error("Error in Binding The User Details");
 		}
 		
-		userService.Login(loginDto);
+		String check=userService.Login1(loginDto);
 		System.out.println("Login SuccessFully");
+		if(check!=null)
+		{
 		return new ResponseEntity<String>(environment.getProperty("a"),HttpStatus.OK);
 		
 		}
+		else
+		{
+			return new ResponseEntity<String>(environment.getProperty("data"),HttpStatus.OK);
+		}
+		}
 	}
 	
-//	@RequestMapping(value = "/Login1", method = RequestMethod.POST)
-//	public void loginForm(@Valid @RequestBody LoginDto loginDto ) throws UserException
-//	{
-//		userService.Login(loginDto);
-//		System.out.println("Login SuccessFully");
-//	}
-	
-	      
-	
-	
-	
+
+	     
 	
 	@RequestMapping(value = "/verify/{token}", method = RequestMethod.GET)
 	public ResponseEntity<String> verifyEmail(@PathVariable String token) throws Exception
@@ -146,7 +144,7 @@ public class UserController {
 		userService.resetPassword(token, password);
 		
 		System.out.println("Reset SuccessFully");
-		return  new ResponseEntity<String>(HttpStatus.OK);
+		return  new ResponseEntity<String>(environment.getProperty("a"),HttpStatus.OK);
 		
 	} 
 

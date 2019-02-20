@@ -107,7 +107,8 @@ public class UserServiceImpl implements UserService{
 		return "login succesfully";
 		//return UserToken.createToken(validUser.getId()); 
 	}
-	return "invalid user and password";
+	
+	return "login invalid";
    
 		
 	}
@@ -116,25 +117,25 @@ public class UserServiceImpl implements UserService{
 	
 	
 	
-//	
-//	public String Login1(LoginDto loginDto) throws UserException
-//	{
-//		
-//		//extract user details by using emailid 
-//		
-//		String emailId = loginDto.getEmail();
-//		User validUser = userRepository.findUserByEmail(emailId).orElseThrow(()-> new UserException("Email not found"));
-//		//matche user password by logindto password 
-//		boolean passwordStaus=passwordEncoder.matches(loginDto.getPassword(), validUser.getPassword());
-//		if(passwordStaus == true)
-//		{
-//			return "login successfully";
-//	
-//		}
-//			throw new UserException("invalid emailid or password");
-//	
-//		
-//	}
+	
+	public String Login1(LoginDto loginDto) throws UserException
+	{
+		
+		//extract user details by using emailid 
+		
+		String emailId = loginDto.getEmail();
+		User validUser = userRepository.findUserByEmail(emailId).orElseThrow(()-> new UserException("Email not found"));
+		//matche user password by logindto password 
+		boolean passwordStaus=passwordEncoder.matches(loginDto.getPassword(), validUser.getPassword());	
+		if(passwordStaus == true)
+		{
+			return "login successfully";
+
+		}
+			throw new UserException("invalid emailid or password");
+	
+		
+	}
 	
 
 	private String getBody(User user) throws UserException, UnsupportedEncodingException{

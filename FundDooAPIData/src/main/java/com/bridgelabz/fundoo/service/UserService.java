@@ -20,5 +20,6 @@ public interface UserService {
 	public Long verifyToken(String token) throws UserException, IllegalArgumentException, UnsupportedEncodingException, Exception ;
     public boolean forgotPassword(String email) throws UnsupportedEncodingException, UserException;
     public String resetPassword(String token,String password) throws Exception;
+    public String Login1(LoginDto loginDto) throws UserException;
 
 }
