@@ -1,18 +1,23 @@
 package com.bridgelabz.fundoo.noteSerivce;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 
+import com.bridgelabz.fundoo.dto.UserDto;
 import com.bridgelabz.fundoo.exception.UserException;
+import com.bridgelabz.fundoo.model.User;
 import com.bridgelabz.fundoo.note.dto.NoteDto;
 import com.bridgelabz.fundoo.note.model.Note;
 import com.bridgelabz.fundoo.note.repository.NoteRepository;
+import com.bridgelabz.fundoo.util.EmailUtil;
 import com.bridgelabz.fundoo.util.UserToken;
 
 
@@ -27,13 +32,19 @@ public class NoteServiceImpl implements NoteService{
     private ModelMapper modelMapper;
 	
 
-	public void createNote(NoteDto noteDto,String token) throws Exception
+	public boolean createNote(NoteDto noteDto,String token) throws Exception
 	{
 		
 		Note note=modelMapper.map(noteDto, Note.class);
 		long userId=UserToken.tokenVerify(token);
 		note.setUserId(userId);
-	    noteRepository.save(note);
+	    Note check= noteRepository.save(note);
+	   if(check != null)
+	   {
+		   return true;
+	   }
+	   
+	   return false;
 		
 	  }
 		
@@ -58,11 +69,56 @@ public class NoteServiceImpl implements NoteService{
  		return false;
     	
     }
-
+    
+    
+    
+    public boolean updateNote(Note note,long noteId) throws UserException
+    {
+    	Note notes=noteRepository.findById(noteId)
+    			.orElseThrow(() -> new UserException("NoteID  not found"));
+    	
+    	notes.setTitle(note.getTitle());
+        notes.setDescription(note.getDescription());   
+        notes.setUpdatedDate(note.getUpdatedDate());
+        
+      Note updateNote=noteRepository.save(notes);
+      if(updateNote!=null)
+	   {
+		   return true;
+	   }
+	   
+	   return false;
+    
+    }
+    
+    public Note deleteNote(long noteId) throws UserException
+    {
+    	Note notes=noteRepository.findById(noteId)
+    			.orElseThrow(() -> new UserException("NoteId not found " ));
+    	noteRepository.delete(notes);
+		return notes;
 	
+    }
     
     
-    
-
+//    public boolean registerUser(NoteDto noteDto,long noteId) 
+//	{
+//		
+//		Optional<Note> note=noteRepository.findById(noteDto.getNoteId());
+//		
+//		
+//		if (note.isPresent()) {
+//			System.out.println("already registered ");
+//			return false;
+//			
+//		}
+//		
+//		Note notes=modelMapper.map(noteDto, Note.class);
+//		notes.setTitle(noteDto.getTitle());
+//		notes.setDescription(noteDto.getDescription());
+//		noteRepository.save(notes);	
+//		return true;
+//		
+//	}
 
 }

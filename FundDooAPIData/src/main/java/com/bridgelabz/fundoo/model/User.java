@@ -2,6 +2,8 @@ package com.bridgelabz.fundoo.model;
 
 
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,6 +33,42 @@ public class User {
 	
 	@Column(name="Verification")
 	private Boolean isVerify;
+	
+	private LocalDateTime updatedDate=LocalDateTime.now();
+	
+	//private LocalDateTime reminder;
+
+	private LocalDateTime createDate=LocalDateTime.now();
+	
+	
+
+	public LocalDateTime getUpdatedDate() {
+		return updatedDate;
+	}
+
+
+
+	public void setUpdatedDate(LocalDateTime updatedDate) {
+		this.updatedDate = updatedDate;
+	
+	}
+
+
+
+	public LocalDateTime getCreateDate() {
+		return createDate;
+	}
+
+
+
+
+	public void setCreateDate(LocalDateTime createDate) {
+		this.createDate = createDate;
+	}
+
+
+
+
 
 	public User()
 	{

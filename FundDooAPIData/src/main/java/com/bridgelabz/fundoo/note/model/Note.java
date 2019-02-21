@@ -46,11 +46,11 @@ public class Note {
     private boolean isArchive;
     
 
-	private LocalDateTime updatedDate;
+	private LocalDateTime updatedDate=LocalDateTime.now();
 	
 	private LocalDateTime reminder;
 
-	private LocalDateTime createDate;
+	private LocalDateTime createDate=LocalDateTime.now();
 
     public LocalDateTime getReminder() {
 		return reminder;

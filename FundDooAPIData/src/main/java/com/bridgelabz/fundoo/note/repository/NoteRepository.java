@@ -10,6 +10,8 @@ import com.bridgelabz.fundoo.note.model.Note;
 public interface NoteRepository extends JpaRepository<Note,Long>{
 
 	
+
+
 	
 	
 
