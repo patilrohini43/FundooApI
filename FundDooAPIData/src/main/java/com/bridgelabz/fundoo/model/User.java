@@ -34,6 +34,8 @@ public class User {
 	@Column(name="Verification")
 	private Boolean isVerify;
 	
+	private boolean isVerified;
+	
 	private LocalDateTime updatedDate=LocalDateTime.now();
 	
 	//private LocalDateTime reminder;
@@ -66,21 +68,10 @@ public class User {
 		this.createDate = createDate;
 	}
 
-
-
-
-
 	public User()
 	{
 		
 	}
-
-	
-	
-
-	
-
-
 
 
 	public Boolean getIsVerify() {
@@ -88,24 +79,9 @@ public class User {
 	}
 
 
-
-
-
-
-
-
-
 	public void setIsVerify(Boolean isVerify) {
 		this.isVerify = isVerify;
 	}
-
-
-
-
-
-
-
-
 
 	public String getEmail() {
 		return email;
@@ -149,7 +125,16 @@ public class User {
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + "]";
 	}
-	
+
+
+
+	public boolean isVerify() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
 	
 	
 	

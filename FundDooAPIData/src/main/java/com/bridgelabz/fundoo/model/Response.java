@@ -2,23 +2,23 @@ package com.bridgelabz.fundoo.model;
 
 public class Response {
 	
-	private int setStatusCode;
-	private String setStatusMessage;
+	private int statusCode;
+	private String statusMessage;
+	public int getStatusCode() {
+		return statusCode;
+	}
+	public void setStatusCode(int statusCode) {
+		this.statusCode = statusCode;
+	}
+	public String getStatusMessage() {
+		return statusMessage;
+	}
+	public void setStatusMessage(String statusMessage) {
+		this.statusMessage = statusMessage;
+	}
+
 	
 	
-	
-	public String getSetStatusMessage() {
-		return setStatusMessage;
-	}
-	public void setSetStatusMessage(String setStatusMessage) {
-		this.setStatusMessage = setStatusMessage;
-	}
-	public int getSetStatusCode() {
-		return setStatusCode;
-	}
-	public void setSetStatusCode(int setStatusCode) {
-		this.setStatusCode = setStatusCode;
-	}
 	
 	
 	

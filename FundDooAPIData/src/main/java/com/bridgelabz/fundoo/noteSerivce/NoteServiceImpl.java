@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 
 import com.bridgelabz.fundoo.dto.UserDto;
+import com.bridgelabz.fundoo.exception.ResourceNotFoundException;
 import com.bridgelabz.fundoo.exception.UserException;
 import com.bridgelabz.fundoo.model.User;
 import com.bridgelabz.fundoo.note.dto.NoteDto;
@@ -72,10 +73,10 @@ public class NoteServiceImpl implements NoteService{
     
     
     
-    public boolean updateNote(Note note,long noteId) throws UserException
+    public boolean updateNote(Note note,long noteId)
     {
     	Note notes=noteRepository.findById(noteId)
-    			.orElseThrow(() -> new UserException("NoteID  not found"));
+    			.orElseThrow(() -> new ResourceNotFoundException("Note", "id", noteId));
     	
     	notes.setTitle(note.getTitle());
         notes.setDescription(note.getDescription());   
@@ -91,10 +92,10 @@ public class NoteServiceImpl implements NoteService{
     
     }
     
-    public Note deleteNote(long noteId) throws UserException
+    public Note deleteNote(long noteId)
     {
     	Note notes=noteRepository.findById(noteId)
-    			.orElseThrow(() -> new UserException("NoteId not found " ));
+    			.orElseThrow(() ->new ResourceNotFoundException("Note", "id", noteId));
     	noteRepository.delete(notes);
 		return notes;
 	

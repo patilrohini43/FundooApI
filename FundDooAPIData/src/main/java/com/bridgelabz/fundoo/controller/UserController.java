@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -32,7 +33,8 @@ import com.bridgelabz.fundoo.service.UserService;
 
 @RestController
 @PropertySource("classpath:message.properties")
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin(origins="http://localhost:4200",allowedHeaders = "*",exposedHeaders= {"jwt_token"})
+
 public class UserController {
 	
 	
@@ -85,27 +87,24 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/Login", method = RequestMethod.POST)
-	public ResponseEntity<String> loginForm(@Valid @RequestBody LoginDto loginDto , BindingResult bindingResult, HttpServletRequest request) throws UserException, UnsupportedEncodingException
+	public ResponseEntity<Response> login(@Valid @RequestBody LoginDto loginDto , BindingResult bindingResult, HttpServletResponse httpresponse) throws UserException, UnsupportedEncodingException
 	{
-		System.out.println("Hello");
+		//System.out.println("Hello");
 
 		{
 		if(bindingResult.hasErrors()) {
 			logger.error("Error in Binding The User Details");
 		}
 		
-		String check=userService.Login1(loginDto);
-		System.out.println("Login SuccessFully");
-		if(check!=null)
-		{
-		return new ResponseEntity<String>(environment.getProperty("a"),HttpStatus.OK);
-		
-		}
-		else
-		{
-			return new ResponseEntity<String>(environment.getProperty("data"),HttpStatus.OK);
-		}
-		}
+		String token=userService.Login2(loginDto);
+	
+		httpresponse.addHeader("jwt_token", token);
+		Response response=new Response();
+		response.setStatusCode(200);
+		response.setStatusMessage(environment.getProperty("message"));
+	
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
 	}
 	
 

@@ -231,6 +231,53 @@ public String getUrl(String service, Long id) throws UserException, UnsupportedE
 			+ "/" + UserToken.createToken(id);
 
 }
+
+
+
+  public String Login2(LoginDto loginDto) throws UserException{
+	
+	return userRepository.findUserByEmail(loginDto.getEmail())
+			.map(validUser -> {
+		
+					try {
+						return this.authenticate(validUser,loginDto);
+					} catch (UserException | UnsupportedEncodingException e) {
+						new UserException(100,"Please Verify Your mail"); 
+                     e.printStackTrace();
+					}
+					
+					return null;
+				
+		
+			}) .orElseThrow(() -> new UserException(400, "Not Valid USer........"));
+				 
+}
+  
+   
+
+   /**
+	 * @param dbUser
+	 * @param password
+	 * @return
+ * @throws UnsupportedEncodingException 
+ * @throws UserException 
+	 */
+	private String authenticate(User validUser,LoginDto loginDto) throws UnsupportedEncodingException, UserException {
+		System.out.println("hello");
+		boolean isVerify=passwordEncoder.matches(loginDto.getPassword(),validUser.getPassword());
+		 
+		System.out.println(isVerify);
+		if(isVerify)
+		 {
+			 return UserToken.createToken(validUser.getId());
+		 }
+	        throw new UserException(403, "Not ok a valid user....");
+				
+}
+
+      
+
+
 	
 	
 	

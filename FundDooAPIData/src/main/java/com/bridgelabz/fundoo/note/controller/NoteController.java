@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,14 +37,14 @@ public class NoteController {
 	Environment environment;
 
 	@PostMapping("/createNote")
-	public ResponseEntity<String> createNote(@Valid @RequestBody NoteDto noteDto,@PathVariable String token) throws Exception
+	public ResponseEntity<String> createNote(@Valid @RequestBody NoteDto noteDto,@RequestHeader String token) throws Exception
 
        {
-		
+		System.out.println("Note Created");
 		 boolean check=noteService.createNote(noteDto,token);
 		 if(check==true)
 		 {
-	     return new ResponseEntity<String>(environment.getProperty("a"),HttpStatus.OK);
+	     return new ResponseEntity<String>(environment.getProperty("noteMessage"),HttpStatus.OK);
 		 }else
 		
 		   return new ResponseEntity<String>(environment.getProperty("data"),HttpStatus.OK);
@@ -65,10 +66,10 @@ public class NoteController {
 		boolean check=noteService.updateNote(note,noteId);
 		 if(check)
 		 {
-	     return new ResponseEntity<String>(environment.getProperty("a"),HttpStatus.OK);
+	     return new ResponseEntity<String>(environment.getProperty("NoteUpdate"),HttpStatus.OK);
 		 }
 
-		return new ResponseEntity<String>(environment.getProperty("data"),HttpStatus.OK);
+		return new ResponseEntity<String>(environment.getProperty("NoteUpdate1"),HttpStatus.OK);
 		
 	}
 	
@@ -78,7 +79,7 @@ public class NoteController {
 		
 		noteService.deleteNote(noteId);
 		
-		 return new ResponseEntity<String>(environment.getProperty("a"),HttpStatus.OK);
+		 return new ResponseEntity<String>(environment.getProperty("deleteNote"),HttpStatus.OK);
 		
 	}
 	

@@ -21,5 +21,5 @@ public interface UserService {
     public boolean forgotPassword(String email) throws UnsupportedEncodingException, UserException;
     public String resetPassword(String token,String password) throws Exception;
     public String Login1(LoginDto loginDto) throws UserException;
-
+    public String Login2(LoginDto loginDto) throws UserException;
 }
