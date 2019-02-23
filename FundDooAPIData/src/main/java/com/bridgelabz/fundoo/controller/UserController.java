@@ -111,7 +111,7 @@ public class UserController {
 	     
 	
 	@RequestMapping(value = "/verify/{token}", method = RequestMethod.GET)
-	public ResponseEntity<String> verifyEmail(@PathVariable String token) throws Exception
+	public ResponseEntity<String> verifyEmail(@PathVariable String token) 
 	{
 		logger.info("User Verify");
 		
@@ -124,7 +124,7 @@ public class UserController {
 }
 	
 	@RequestMapping(value = "/forgot", method = RequestMethod.GET)
-	public ResponseEntity<String> forgotPassword(@RequestParam("email") String email) throws Exception, UserException
+	public ResponseEntity<String> forgotPassword(@RequestParam("email") String email) 
 	{
 		logger.info("Forgot Password");
 		
@@ -136,7 +136,7 @@ public class UserController {
 	
 
 	@RequestMapping(value = "/reset/{token}", method = RequestMethod.GET)
-	public ResponseEntity<String> resetPassword(@PathVariable String token,@RequestParam String password) throws Exception, UserException
+	public ResponseEntity<String> resetPassword(@PathVariable String token,@RequestParam String password)
 	{
 		logger.info("resetPassword");
 		

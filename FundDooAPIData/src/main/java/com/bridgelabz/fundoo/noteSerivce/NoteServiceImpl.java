@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 
 import com.bridgelabz.fundoo.dto.UserDto;
-import com.bridgelabz.fundoo.exception.ResourceNotFoundException;
+import com.bridgelabz.fundoo.exception.NoteException;
 import com.bridgelabz.fundoo.exception.UserException;
 import com.bridgelabz.fundoo.model.User;
 import com.bridgelabz.fundoo.note.dto.NoteDto;
@@ -33,7 +33,7 @@ public class NoteServiceImpl implements NoteService{
     private ModelMapper modelMapper;
 	
 
-	public boolean createNote(NoteDto noteDto,String token) throws Exception
+	public boolean createNote(NoteDto noteDto,String token) 
 	{
 		
 		Note note=modelMapper.map(noteDto, Note.class);
@@ -58,7 +58,7 @@ public class NoteServiceImpl implements NoteService{
 	}
 	
 	 
-    public boolean getNoteById(Long noteId) throws UserException
+    public boolean getNoteById(Long noteId)
     {
     	Note check=noteRepository.findById(noteId)
     	.orElseThrow(() -> new UserException("Note Not Found"));
@@ -73,16 +73,18 @@ public class NoteServiceImpl implements NoteService{
     
     
     
-    public boolean updateNote(Note note,long noteId)
+    public boolean updateNote(Note note,String token)
     {
-    	Note notes=noteRepository.findById(noteId)
-    			.orElseThrow(() -> new ResourceNotFoundException("Note", "id", noteId));
-    	
-    	notes.setTitle(note.getTitle());
-        notes.setDescription(note.getDescription());   
-        notes.setUpdatedDate(note.getUpdatedDate());
+    
+    	//Note notes=noteRepository.findById(noteId)
+    			//.orElseThrow(() -> new ResourceNotFoundException("Note", "id", noteId));
+    	long userId=UserToken.tokenVerify(token);
+    	note.setUserId(userId);
+    	//notes.setTitle(note.getTitle());
+        //notes.setDescription(note.getDescription());   
+        note.setUpdatedDate(LocalDateTime.now());
         
-      Note updateNote=noteRepository.save(notes);
+      Note updateNote=noteRepository.save(note);
       if(updateNote!=null)
 	   {
 		   return true;
@@ -92,34 +94,19 @@ public class NoteServiceImpl implements NoteService{
     
     }
     
-    public Note deleteNote(long noteId)
+    public boolean deleteNote(long noteId,String token)
     {
-    	Note notes=noteRepository.findById(noteId)
-    			.orElseThrow(() ->new ResourceNotFoundException("Note", "id", noteId));
-    	noteRepository.delete(notes);
-		return notes;
+    
+			long userId=UserToken.tokenVerify(token);
+			Note notes=noteRepository.findById(noteId)
+					.orElseThrow(() ->new NoteException("Note", "id", noteId));
+	    
+             noteRepository.delete(notes);
+    	  
+		return false;
 	
     }
     
     
-//    public boolean registerUser(NoteDto noteDto,long noteId) 
-//	{
-//		
-//		Optional<Note> note=noteRepository.findById(noteDto.getNoteId());
-//		
-//		
-//		if (note.isPresent()) {
-//			System.out.println("already registered ");
-//			return false;
-//			
-//		}
-//		
-//		Note notes=modelMapper.map(noteDto, Note.class);
-//		notes.setTitle(noteDto.getTitle());
-//		notes.setDescription(noteDto.getDescription());
-//		noteRepository.save(notes);	
-//		return true;
-//		
-//	}
 
 }

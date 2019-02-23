@@ -41,15 +41,9 @@ public class NoteController {
 
        {
 		System.out.println("Note Created");
-		 boolean check=noteService.createNote(noteDto,token);
-		 if(check==true)
-		 {
-	     return new ResponseEntity<String>(environment.getProperty("noteMessage"),HttpStatus.OK);
-		 }else
+	     noteService.createNote(noteDto,token);
 		
-		   return new ResponseEntity<String>(environment.getProperty("data"),HttpStatus.OK);
-			
-		
+	     return new ResponseEntity<String>(environment.getProperty("noteMessage"),HttpStatus.OK);	
 	}
 	
 	@GetMapping("/getNote")
@@ -60,24 +54,20 @@ public class NoteController {
 	}
 	
 	@PutMapping("/updateNote/{id}")
-	public ResponseEntity<String> updateNote(@PathVariable(value="id") long noteId,@Valid @RequestBody Note note) throws UserException
+	public ResponseEntity<String> updateNote(@RequestHeader String token,@Valid @RequestBody Note note) throws Exception
 	{
 		
-		boolean check=noteService.updateNote(note,noteId);
-		 if(check)
-		 {
-	     return new ResponseEntity<String>(environment.getProperty("NoteUpdate"),HttpStatus.OK);
-		 }
-
-		return new ResponseEntity<String>(environment.getProperty("NoteUpdate1"),HttpStatus.OK);
+		noteService.updateNote(note,token);
 		
+	     return new ResponseEntity<String>(environment.getProperty("NoteUpdate"),HttpStatus.OK);
+		 
 	}
 	
 	@DeleteMapping("/deleteNote/{id}")
-	public ResponseEntity<String> delteNote(@PathVariable(value="id") long noteId) throws UserException
+	public ResponseEntity<String> delteNote(@RequestHeader String token,@PathVariable(value="id") long noteId) throws Exception
 	{
 		
-		noteService.deleteNote(noteId);
+		noteService.deleteNote(noteId,token);
 		
 		 return new ResponseEntity<String>(environment.getProperty("deleteNote"),HttpStatus.OK);
 		

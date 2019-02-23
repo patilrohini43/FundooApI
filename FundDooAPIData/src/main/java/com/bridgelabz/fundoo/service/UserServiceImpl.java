@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import com.bridgelabz.fundoo.dto.LoginDto;
 import com.bridgelabz.fundoo.dto.UserDto;
+import com.bridgelabz.fundoo.exception.EmailException;
+import com.bridgelabz.fundoo.exception.PasswordException;
+import com.bridgelabz.fundoo.exception.TokenException;
 import com.bridgelabz.fundoo.exception.UserException;
 import com.bridgelabz.fundoo.model.*;
 import com.bridgelabz.fundoo.repository.UserRepository;
@@ -45,7 +48,7 @@ public class UserServiceImpl implements UserService{
 	}
 	
 
-	public void registerUser(UserDto userDto) throws UnsupportedEncodingException, UserException
+	public void registerUser(UserDto userDto) 
 	{
 		
 		User userExist=userRepository.findByEmail(userDto.getEmail());
@@ -71,74 +74,70 @@ public class UserServiceImpl implements UserService{
 
 	
 
-
-		
-	
-
 	public User findByEmail(String email) {
 		
 		return userRepository.findByEmail(email);
 	}
 	
 	
-	public User registerUser1(UserDto userDto) throws UserException, UnsupportedEncodingException
-	{
-		
-		User user=modelMapper.map(userDto, User.class);
-		user.setPassword( passwordEncoder.encode(user.getPassword()));
-		user=userRepository.save(user);
-		EmailUtil.sendEmail(userDto.getEmail(), "Successfully send", getBody(user));
-		return user; 
+//	public User registerUser1(UserDto userDto) throws UserException, UnsupportedEncodingException
+//	{
+//		
+//		User user=modelMapper.map(userDto, User.class);
+//		user.setPassword( passwordEncoder.encode(user.getPassword()));
+//		user=userRepository.save(user);
+//		EmailUtil.sendEmail(userDto.getEmail(), "Successfully send", getBody(user));
+//		return user; 
+//	
+//		
+//	}
 	
-		
-	}
 	
+//
+//	public String Login(LoginDto loginDto) 
+//	{
+//		//extract user details by using emailid 
+//	Optional<User> validUser =userRepository.findUserByEmail(loginDto.getEmail());
+//	
+//		//match user password by logindto password 
+//	boolean passwordStaus=passwordEncoder.matches(loginDto.getPassword(), validUser.get().getPassword());
+//	if(passwordStaus){ 
+//		
+//		return "login succesfully";
+//		//return UserToken.createToken(validUser.getId()); 
+//	}
+//	
+//	return "login invalid";
+//   
+//		
+//	}
+	
+	
+	
+	
+	
+//	
+//	public String Login1(LoginDto loginDto) throws UserException
+//	{
+//		
+//		//extract user details by using emailid 
+//		
+//		String emailId = loginDto.getEmail();
+//		User validUser = userRepository.findUserByEmail(emailId).orElseThrow(()-> new UserException("Email not found"));
+//		//matche user password by logindto password 
+//		boolean passwordStaus=passwordEncoder.matches(loginDto.getPassword(), validUser.getPassword());	
+//		if(passwordStaus == true)
+//		{
+//			return "login successfully";
+//
+//		}
+//			throw new UserException("invalid emailid or password");
+//	
+//		
+//	}
 	
 
-	public String Login(LoginDto loginDto) throws UserException
-	{
-		//extract user details by using emailid 
-	Optional<User> validUser =userRepository.findUserByEmail(loginDto.getEmail());
-	
-		//match user password by logindto password 
-	boolean passwordStaus=passwordEncoder.matches(loginDto.getPassword(), validUser.get().getPassword());
-	if(passwordStaus){ 
-		
-		return "login succesfully";
-		//return UserToken.createToken(validUser.getId()); 
-	}
-	
-	return "login invalid";
-   
-		
-	}
-	
-	
-	
-	
-	
-	
-	public String Login1(LoginDto loginDto) throws UserException
-	{
-		
-		//extract user details by using emailid 
-		
-		String emailId = loginDto.getEmail();
-		User validUser = userRepository.findUserByEmail(emailId).orElseThrow(()-> new UserException("Email not found"));
-		//matche user password by logindto password 
-		boolean passwordStaus=passwordEncoder.matches(loginDto.getPassword(), validUser.getPassword());	
-		if(passwordStaus == true)
-		{
-			return "login successfully";
-
-		}
-			throw new UserException("invalid emailid or password");
-	
-		
-	}
-	
-
-	private String getBody(User user) throws UserException, UnsupportedEncodingException{
+	private String getBody(User user) {
 
 		
 		return "http://localhost:8081/verify/" 
@@ -151,14 +150,14 @@ public class UserServiceImpl implements UserService{
 	
 	
 	
-	public Long verifyToken(String token) throws Exception
+	public Long verifyToken(String token) 
 	{
 		System.out.println(token);
 		
 		Long userID = UserToken.tokenVerify(token);
 	
     	   User user=userRepository.findById(userID)
-			   .orElseThrow(() -> new UserException(400, "Token is not valid........."));
+			   .orElseThrow(() -> new TokenException(400, "Token is not valid........."));
 
 		user.setIsVerify(true);
 		userRepository.save(user);
@@ -169,11 +168,12 @@ public class UserServiceImpl implements UserService{
 
 
 	@Override
-	public boolean forgotPassword(String email) throws UserException, UnsupportedEncodingException {
+	public boolean forgotPassword(String email)  {
 		// TODO Auto-generated method stub
 		
      
-    	User user=userRepository.findByEmail(email);
+		User user=userRepository.findUserByEmail(email)
+				.orElseThrow(() -> new EmailException(400, "Not Valid Email........"));
 		System.out.println(user);
 		
 		if (user != null) {
@@ -188,24 +188,16 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	
+
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	public String resetPassword(String token,String password) throws Exception
+	public String resetPassword(String token,String password)
 	{
 		System.out.println(token);
 		
 		Long userID = UserToken.tokenVerify(token);
 	
 	   User user=userRepository.findById(userID)
-			   .orElseThrow(() -> new UserException( "User is not valid........."));
+			   .orElseThrow(() -> new TokenException( 400,"User is not valid........."));
 
 		user.setPassword(passwordEncoder.encode(password));
 		userRepository.save(user);
@@ -225,7 +217,7 @@ public class UserServiceImpl implements UserService{
 
 
 
-public String getUrl(String service, Long id) throws UserException, UnsupportedEncodingException {
+public String getUrl(String service, Long id) {
 	
 	return "http://localhost:4200/" + service 
 			+ "/" + UserToken.createToken(id);
@@ -234,22 +226,16 @@ public String getUrl(String service, Long id) throws UserException, UnsupportedE
 
 
 
-  public String Login2(LoginDto loginDto) throws UserException{
-	
+  public String Login2(LoginDto loginDto) {
+	Response respone = new Response();
 	return userRepository.findUserByEmail(loginDto.getEmail())
 			.map(validUser -> {
 		
-					try {
 						return this.authenticate(validUser,loginDto);
-					} catch (UserException | UnsupportedEncodingException e) {
-						new UserException(100,"Please Verify Your mail"); 
-                     e.printStackTrace();
-					}
-					
-					return null;
+                    
 				
 		
-			}) .orElseThrow(() -> new UserException(400, "Not Valid USer........"));
+			}) .orElseThrow(() -> new EmailException(400, "Not Valid USer........"));
 				 
 }
   
@@ -262,7 +248,7 @@ public String getUrl(String service, Long id) throws UserException, UnsupportedE
  * @throws UnsupportedEncodingException 
  * @throws UserException 
 	 */
-	private String authenticate(User validUser,LoginDto loginDto) throws UnsupportedEncodingException, UserException {
+	private String authenticate(User validUser,LoginDto loginDto)  {
 		System.out.println("hello");
 		boolean isVerify=passwordEncoder.matches(loginDto.getPassword(),validUser.getPassword());
 		 
@@ -271,7 +257,7 @@ public String getUrl(String service, Long id) throws UserException, UnsupportedE
 		 {
 			 return UserToken.createToken(validUser.getId());
 		 }
-	        throw new UserException(403, "Not ok a valid user....");
+	        throw new PasswordException(403, "Not ok a valid user....");
 				
 }
 

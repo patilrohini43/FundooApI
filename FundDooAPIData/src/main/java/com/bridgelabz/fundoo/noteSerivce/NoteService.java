@@ -15,8 +15,8 @@ public interface NoteService {
 	
 	public boolean createNote(NoteDto noteDto,String token) throws Exception;
 	public List<Note> getAllNotes();
-	 public boolean updateNote(Note note,long noteId) throws UserException;
-	 public Note deleteNote(long noteId) throws UserException;
+	 public boolean updateNote(Note note,String token) throws Exception;
+	    public boolean deleteNote(long noteId,String token) throws Exception;
 	//public boolean registerUser(@Valid NoteDto noteDto, long noteId);
 
 }

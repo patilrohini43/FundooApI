@@ -4,6 +4,13 @@ public class Response {
 	
 	private int statusCode;
 	private String statusMessage;
+	private String token;
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
+	}
 	public int getStatusCode() {
 		return statusCode;
 	}

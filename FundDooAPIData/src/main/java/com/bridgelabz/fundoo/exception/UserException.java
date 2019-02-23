@@ -1,6 +1,6 @@
 package com.bridgelabz.fundoo.exception;
 
-public class UserException extends Exception {
+public class UserException extends RuntimeException {
 
 	/**
 	 * 
@@ -23,6 +23,9 @@ public class UserException extends Exception {
 		super(msg, throwable);
 		this.errorCode=errorCode;
 	}
+	
+	
+	
 	public int getErrorCode() {
 		return errorCode;
 	}

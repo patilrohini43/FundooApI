@@ -9,13 +9,14 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.Verification;
+import com.bridgelabz.fundoo.exception.TokenException;
 import com.bridgelabz.fundoo.exception.UserException;
 public class UserToken {
 
 
 	public static final String TOKEN_SECRET = "s4T2zOIWHMM1sxq";
 	
-	public static String createToken(Long id) throws UnsupportedEncodingException {
+	public static String createToken(Long id){
 		try {
 			System.out.println(id);
 			Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
@@ -30,7 +31,7 @@ public class UserToken {
 		return null;
 	}
 	
-	public static Long tokenVerify(String token)throws Exception	
+	public static Long tokenVerify(String token)
 	{
 		Long userid;
 		try {
@@ -44,7 +45,7 @@ public class UserToken {
 		}
 		catch(Exception exception)
 		{
-			throw new UserException(100,"Token Not Verified");
+			throw new TokenException(100,"Token Not Verified");
 		}
 	}
 
