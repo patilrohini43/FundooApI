@@ -8,7 +8,7 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +22,7 @@ import com.bridgelabz.fundoo.model.*;
 import com.bridgelabz.fundoo.repository.UserRepository;
 import com.bridgelabz.fundoo.util.EmailUtil;
 import com.bridgelabz.fundoo.util.UserToken;
+import com.bridgelabz.fundoo.util.Utility;
 
 
 @Service
@@ -38,6 +39,12 @@ public class UserServiceImpl implements UserService{
     private ModelMapper modelMapper;
     
    
+	@Autowired
+	private Environment environment;
+    
+    private Response response;
+    
+    private Utility util;
 	
 	public List<User> getAll()
 	{
@@ -48,15 +55,17 @@ public class UserServiceImpl implements UserService{
 	}
 	
 
-	public void registerUser(UserDto userDto) 
+	public Response registerUser(UserDto userDto) 
 	{
 		
 		User userExist=userRepository.findByEmail(userDto.getEmail());
-		System.out.println(userExist);
+		//System.out.println(userExist);
 		
 		if (userExist != null) {
 			
-			System.out.println("already registered ");
+			 System.out.println("already registered ");
+			 throw new UserException(201,environment.getProperty("user.register.exist"));
+			// throw new UserException(environment.getProperty("1"));
 		}
 		else
 		{
@@ -66,9 +75,13 @@ public class UserServiceImpl implements UserService{
 		String url =this.getUrl("loginVerify", user.getId());
    	    EmailUtil.sendEmail(userDto.getEmail(),"Successfully send","click on link "+ url);
 		//EmailUtil.sendEmail(userDto.getEmail(), "Successfully send", getBody(user));
-		
+   	    //response.setStatusCode(100);
+   	    //response.setStatusMessage("Registered Succssfully");
+		 Response response1=Utility.statusResponse(200, environment.getProperty("user.register.success.message"));
+		 return response1;
 		
 	}
+		
 		}
 	
 
@@ -150,47 +163,52 @@ public class UserServiceImpl implements UserService{
 	
 	
 	
-	public Long verifyToken(String token) 
+	public Response verifyToken(String token) 
 	{
 		System.out.println(token);
 		
 		Long userID = UserToken.tokenVerify(token);
 	
     	   User user=userRepository.findById(userID)
-			   .orElseThrow(() -> new TokenException(400, "Token is not valid........."));
+			   .orElseThrow(() -> new TokenException(401, "token.error"));
 
 		user.setIsVerify(true);
 		userRepository.save(user);
 		
-		return user.getId();
+		Response response=Utility.statusResponseToken(103, environment.getProperty("token.verify.message"), token);
+		return response;
 		
    }
 
 
 	@Override
-	public boolean forgotPassword(String email)  {
+	public Response forgotPassword(String email)  {
 		// TODO Auto-generated method stub
 		
      
 		User user=userRepository.findUserByEmail(email)
-				.orElseThrow(() -> new EmailException(400, "Not Valid Email........"));
+				.orElseThrow(() -> new EmailException(300, environment.getProperty("email.error")));
 		System.out.println(user);
 		
 		if (user != null) {
 			
 			System.out.println("already registered ");
+			// throw new UserException(201,environment.getProperty("user.register.exist"));
+			
 		}
 		
 		String url =this.getUrl("forgetVerify", user.getId());
     	EmailUtil.sendEmail(user.getEmail(),"reset your password","click on link "+ url);
+    	
+    	Response response=Utility.statusResponse(101, environment.getProperty("user.forgot.success.message"));
 		
-		return false;
+		return response;
 	}
 	
 	
 
 	
-	public String resetPassword(String token,String password)
+	public Response resetPassword(String token,String password)
 	{
 		System.out.println(token);
 		
@@ -202,18 +220,12 @@ public class UserServiceImpl implements UserService{
 		user.setPassword(passwordEncoder.encode(password));
 		userRepository.save(user);
 		
-		return "reset Successfully";
+		Response response=Utility.statusResponse(102,environment.getProperty("user.reset.success.message"));
+		
+		return  response;
 		
    }
 	
-
-//	
-//private String getBody1(User user,String link) throws UserException, UnsupportedEncodingException{
-//
-//		
-//		return "http://localhost:8081/verify/" 
-//				  + UserToken.createToken(user.getId());
-//      }
 
 
 
@@ -226,20 +238,19 @@ public String getUrl(String service, Long id) {
 
 
 
-  public String Login2(LoginDto loginDto) {
-	Response respone = new Response();
+  public Response Login2(LoginDto loginDto) {
+	//Response respone = new Response();
 	return userRepository.findUserByEmail(loginDto.getEmail())
 			.map(validUser -> {
-		
-						return this.authenticate(validUser,loginDto);
-                    
 				
-		
-			}) .orElseThrow(() -> new EmailException(400, "Not Valid USer........"));
+						return this.authenticate(validUser,loginDto);
+                   
+			}) .orElseThrow(() -> new EmailException(300,environment.getProperty("email.error")));
+
 				 
 }
   
-   
+  
 
    /**
 	 * @param dbUser
@@ -248,16 +259,18 @@ public String getUrl(String service, Long id) {
  * @throws UnsupportedEncodingException 
  * @throws UserException 
 	 */
-	private String authenticate(User validUser,LoginDto loginDto)  {
+	private Response authenticate(User validUser,LoginDto loginDto)  {
 		System.out.println("hello");
 		boolean isVerify=passwordEncoder.matches(loginDto.getPassword(),validUser.getPassword());
 		 
 		System.out.println(isVerify);
 		if(isVerify)
 		 {
-			 return UserToken.createToken(validUser.getId());
+			String token= UserToken.createToken(validUser.getId());
+			Response response=Utility.statusResponseToken(200,environment.getProperty("login.message"), token);
+			return response;
 		 }
-	        throw new PasswordException(403, "Not ok a valid user....");
+	        throw new PasswordException(102, "password.error");
 				
 }
 

@@ -12,5 +12,11 @@ private static final long serialVersionUID = 1L;
 		super(msg);
 		this.errorCode=errorCode;
 	}
+	
+	public EmailException(String errormessage) {
+		super(errormessage);
+	}
+	
+
 
 }

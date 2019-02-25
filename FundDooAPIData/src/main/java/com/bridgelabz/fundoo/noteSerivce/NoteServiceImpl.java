@@ -8,18 +8,21 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 
 import com.bridgelabz.fundoo.dto.UserDto;
 import com.bridgelabz.fundoo.exception.NoteException;
 import com.bridgelabz.fundoo.exception.UserException;
+import com.bridgelabz.fundoo.model.Response;
 import com.bridgelabz.fundoo.model.User;
 import com.bridgelabz.fundoo.note.dto.NoteDto;
 import com.bridgelabz.fundoo.note.model.Note;
 import com.bridgelabz.fundoo.note.repository.NoteRepository;
 import com.bridgelabz.fundoo.util.EmailUtil;
 import com.bridgelabz.fundoo.util.UserToken;
+import com.bridgelabz.fundoo.util.Utility;
 
 
 
@@ -32,20 +35,22 @@ public class NoteServiceImpl implements NoteService{
 	@Autowired
     private ModelMapper modelMapper;
 	
+	
+	@Autowired
+	private Environment environment;
+	
 
-	public boolean createNote(NoteDto noteDto,String token) 
+	public Response createNote(NoteDto noteDto,String token) 
 	{
 		
 		Note note=modelMapper.map(noteDto, Note.class);
 		long userId=UserToken.tokenVerify(token);
 		note.setUserId(userId);
 	    Note check= noteRepository.save(note);
-	   if(check != null)
-	   {
-		   return true;
-	   }
-	   
-	   return false;
+	    
+	    Response response=Utility.statusResponse(401, environment.getProperty("note.success.message"));
+		return response;
+	  
 		
 	  }
 		

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.bridgelabz.fundoo.model.Response;
+import com.bridgelabz.fundoo.util.Utility;
 
 @ControllerAdvice
 @RestController
@@ -20,14 +21,17 @@ public class GlobalExceptionHandler {
 	Environment environment;
 
 	Response response=new Response();
+
+	Utility util=new Utility();
 	
 	@ExceptionHandler(UserException.class)
-	  public final ResponseEntity<Response> userNotFoundException(Exception e) {
+	  public final ResponseEntity<Response> userNotFoundException(UserException e) {
 	  
 		System.out.println("Not Found");
-		response.setStatusCode(100);
-		response.setStatusMessage(environment.getProperty("UserException"));
-	    return new ResponseEntity<Response>(response,HttpStatus.OK);
+		//response.setStatusCode(100);
+		//response.setStatusMessage(environment.getProperty("UserException"));
+		Response status=util.statusResponse(100,e.getMessage());
+	    return new ResponseEntity<Response>(status,HttpStatus.OK);
 	  }
 
 	
@@ -43,11 +47,12 @@ public class GlobalExceptionHandler {
 
 	
 	@ExceptionHandler(EmailException.class)
-	  public final ResponseEntity<Response> emailNotFoundException(Exception e) {
+	  public final ResponseEntity<Response> emailNotFoundException(EmailException e) {
 	  
-		System.out.println("Not Found");
-		response.setStatusCode(100);
-		response.setStatusMessage(environment.getProperty("EmailException"));
+		//System.out.println("Not Found");
+		////response.setStatusCode(100);
+		//response.setStatusMessage(environment.getProperty("EmailException"));
+		Response response=util.statusResponse(300,e.getMessage());
 	    return new ResponseEntity<Response>(response,HttpStatus.OK);
 	  }
 
@@ -62,7 +67,14 @@ public class GlobalExceptionHandler {
 	  }
 	
 	
-
+	@ExceptionHandler(DataException.class)
+	  public final ResponseEntity<Response> dataNotFoundException(Exception e) {
+	  
+		//System.out.println("Not Found");
+		//response.setStatusCode(100);
+		response.setStatusMessage(environment.getProperty("DataException"));
+	    return new ResponseEntity<Response>(response,HttpStatus.OK);
+	  }
 
 
 }

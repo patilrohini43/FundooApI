@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.core.env.Environment;
 
 import com.bridgelabz.fundoo.exception.UserException;
+import com.bridgelabz.fundoo.model.Response;
 import com.bridgelabz.fundoo.note.dto.NoteDto;
 import com.bridgelabz.fundoo.note.model.Note;
 import com.bridgelabz.fundoo.noteSerivce.NoteService;
@@ -35,15 +36,17 @@ public class NoteController {
 	
 	@Autowired
 	Environment environment;
+	
+	Response response=new Response();
 
 	@PostMapping("/createNote")
-	public ResponseEntity<String> createNote(@Valid @RequestBody NoteDto noteDto,@RequestHeader String token) throws Exception
+	public ResponseEntity<Response> createNote(@Valid @RequestBody NoteDto noteDto,@RequestHeader String token)
 
        {
 		System.out.println("Note Created");
-	     noteService.createNote(noteDto,token);
+	    Response response= noteService.createNote(noteDto,token);
 		
-	     return new ResponseEntity<String>(environment.getProperty("noteMessage"),HttpStatus.OK);	
+	     return new ResponseEntity<Response>(response,HttpStatus.OK);	
 	}
 	
 	@GetMapping("/getNote")

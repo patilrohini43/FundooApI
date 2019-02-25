@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bridgelabz.fundoo.dto.LoginDto;
 import com.bridgelabz.fundoo.dto.UserDto;
+import com.bridgelabz.fundoo.exception.DataException;
 import com.bridgelabz.fundoo.exception.UserException;
 import com.bridgelabz.fundoo.model.Response;
 import com.bridgelabz.fundoo.model.User;
@@ -33,7 +34,7 @@ import com.bridgelabz.fundoo.service.UserService;
 
 @RestController
 @PropertySource("classpath:message.properties")
-@CrossOrigin(origins="http://localhost:4200",allowedHeaders = "*",exposedHeaders= {"jwt_token"})
+@CrossOrigin(origins="http://localhost:4200")
 
 public class UserController {
 	
@@ -70,24 +71,26 @@ public class UserController {
 	
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)	
-	public ResponseEntity<String> registerUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult, HttpServletRequest request) throws UserException, UnsupportedEncodingException  
+	public ResponseEntity<Response> registerUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult, HttpServletRequest request) throws UserException, UnsupportedEncodingException  
 
        {
 	    if(bindingResult.hasErrors())
 	    {
 			logger.error("Error in Binding The User Details");
+			throw new DataException(100,"Data Doesnt Match");
+		
 	    }
 		
-			 userService.registerUser(userDto);
-			 System.out.println("successfully registered");
+			Response response= userService.registerUser(userDto);
+			// System.out.println("successfully registered");
 		
-		return new ResponseEntity<String>(environment.getProperty("a"),HttpStatus.OK);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	
 		
 	}
 
 	@RequestMapping(value = "/Login", method = RequestMethod.POST)
-	public ResponseEntity<Response> login(@Valid @RequestBody LoginDto loginDto , BindingResult bindingResult, HttpServletResponse httpresponse) throws UserException, UnsupportedEncodingException
+	public ResponseEntity<Response> login(@Valid @RequestBody LoginDto loginDto , BindingResult bindingResult) throws UserException, UnsupportedEncodingException
 	{
 		//System.out.println("Hello");
 
@@ -96,12 +99,12 @@ public class UserController {
 			logger.error("Error in Binding The User Details");
 		}
 		
-		String token=userService.Login2(loginDto);
+		Response response=userService.Login2(loginDto);
 	
-		httpresponse.addHeader("jwt_token", token);
-		Response response=new Response();
-		response.setStatusCode(200);
-		response.setStatusMessage(environment.getProperty("message"));
+		//httpresponse.addHeader("jwt_token", token);
+	
+		//response.setStatusCode(200);
+		//response.setStatusMessage(environment.getProperty("message"));
 	
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -111,39 +114,39 @@ public class UserController {
 	     
 	
 	@RequestMapping(value = "/verify/{token}", method = RequestMethod.GET)
-	public ResponseEntity<String> verifyEmail(@PathVariable String token) 
+	public ResponseEntity<Response> verifyEmail(@PathVariable String token) 
 	{
 		logger.info("User Verify");
 		
-			userService.verifyToken(token);
+		   Response response=userService.verifyToken(token);
 			System.out.println("Verify Successfully");
 	
 			
-		return new ResponseEntity<String>("Account Verified",HttpStatus.OK);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
   
 }
 	
 	@RequestMapping(value = "/forgot", method = RequestMethod.GET)
-	public ResponseEntity<String> forgotPassword(@RequestParam("email") String email) 
+	public ResponseEntity<Response> forgotPassword(@RequestParam("email") String email) 
 	{
 		logger.info("Forgot Password");
 		
-		userService.forgotPassword(email);
-		return  new ResponseEntity<String>("SuccessFully",HttpStatus.OK);
+		Response response=userService.forgotPassword(email);
+		return  new ResponseEntity<Response>(response,HttpStatus.OK);
 		
 	}
 	
 	
 
 	@RequestMapping(value = "/reset/{token}", method = RequestMethod.GET)
-	public ResponseEntity<String> resetPassword(@PathVariable String token,@RequestParam String password)
+	public ResponseEntity<Response> resetPassword(@PathVariable String token,@RequestParam String password)
 	{
 		logger.info("resetPassword");
 		
-		userService.resetPassword(token, password);
+		Response response=userService.resetPassword(token, password);
 		
 		System.out.println("Reset SuccessFully");
-		return  new ResponseEntity<String>(environment.getProperty("a"),HttpStatus.OK);
+		return  new ResponseEntity<Response>(response,HttpStatus.OK);
 		
 	} 
 
