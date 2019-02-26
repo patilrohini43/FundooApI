@@ -46,6 +46,7 @@ public class NoteServiceImpl implements NoteService{
 		Note note=modelMapper.map(noteDto, Note.class);
 		long userId=UserToken.tokenVerify(token);
 		note.setUserId(userId);
+		note.setCreateDate(LocalDateTime.now());
 	    Note check= noteRepository.save(note);
 	    
 	    Response response=Utility.statusResponse(401, environment.getProperty("note.success.message"));
@@ -78,37 +79,32 @@ public class NoteServiceImpl implements NoteService{
     
     
     
-    public boolean updateNote(Note note,String token)
+    public Response updateNote(Note note,String token)
     {
-    
     	//Note notes=noteRepository.findById(noteId)
-    			//.orElseThrow(() -> new ResourceNotFoundException("Note", "id", noteId));
+    			//.orElseThrow(() -> new NoteException(405, environment.getProperty("note.id.message")));
     	long userId=UserToken.tokenVerify(token);
     	note.setUserId(userId);
-    	//notes.setTitle(note.getTitle());
-        //notes.setDescription(note.getDescription());   
+  
         note.setUpdatedDate(LocalDateTime.now());
         
       Note updateNote=noteRepository.save(note);
-      if(updateNote!=null)
-	   {
-		   return true;
-	   }
-	   
-	   return false;
-    
+      Response response=Utility.statusResponse(401, environment.getProperty("note.update.message"));
+      return response;
     }
     
-    public boolean deleteNote(long noteId,String token)
+    public Response deleteNote(long noteId,String token)
     {
-    
+             System.out.println(noteId);
 			long userId=UserToken.tokenVerify(token);
 			Note notes=noteRepository.findById(noteId)
-					.orElseThrow(() ->new NoteException("Note", "id", noteId));
+					.orElseThrow(() ->new NoteException(405, environment.getProperty("note.id.message"),noteId));
 	    
              noteRepository.delete(notes);
+             
+             Response response=Utility.statusResponse(401, environment.getProperty("note.delete.message"));
     	  
-		return false;
+		      return response;
 	
     }
     

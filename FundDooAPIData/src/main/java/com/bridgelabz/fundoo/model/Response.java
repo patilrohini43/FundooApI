@@ -5,6 +5,18 @@ public class Response {
 	private int statusCode;
 	private String statusMessage;
 	private String token;
+	private Long noteId;
+	
+	
+	
+	
+
+	public Long getNoteId() {
+		return noteId;
+	}
+	public void setNoteId(Long noteId) {
+		this.noteId = noteId;
+	}
 	public String getToken() {
 		return token;
 	}

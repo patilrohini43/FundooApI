@@ -270,7 +270,7 @@ public String getUrl(String service, Long id) {
 			Response response=Utility.statusResponseToken(200,environment.getProperty("login.message"), token);
 			return response;
 		 }
-	        throw new PasswordException(102, "password.error");
+	        throw new PasswordException(300, environment.getProperty("password.error"));
 				
 }
 

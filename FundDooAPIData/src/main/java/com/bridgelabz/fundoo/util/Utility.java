@@ -22,5 +22,14 @@ public class Utility {
 	  response.setToken(token);
 	 return response;
 	}
+	
+	public static Response statusResponseNote(int statusCode,String statusMessage,long noteId)
+	{
+	  Response response=new Response();
+	  response.setStatusCode(statusCode);
+	  response.setStatusMessage(statusMessage);
+	  response.setNoteId(noteId);
+	  return response;
+	}
 
 }

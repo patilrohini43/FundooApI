@@ -56,18 +56,18 @@ public class NoteController {
 		
 	}
 	
-	@PutMapping("/updateNote/{id}")
-	public ResponseEntity<String> updateNote(@RequestHeader String token,@Valid @RequestBody Note note) throws Exception
+	@PutMapping("/updateNote")
+	public ResponseEntity<Response> updateNote(@RequestHeader String token,@Valid @RequestBody Note note)
 	{
 		
-		noteService.updateNote(note,token);
+		Response response=noteService.updateNote(note,token);
 		
-	     return new ResponseEntity<String>(environment.getProperty("NoteUpdate"),HttpStatus.OK);
+	     return new ResponseEntity<Response>(response,HttpStatus.OK);
 		 
 	}
 	
 	@DeleteMapping("/deleteNote/{id}")
-	public ResponseEntity<String> delteNote(@RequestHeader String token,@PathVariable(value="id") long noteId) throws Exception
+	public ResponseEntity<String> delteNote(@RequestHeader String token,@PathVariable(value="id") long noteId) 
 	{
 		
 		noteService.deleteNote(noteId,token);
