@@ -1,5 +1,9 @@
 package com.bridgelabz.fundoo.model;
 
+import java.util.List;
+
+import com.bridgelabz.fundoo.note.model.Note;
+
 public class Response {
 	
 	private int statusCode;
@@ -7,10 +11,16 @@ public class Response {
 	private String token;
 	private Long noteId;
 	
+	private Note note;
+	private List<Note> notes;
 	
 	
-	
-
+	public Note getNote() {
+		return note;
+	}
+	public void setNote(Note note) {
+		this.note = note;
+	}
 	public Long getNoteId() {
 		return noteId;
 	}
@@ -35,6 +45,12 @@ public class Response {
 	public void setStatusMessage(String statusMessage) {
 		this.statusMessage = statusMessage;
 	}
+	@Override
+	public String toString() {
+		return "Response [statusCode=" + statusCode + ", statusMessage=" + statusMessage + ", notes=" + notes + "]";
+	}
+	
+	
 	
 
 

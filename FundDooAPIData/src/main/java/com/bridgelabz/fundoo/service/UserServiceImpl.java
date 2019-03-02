@@ -59,13 +59,13 @@ public class UserServiceImpl implements UserService{
 	{
 		
 		User userExist=userRepository.findByEmail(userDto.getEmail());
-		//System.out.println(userExist);
+	
 		
 		if (userExist != null) {
 			
 			 System.out.println("already registered ");
 			 throw new UserException(201,environment.getProperty("user.register.exist"));
-			// throw new UserException(environment.getProperty("1"));
+			
 		}
 		else
 		{
@@ -93,62 +93,7 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	
-//	public User registerUser1(UserDto userDto) throws UserException, UnsupportedEncodingException
-//	{
-//		
-//		User user=modelMapper.map(userDto, User.class);
-//		user.setPassword( passwordEncoder.encode(user.getPassword()));
-//		user=userRepository.save(user);
-//		EmailUtil.sendEmail(userDto.getEmail(), "Successfully send", getBody(user));
-//		return user; 
-//	
-//		
-//	}
-	
-	
-//
-//	public String Login(LoginDto loginDto) 
-//	{
-//		//extract user details by using emailid 
-//	Optional<User> validUser =userRepository.findUserByEmail(loginDto.getEmail());
-//	
-//		//match user password by logindto password 
-//	boolean passwordStaus=passwordEncoder.matches(loginDto.getPassword(), validUser.get().getPassword());
-//	if(passwordStaus){ 
-//		
-//		return "login succesfully";
-//		//return UserToken.createToken(validUser.getId()); 
-//	}
-//	
-//	return "login invalid";
-//   
-//		
-//	}
-	
-	
-	
-	
-	
-//	
-//	public String Login1(LoginDto loginDto) throws UserException
-//	{
-//		
-//		//extract user details by using emailid 
-//		
-//		String emailId = loginDto.getEmail();
-//		User validUser = userRepository.findUserByEmail(emailId).orElseThrow(()-> new UserException("Email not found"));
-//		//matche user password by logindto password 
-//		boolean passwordStaus=passwordEncoder.matches(loginDto.getPassword(), validUser.getPassword());	
-//		if(passwordStaus == true)
-//		{
-//			return "login successfully";
-//
-//		}
-//			throw new UserException("invalid emailid or password");
-//	
-//		
-//	}
-	
+
 
 	private String getBody(User user) {
 

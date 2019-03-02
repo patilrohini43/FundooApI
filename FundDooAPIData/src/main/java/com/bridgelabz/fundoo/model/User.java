@@ -3,12 +3,21 @@ package com.bridgelabz.fundoo.model;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+
+import com.bridgelabz.fundoo.note.model.Note;
 
 @Entity
 public class User {
@@ -36,6 +45,23 @@ public class User {
 	
 	private boolean isVerified;
 	
+	@JoinColumn(name="Id")
+	 @OneToMany(targetEntity = Note.class, cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	 private List<Note> note=new ArrayList<Note>();
+	 
+	 
+	 
+	
+	public List<Note> getNote() {
+		return note;
+	}
+
+	public void setNote(List<Note> note) {
+		this.note = note;
+	}
+
+
+
 	private LocalDateTime updatedDate=LocalDateTime.now();
 	
 	//private LocalDateTime reminder;
@@ -43,6 +69,10 @@ public class User {
 	private LocalDateTime createDate=LocalDateTime.now();
 	
 	
+	public User(Long id)
+	{
+		this.id=id;
+	}
 
 	public LocalDateTime getUpdatedDate() {
 		return updatedDate;
@@ -103,6 +133,7 @@ public class User {
 	public Long getId() {
 		return id;
 	}
+	
 
 	public void setId(Long id) {
 		this.id = id;
@@ -132,6 +163,10 @@ public class User {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+
+
+
 
 
 

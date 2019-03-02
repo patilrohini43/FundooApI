@@ -3,20 +3,14 @@ package com.bridgelabz.fundoo.note.dto;
 public class NoteDto {
 	
 	
-	private Long noteId;
+	
 	
 	private String title;
 	private String description;
+
 	
+
 	
-	
-	
-	public Long getNoteId() {
-		return noteId;
-	}
-	public void setNoteId(Long noteId) {
-		this.noteId = noteId;
-	}
 	public String getTitle() {
 		return title;
 	}

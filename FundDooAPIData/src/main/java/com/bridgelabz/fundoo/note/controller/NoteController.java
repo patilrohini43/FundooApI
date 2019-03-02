@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.core.env.Environment;
 
 import com.bridgelabz.fundoo.exception.UserException;
@@ -39,7 +40,7 @@ public class NoteController {
 	
 	Response response=new Response();
 
-	@PostMapping("/createNote")
+	@PostMapping("/note")
 	public ResponseEntity<Response> createNote(@Valid @RequestBody NoteDto noteDto,@RequestHeader String token)
 
        {
@@ -48,15 +49,37 @@ public class NoteController {
 		
 	     return new ResponseEntity<Response>(response,HttpStatus.OK);	
 	}
-	
-	@GetMapping("/getNote")
-	public List<Note> getAllNote()
+//	
+//	@GetMapping("/notes")
+//	public String getAllNote()
+//	{
+//
+//		 List<Note> note=noteService.getAllNotes();
+//		 System.out.println(note);
+//		 return "hiiii";
+//		
+//	}
+	@ResponseBody
+	@GetMapping("/note/{id}")
+	public List<Note> getNote(@PathVariable(value="id") long userId)
 	{
-		return noteService.getAllNotes();
 		
+		List<Note> response=noteService.getAllNotes(userId);
+		 System.out.println(response);
+		
+	     return response;
+		 
 	}
 	
-	@PutMapping("/updateNote")
+	@GetMapping("/notes/{id}")
+	public ResponseEntity<Response> getByNote(@PathVariable(value="id") long noteId,@RequestHeader String token)
+	{
+		Response response= noteService.getNoteById(noteId,token);
+		
+		 return new ResponseEntity<Response>(response,HttpStatus.OK);
+		
+	}
+	@PutMapping("/note/update")
 	public ResponseEntity<Response> updateNote(@RequestHeader String token,@Valid @RequestBody Note note)
 	{
 		
@@ -66,13 +89,14 @@ public class NoteController {
 		 
 	}
 	
-	@DeleteMapping("/deleteNote/{id}")
-	public ResponseEntity<String> delteNote(@RequestHeader String token,@PathVariable(value="id") long noteId) 
+	@DeleteMapping("/note/{id}")
+	public ResponseEntity<Response> delteNote(@RequestHeader String token,@PathVariable(value="id") long noteId) 
 	{
+		//System.out.println(token);
+		//System.out.println(noteId);
+		Response response=noteService.deleteNote(noteId,token);
 		
-		noteService.deleteNote(noteId,token);
-		
-		 return new ResponseEntity<String>(environment.getProperty("deleteNote"),HttpStatus.OK);
+		 return new ResponseEntity<Response>(response,HttpStatus.OK);
 		
 	}
 	

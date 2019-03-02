@@ -27,10 +27,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(UserException.class)
 	  public final ResponseEntity<Response> userNotFoundException(UserException e) {
 	  
-		System.out.println("Not Found");
-		//response.setStatusCode(100);
-		//response.setStatusMessage(environment.getProperty("UserException"));
-		Response status=util.statusResponse(100,e.getMessage());
+		Response status=Utility.statusResponse(100,e.getMessage());
 	    return new ResponseEntity<Response>(status,HttpStatus.OK);
 	  }
 
@@ -39,10 +36,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(TokenException.class)
 	  public final ResponseEntity<Response> tokenNotFoundException(TokenException e) {
 	  
-		System.out.println("Not Found");
-		//response.setStatusCode(100);
-		//response.setStatusMessage(environment.getProperty("TokenException"));
-		Response status=util.statusResponse(100,e.getMessage());
+		Response status=Utility.statusResponse(100,e.getMessage());
 	    return new ResponseEntity<Response>(status,HttpStatus.OK);
 	  }
 
@@ -50,10 +44,8 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(EmailException.class)
 	  public final ResponseEntity<Response> emailNotFoundException(EmailException e) {
 	  
-		//System.out.println("Not Found");
-		////response.setStatusCode(100);
-		//response.setStatusMessage(environment.getProperty("EmailException"));
-		Response response=util.statusResponse(300,e.getMessage());
+	
+		Response response=Utility.statusResponse(300,e.getMessage());
 	    return new ResponseEntity<Response>(response,HttpStatus.OK);
 	  }
 
@@ -61,10 +53,10 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(PasswordException.class)
 	  public final ResponseEntity<Response> passwordNotFoundException(Exception e) {
 	  
-		System.out.println("Not Found");
+		//System.out.println("Not Found");
 		//response.setStatusCode(100);
 		//response.setStatusMessage(environment.getProperty("PasswordException"));
-		Response response=util.statusResponse(300,e.getMessage());
+		Response response=Utility.statusResponse(300,e.getMessage());
 	    return new ResponseEntity<Response>(response,HttpStatus.OK);
 	  }
 	
@@ -72,8 +64,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(DataException.class)
 	  public final ResponseEntity<Response> dataNotFoundException(Exception e) {
 	  
-		//System.out.println("Not Found");
-		//response.setStatusCode(100);
+
 		response.setStatusMessage(environment.getProperty("DataException"));
 	    return new ResponseEntity<Response>(response,HttpStatus.OK);
 	  }
@@ -82,8 +73,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(NoteException.class)
 	  public final ResponseEntity<Response> noteNotFoundException(NoteException e) {
 	  
-		//System.out.println("Not Found");
-		//response.setStatusCode(100);
+		
 		Response response=Utility.statusResponseNote(405, e.getMessage(),100);
 	
         return new ResponseEntity<Response>(response,HttpStatus.OK);

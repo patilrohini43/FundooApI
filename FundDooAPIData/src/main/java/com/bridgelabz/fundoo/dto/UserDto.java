@@ -7,6 +7,7 @@ public class UserDto {
 
 @NotNull(message="Can not be null")
 private String username;
+
 private String password;
 private String email;
 private String mobilenumber;

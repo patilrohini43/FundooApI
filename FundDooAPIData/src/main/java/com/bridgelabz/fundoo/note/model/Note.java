@@ -1,20 +1,18 @@
 package com.bridgelabz.fundoo.note.model;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Date;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.bridgelabz.fundoo.model.User;
 
 @Entity
 public class Note {
@@ -44,13 +42,32 @@ public class Note {
 	
 	@Column(name="Archive")
     private boolean isArchive;
-    
+	
+
+	
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "Id")
+//	private User user;
+//   
+
+
+
+//	public User getUser() {
+//		return user;
+//	}
+//
+//	public void setUser(User user) {
+//		this.user = user;
+//	}
+
 
 	private LocalDateTime updatedDate=LocalDateTime.now();
 	
 	private LocalDateTime reminder;
 
 	private LocalDateTime createDate=LocalDateTime.now();
+	
+
 
     public LocalDateTime getReminder() {
 		return reminder;
@@ -143,10 +160,20 @@ public class Note {
 		this.isArchive = isArchive;
 	}
 
+	public boolean isPresent() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-    
-    
-    
+
+	@Override
+	public String toString() {
+		return "Note [noteId=" + noteId + ", userId=" + userId + ", title=" + title + ", description=" + description
+				+ ", color=" + color + ", isPin=" + isPin + ", isTrash=" + isTrash + ", isArchive=" + isArchive
+				+ ", updatedDate=" + updatedDate + ", reminder=" + reminder + ", createDate=" + createDate + "]";
+	}
+
+
     
 
 }
