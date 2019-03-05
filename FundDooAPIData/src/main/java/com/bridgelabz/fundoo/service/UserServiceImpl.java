@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService{
     	   User user=userRepository.findById(userID)
 			   .orElseThrow(() -> new TokenException(401, "token.error"));
 
-		user.setIsVerify(true);
+		user.setVerify(true);
 		userRepository.save(user);
 		
 		Response response=Utility.statusResponseToken(103, environment.getProperty("token.verify.message"), token);
@@ -183,7 +183,7 @@ public String getUrl(String service, Long id) {
 
 
 
-  public Response Login2(LoginDto loginDto) {
+  public Response Login(LoginDto loginDto) {
 	//Response respone = new Response();
 	return userRepository.findUserByEmail(loginDto.getEmail())
 			.map(validUser -> {
@@ -205,20 +205,25 @@ public String getUrl(String service, Long id) {
  * @throws UserException 
 	 */
 	private Response authenticate(User validUser,LoginDto loginDto)  {
-		System.out.println("hello");
-		boolean isVerify=passwordEncoder.matches(loginDto.getPassword(),validUser.getPassword());
+	System.out.println(loginDto);
+		System.out.println(validUser.isVerify());
+		if(validUser.isVerify())
+		{
+			System.out.println("hello");
+		boolean status=passwordEncoder.matches(loginDto.getPassword(),validUser.getPassword());
+		 System.out.println(status);
 		 
-		System.out.println(isVerify);
-		if(isVerify)
+		if(status == true)
 		 {
 			String token= UserToken.createToken(validUser.getId());
 			Response response=Utility.statusResponseToken(200,environment.getProperty("login.message"), token);
 			return response;
+		 
 		 }
 	        throw new PasswordException(300, environment.getProperty("password.error"));
-				
-}
-
+    }
+		throw new PasswordException(300, environment.getProperty("user.login.verification"));
+	}
       
 
 

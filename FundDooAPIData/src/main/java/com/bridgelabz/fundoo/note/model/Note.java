@@ -9,6 +9,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,46 +22,54 @@ public class Note {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO) 
+	
 	@Column(name="NoteId")
 	private Long noteId;
 	
-	@Column(name="UserId")
-	private Long userId;
-	
+
+
 	@Column(name="Title")
 	private String title;
 	
+
 	@Column(name="Description")
 	private String description;
 	
+
 	@Column(name="Color")
     private String color;
 	
+
 	@Column(name="Pin")
     private boolean isPin;
+	
 	
 	@Column(name="Trash")
     private boolean isTrash;
 	
+
 	@Column(name="Archive")
     private boolean isArchive;
 	
 
 	
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name = "Id")
-//	private User user;
-//   
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "Id")
+	private User user;
+ 
 
 
 
-//	public User getUser() {
-//		return user;
-//	}
-//
-//	public void setUser(User user) {
-//		this.user = user;
-//	}
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
 
 
 	private LocalDateTime updatedDate=LocalDateTime.now();
@@ -104,17 +115,7 @@ public class Note {
 		this.noteId = noteId;
 	}
 
-	public Long getUserId() {
-		return userId;
-	}
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-
-	public String getTitle() {
-		return title;
-	}
 
 	public void setTitle(String title) {
 		this.title = title;
@@ -168,7 +169,7 @@ public class Note {
 
 	@Override
 	public String toString() {
-		return "Note [noteId=" + noteId + ", userId=" + userId + ", title=" + title + ", description=" + description
+		return "Note [noteId=" + noteId + ", title=" + title + ", description=" + description
 				+ ", color=" + color + ", isPin=" + isPin + ", isTrash=" + isTrash + ", isArchive=" + isArchive
 				+ ", updatedDate=" + updatedDate + ", reminder=" + reminder + ", createDate=" + createDate + "]";
 	}

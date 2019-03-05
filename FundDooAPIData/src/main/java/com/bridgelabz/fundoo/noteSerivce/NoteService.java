@@ -19,9 +19,12 @@ public interface NoteService {
 	public List<Note> getAllNotes(Long userId) ;
 	// public Response getAllNotes();
 	 public Response getNoteById(long noteId,String token);
-	 public Response deleteNote1(long noteId, String token);
-	 public Response updateNote(Note note,String token) ;
-	    public Response deleteNote(long noteId,String token) throws NoteException;
+	// public Response deleteNote(long noteId, String token);
+	 public Response updateNote(long noteId,NoteDto noteDto,String token) ;
+	    public Response deleteNote(long noteId,String token);
 	//public boolean registerUser(@Valid NoteDto noteDto, long noteId);
+	    public Response isTrash(long noteId,String token);
+	    public Response isArchive(long noteId,String token);
+	    public Response isPin(long noteId,String token);
 
 }

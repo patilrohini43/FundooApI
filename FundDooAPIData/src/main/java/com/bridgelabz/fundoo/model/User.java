@@ -40,17 +40,18 @@ public class User {
 	@Column(name = "Mobile")
       private String mobilenumber;
 	
+	
+	
 	@Column(name="Verification")
-	private Boolean isVerify;
+    private boolean isVerify;
 	
-	private boolean isVerified;
-	
-	@JoinColumn(name="Id")
-	 @OneToMany(targetEntity = Note.class, cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	 private List<Note> note=new ArrayList<Note>();
+//	@JoinColumn(name="Id")
+//	 @OneToMany(targetEntity = Note.class, cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+//	 private List<Note> note=new ArrayList<Note>();
+//	 
 	 
-	 
-	 
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Note> note = new ArrayList<Note>();
 	
 	public List<Note> getNote() {
 		return note;
@@ -103,13 +104,13 @@ public class User {
 		
 	}
 
+	
 
-	public Boolean getIsVerify() {
+	public boolean isVerify() {
 		return isVerify;
 	}
 
-
-	public void setIsVerify(Boolean isVerify) {
+	public void setVerify(boolean isVerify) {
 		this.isVerify = isVerify;
 	}
 
@@ -158,12 +159,12 @@ public class User {
 	}
 
 
-
-	public boolean isVerify() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+//
+//	public boolean isVerify() {
+//		// TODO Auto-generated method stub
+//		return true;
+//	}
+//
 
 
 

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ import com.bridgelabz.fundoo.noteSerivce.NoteService;
 
 @Controller
 @RequestMapping(value = "/user")
+@CrossOrigin(origins="http://localhost:4200")
 public class NoteController {
 	
 	@Autowired
@@ -41,7 +43,7 @@ public class NoteController {
 	Response response=new Response();
 
 	@PostMapping("/note")
-	public ResponseEntity<Response> createNote(@Valid @RequestBody NoteDto noteDto,@RequestHeader String token)
+	public ResponseEntity<Response> createNote(@Valid @RequestBody NoteDto noteDto,@RequestHeader("jwt_token") String token)
 
        {
 		System.out.println("Note Created");
@@ -53,7 +55,7 @@ public class NoteController {
 //	@GetMapping("/notes")
 //	public String getAllNote()
 //	{
-//
+
 //		 List<Note> note=noteService.getAllNotes();
 //		 System.out.println(note);
 //		 return "hiiii";
@@ -79,18 +81,18 @@ public class NoteController {
 		 return new ResponseEntity<Response>(response,HttpStatus.OK);
 		
 	}
-	@PutMapping("/note/update")
-	public ResponseEntity<Response> updateNote(@RequestHeader String token,@Valid @RequestBody Note note)
+	@PutMapping("/note/update/{id}")
+	public ResponseEntity<Response> updateNote(@RequestHeader String token,@Valid @RequestBody NoteDto noteDto,@PathVariable(value="id") long noteId)
 	{
 		
-		Response response=noteService.updateNote(note,token);
+		Response response=noteService.updateNote(noteId,noteDto,token);
 		
 	     return new ResponseEntity<Response>(response,HttpStatus.OK);
 		 
 	}
 	
 	@DeleteMapping("/note/{id}")
-	public ResponseEntity<Response> delteNote(@RequestHeader String token,@PathVariable(value="id") long noteId) 
+	public ResponseEntity<Response> deleteNote(@RequestHeader String token,@PathVariable(value="id") long noteId) 
 	{
 		//System.out.println(token);
 		//System.out.println(noteId);
@@ -101,22 +103,38 @@ public class NoteController {
 	}
 	
 	
-//	@PutMapping("/updateNote1/{id}")
-//	public ResponseEntity<String> updateNote1(@PathVariable(value="id") long noteId,@Valid @RequestBody NoteDto noteDto) throws UserException
-//	{
-//		
-//		boolean check=noteService.registerUser(noteDto,noteId);
-//		 if(check)
-//		 {
-//	     return new ResponseEntity<String>(environment.getProperty("a"),HttpStatus.OK);
-//		 }
-//
-//		return new ResponseEntity<String>(environment.getProperty("data"),HttpStatus.OK);
-//		
-//	}
-//	
-//	
+	@PutMapping("/note/isTrash/{id}")
+	public ResponseEntity<Response> trashNote(@RequestHeader String token,@PathVariable(value="id") long noteId)
+	{
+		
+		Response response=noteService.isTrash(noteId,token);
+		
+	     return new ResponseEntity<Response>(response,HttpStatus.OK);
+		 
+	}
+	
+	
+	@PutMapping("/note/isArchive/{id}")
+	public ResponseEntity<Response> isArchiveNote(@RequestHeader String token,@PathVariable(value="id") long noteId)
+	{
+		
+		Response response=noteService.isArchive(noteId,token);
+		
+	     return new ResponseEntity<Response>(response,HttpStatus.OK);
+		 
+	}
+	
+	@PutMapping("/note/	isPin/{id}")
+	public ResponseEntity<Response> isPinNote(@RequestHeader String token,@PathVariable(value="id") long noteId)
+	{
+		
+		Response response=noteService.isPin(noteId,token);
+		
+	     return new ResponseEntity<Response>(response,HttpStatus.OK);
+		 
+	}
 	
 	
 
+	
 }

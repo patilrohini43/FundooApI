@@ -46,19 +46,19 @@ public class NoteServiceImpl implements NoteService {
 	{
 		
 		Long userId=UserToken.tokenVerify(token);
-		Note notes=modelMapper.map(noteDto, Note.class);
+		Note note=modelMapper.map(noteDto, Note.class);
 		
-		//User user=new User(userId);
-		//notes.setUser(user);
-           
-		User user=userRepository.findById(userId)
-				.orElseThrow(() ->new NoteException(405, environment.getProperty("note.userid.message"),userId));
-			
-		//User user=new User(userId);
-		user.getNote().add(notes);
-		
-		userRepository.save(user);
-	  
+		User user=new User(userId);
+		note.setUser(user);
+//           
+//		User user=userRepository.findById(userId)
+//				.orElseThrow(() ->new NoteException(405, environment.getProperty("note.userid.message"),userId));
+//			
+//		//User user=new User(userId);
+//		user.getNote().add(note);
+//		
+//		userRepository.save(user);
+	    noteRepository.save(note);
 
 	    Response response=Utility.statusResponse(401, environment.getProperty("note.success.message"));
 		return response;
@@ -96,100 +96,185 @@ public class NoteServiceImpl implements NoteService {
     }
     
     
-    public Response updateNote(Note note,String token)
+    public Response updateNote(long noteId,NoteDto noteDto,String token)
     {
     	
-    	long userId=UserToken.tokenVerify(token);
-         User user=userRepository.findById(userId)
-    	
-        		 .orElseThrow(() -> new NoteException(405, environment.getProperty("note.userid.message"),userId));
-    
-        Long noteId=note.getNoteId();
-    	Note notes=noteRepository.findById(noteId)
+    	 long userId=UserToken.tokenVerify(token);
+       
+ 
+    	Note note=noteRepository.findById(noteId)
 				.orElseThrow(() ->new NoteException(405, environment.getProperty("note.id.message"),noteId));
     
-   
+    	
+    	
+      note.setTitle(noteDto.getTitle());
+      note.setDescription(noteDto.getDescription());
       note.setUpdatedDate(LocalDateTime.now());
-	  noteRepository.save(note);
+      long dbUserId=note.getUser().getId();
+      System.out.println(dbUserId);
+    //  System.out.println(user.getId());
+      if(note.isPresent() && dbUserId==userId)
+      {
+      	noteRepository.save(note);
+      }
 	
       Response response=Utility.statusResponse(401, environment.getProperty("note.update.message"));
       return response;
     }
    
     
-    public Response deleteNote(long noteId, String token) throws NoteException
-    {
-             
-        	 long userId=UserToken.tokenVerify(token);
-        	 System.out.println(userId);
-        
-        	 
-        
-           Note note=noteRepository.findById(noteId)
-					.orElseThrow(() ->new NoteException(405, environment.getProperty("note.id.message"),noteId));             
-    //  User user=userRepository.findById(userId).get();  
-//      System.out.println("User Details : "+optionalUser.get());
-//     	System.out.println(optionalUser.get().getNote());
-//     	
-//     	Optional<Note> optionalNote = null;
-//        for(Note note: optionalUser.get().getNote()) {
-//        	if(note.getNoteId()==noteId) {
-//        		System.out.println("Working 1");
-//        		optionalNote = noteRepository.findById(noteId);
-//        		System.out.println(optionalNote.get());
-//        		System.out.println(note);
-//        		System.out.println("Working 2");
-//        		noteRepository.delete(note);
-//        		break;
-//        	}
-//        }
-     
-	    // user.getNote().forEach(data -> {
-	    //	 if(((long)(data.getNoteId())) == (noteId)) 
-	    //	 {
-	    		 
-	    	//	 
-	    	//	 noteRepository.deleteById(noteId);
-	    	//	 System.out.println(noteId);
-//    		   System.out.println("Hello");
-//    		   Optional<Note> optionalNote = noteRepository.findById(noteId);
-//    	       noteRepository.delete(optionalNote.get());    	 
-//    		  
-       // }
-	   //  });
-	     
-     	noteRepository.delete(note);
-     			  
-             Response response=Utility.statusResponse(401, environment.getProperty("note.delete.message"));
-		      return response;
-	
-    }
+//    public Response deleteNote(long noteId, String token) throws NoteException
+//    {
+//             
+//        	 long userId=UserToken.tokenVerify(token);
+//        	 System.out.println(userId);
+//        
+//        	 
+//        
+//           Note note=noteRepository.findById(noteId)
+//					.orElseThrow(() ->new NoteException(405, environment.getProperty("note.id.message"),noteId));             
+//    //  User user=userRepository.findById(userId).get();  
+////      System.out.println("User Details : "+optionalUser.get());
+////     	System.out.println(optionalUser.get().getNote());
+////     	
+////     	Optional<Note> optionalNote = null;
+////        for(Note note: optionalUser.get().getNote()) {
+////        	if(note.getNoteId()==noteId) {
+////        		System.out.println("Working 1");
+////        		optionalNote = noteRepository.findById(noteId);
+////        		System.out.println(optionalNote.get());
+////        		System.out.println(note);
+////        		System.out.println("Working 2");
+////        		noteRepository.delete(note);
+////        		break;
+////        	}
+////        }
+//     
+//	    // user.getNote().forEach(data -> {
+//	    //	 if(((long)(data.getNoteId())) == (noteId)) 
+//	    //	 {
+//	    		 
+//	    	//	 
+//	    	//	 noteRepository.deleteById(noteId);
+//	    	//	 System.out.println(noteId);
+////    		   System.out.println("Hello");
+////    		   Optional<Note> optionalNote = noteRepository.findById(noteId);
+////    	       noteRepository.delete(optionalNote.get());    	 
+////    		  
+//       // }
+//	   //  });
+//	     
+//     	noteRepository.delete(note);
+//     			  
+//             Response response=Utility.statusResponse(401, environment.getProperty("note.delete.message"));
+//		      return response;
+//	
+//    }
+//    
+//    
     
-    
-    
-    public Response deleteNote1(long noteId, String token) 
+    public Response deleteNote(long noteId, String token) 
     {
     	 
             long userId=UserToken.tokenVerify(token);
             System.out.println(userId);
         
-            User user=new User();
+ 
+       
             Note note=noteRepository.findById(noteId)
             		.orElseThrow(() -> new NoteException(405, environment.getProperty("note.id.message"),noteId));        
             System.out.println(note);
-//          
-//           // long id=user.getId();
-//            //System.out.println(id);
-            System.out.println(user.getId());
-//            if(note.isPresent()&&dbUserId==userId&&note.isTrash()==true)
-//            {
-//            	noteRepository.delete(note);
-//            }
+          
+            long dbUserId=note.getUser().getId();
+            
+            System.out.println(dbUserId);
+          //  System.out.println(user.getId());
+            if(note.isPresent()||dbUserId==userId)
+            {
+            	noteRepository.delete(note);
+            }
 			  
              Response response=Utility.statusResponse(401, environment.getProperty("note.delete.message"));
 		      return response;
 	
     }
+    
+    
+    public Response isTrash(long noteId,String token)
+    
+    {
+    	  long userId=UserToken.tokenVerify(token);
+          System.out.println(userId);
+
+        Note note=noteRepository.findById(noteId)
+        		.orElseThrow(() -> new NoteException(405, environment.getProperty("note.id.message"),noteId));        
+    	
+
+        System.out.println(note.isTrash());
+        if(note.isTrash())
+    	{
+    		note.setTrash(false);
+    	}
+        else
+        {
+        	note.setTrash(true);
+        }
+        
+        Response response=Utility.statusResponse(401, environment.getProperty("note.isTrash.message"));
+	      return response;
+    	
+    }
+    
+    
+public Response isArchive(long noteId,String token)
+    
+    {
+    	  long userId=UserToken.tokenVerify(token);
+          System.out.println(userId);
+
+        Note note=noteRepository.findById(noteId)
+        		.orElseThrow(() -> new NoteException(405, environment.getProperty("note.id.message"),noteId));        
+    	
+
+        System.out.println(note.isArchive());
+        if(note.isArchive())
+    	{
+    		note.setArchive(false);
+    	}
+        else
+        {
+        	note.setArchive(true);
+        }
+        
+        Response response=Utility.statusResponse(401, environment.getProperty("note.isArchive.message"));
+	      return response;
+    	
+    }
+
+public Response isPin(long noteId,String token)
+
+{
+	  long userId=UserToken.tokenVerify(token);
+      System.out.println(userId);
+
+    Note note=noteRepository.findById(noteId)
+    		.orElseThrow(() -> new NoteException(405, environment.getProperty("note.id.message"),noteId));        
+	
+
+    System.out.println(note.isPin());
+    if(note.isPin())
+	{
+		note.setPin(false);
+	}
+    else
+    {
+    	note.setPin(true);
+    }
+    
+    Response response=Utility.statusResponse(401, environment.getProperty("note.isPin.message"));
+      return response;
+	
+}
    
    
 }

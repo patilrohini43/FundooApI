@@ -22,5 +22,5 @@ public interface UserService {
     public Response forgotPassword(String email);
     public Response resetPassword(String token,String password);
     //public String Login1(LoginDto loginDto) throws UserException;
-    public Response Login2(LoginDto loginDto);
+    public Response Login(LoginDto loginDto);
 }

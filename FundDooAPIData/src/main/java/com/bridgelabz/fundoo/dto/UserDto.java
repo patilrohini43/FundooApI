@@ -8,9 +8,15 @@ public class UserDto {
 @NotNull(message="Can not be null")
 private String username;
 
+@NotNull(message="Can not be null Password")
 private String password;
+
+@NotNull(message="Can not be null Email")
 private String email;
+
+@NotNull(message="Can not be null Mobile Number")
 private String mobilenumber;
+
 public String getUsername() {
 	return username;
 }

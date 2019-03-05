@@ -71,13 +71,14 @@ public class UserController {
 	
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)	
-	public ResponseEntity<Response> registerUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult, HttpServletRequest request) throws UserException, UnsupportedEncodingException  
+	public ResponseEntity<Response> registerUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult, HttpServletRequest request)   
 
        {
 	    if(bindingResult.hasErrors())
 	    {
 			logger.error("Error in Binding The User Details");
-			throw new DataException(100,"Data Doesnt Match");
+			bindingResult(bindingResult);
+			//throw new DataException(100,"Data Doesnt Match");
 		
 	    }
 		
@@ -99,7 +100,7 @@ public class UserController {
 			logger.error("Error in Binding The User Details");
 		}
 		
-		Response response=userService.Login2(loginDto);
+		Response response=userService.Login(loginDto);
 	
 		//httpresponse.addHeader("jwt_token", token);
 	
@@ -149,6 +150,19 @@ public class UserController {
 		return  new ResponseEntity<Response>(response,HttpStatus.OK);
 		
 	} 
+	
+	private void bindingResult(BindingResult bindingResult)
+	{
+		if(bindingResult.hasErrors())
+		{
+			logger.error("Error while binding user details");
+
+			String statusMessge=environment.getProperty("data.message");
+			int statusCode=Integer.parseInt(environment.getProperty("data.code"));
+
+			throw new DataException(statusCode,statusMessge);
+		}
+}
 
 }
 
