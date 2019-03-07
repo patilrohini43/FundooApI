@@ -66,9 +66,8 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(DataException.class)
 	  public final ResponseEntity<Response> dataNotFoundException(Exception e) {
-	  
 
-		response.setStatusMessage(environment.getProperty("DataException"));
+		Response response=Utility.statusResponse(100,e.getMessage());
 	    return new ResponseEntity<Response>(response,HttpStatus.OK);
 	  }
 

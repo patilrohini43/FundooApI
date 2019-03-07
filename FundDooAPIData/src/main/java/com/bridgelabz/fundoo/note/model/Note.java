@@ -1,5 +1,6 @@
 package com.bridgelabz.fundoo.note.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
@@ -18,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.bridgelabz.fundoo.model.User;
 
 @Entity
-public class Note {
+public class Note{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO) 
@@ -26,11 +27,17 @@ public class Note {
 	@Column(name="NoteId")
 	private Long noteId;
 	
-
-
+	
 	@Column(name="Title")
 	private String title;
 	
+
+	public String getTitle() {
+		return title;
+	}
+
+
+
 
 	@Column(name="Description")
 	private String description;
@@ -51,13 +58,11 @@ public class Note {
 	@Column(name="Archive")
     private boolean isArchive;
 	
-
 	
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "Id")
-	private User user;
- 
+	@ManyToOne
+	@JoinColumn(name="Id")
+    private User user=new User();
 
 
 

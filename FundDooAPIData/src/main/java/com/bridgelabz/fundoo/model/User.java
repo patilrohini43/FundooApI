@@ -2,6 +2,7 @@ package com.bridgelabz.fundoo.model;
 
 
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +21,16 @@ import javax.persistence.OneToMany;
 import com.bridgelabz.fundoo.note.model.Note;
 
 @Entity
-public class User {
+public class User implements Serializable {
 	
-	
+	private static final long serialVersionUID = 1L;
 	//@GeneratedValue(strategy = GenerationType.AUTO)
 	@Id
 	@Column(name = "Id")
 	@GeneratedValue(strategy=GenerationType.AUTO) 
 	private Long id;
+	
+	
 	@Column(name = "UserName")
 	private String username;
 	
@@ -50,16 +53,16 @@ public class User {
 //	 private List<Note> note=new ArrayList<Note>();
 //	 
 	 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Note> note = new ArrayList<Note>();
+	//@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+  //  private List<Note> note ;
 	
-	public List<Note> getNote() {
-		return note;
-	}
+	//public List<Note> getNote() {
+		//return note;
+//}
 
-	public void setNote(List<Note> note) {
-		this.note = note;
-	}
+	//public void setNote(List<Note> note) {
+	//	this.note = note;
+	//}
 
 
 

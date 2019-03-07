@@ -11,7 +11,7 @@ import com.bridgelabz.fundoo.model.User;
 import com.bridgelabz.fundoo.note.model.Note;
 
 @Repository
-public interface NoteRepository extends CrudRepository<Note,Long>{
+public interface NoteRepository extends JpaRepository<Note,Long>{
 	
 //	@Query("delete from note where noteId=")
 //	void deleteByNoteId(Long noteId);

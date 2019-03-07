@@ -62,16 +62,18 @@ public class NoteController {
 //		
 //	}
 	@ResponseBody
-	@GetMapping("/note/{id}")
-	public List<Note> getNote(@PathVariable(value="id") long userId)
+	@GetMapping("/note/list")
+	public List<Note> getNote(@RequestHeader(value="jwt_token") String token)
 	{
 		
-		List<Note> response=noteService.getAllNotes(userId);
+		List<Note> response=noteService.getAllNotes(token);
 		 System.out.println(response);
 		
 	     return response;
 		 
 	}
+	
+	
 	
 	@GetMapping("/notes/{id}")
 	public ResponseEntity<Response> getByNote(@PathVariable(value="id") long noteId,@RequestHeader String token)

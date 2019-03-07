@@ -68,21 +68,67 @@ public class NoteServiceImpl implements NoteService {
 		
 		
 
-	public List<Note> getAllNotes(Long userId) {
+//	public List<Note> getAllNotes(Long userId) {
+//		
+//		
+//		 User user=userRepository.findById(userId)
+//				 .orElseThrow(() ->new NoteException(405, environment.getProperty("note.userid.message"),userId));
+//				 
+//		// List<Note> notes=user.getNote();
+//	   
+//		  System.out.println(notes);
+//	     //Response response=Utility.statusResponseNote2(401, environment.getProperty("note.id.sucess"),notes);
+//		return notes;
+//	    
+//	}
+	
+	
+	public List<Note> getAllNotes(String token) {
+	
+		long userId=UserToken.tokenVerify(token);
+	 //User user=userRepository.findById(userId)
+			 //.orElseThrow(() ->new NoteException(405, environment.getProperty("note.userid.message"),userId));
+			 System.out.println("hello");
+	List<Note> notes=noteRepository.findAll();
+	List<Note> list = new ArrayList<>();
+	
+	for (int i = 0; i < notes.size(); i++) {
 		
+		if(notes.get(i).getUser().getId()==userId)
+		{
+			list.add(notes.get(i));
+			System.out.println(list.add(notes.get(i)));
 		
-		 User user=userRepository.findById(userId)
-				 .orElseThrow(() ->new NoteException(405, environment.getProperty("note.userid.message"),userId));
-				 
-		 List<Note> notes=user.getNote();
-	   
-		  System.out.println(notes);
-	     //Response response=Utility.statusResponseNote2(401, environment.getProperty("note.id.sucess"),notes);
-		return notes;
-	    
+	    }
 	}
-	
-	
+   
+	  System.out.println(notes);
+     //Response response=Utility.statusResponseNote2(401, environment.getProperty("note.id.sucess"),notes);
+	return notes;
+    
+}
+
+
+//	public List<Note> getAllNote(String token) 
+//	{
+//	Long userId=UserToken.tokenVerify(token);
+//	List<Note> notelist=noteRepository.findAll();
+//	
+//	List<Note> list = new ArrayList<>();
+//	for (int i = 0; i < notelist.size(); i++) {
+//		
+//		if(notelist.get(i).getUser().getId()==userId)
+//		{
+//			list.add(notelist.get(i));
+//		
+//	}
+//	}
+//	
+//		return list;
+//
+//}
+
+
 	
 	 
     public Response getNoteById(long noteId,String token)
@@ -275,6 +321,12 @@ public Response isPin(long noteId,String token)
       return response;
 	
 }
-   
+
+
+
+
+
+
+
    
 }
