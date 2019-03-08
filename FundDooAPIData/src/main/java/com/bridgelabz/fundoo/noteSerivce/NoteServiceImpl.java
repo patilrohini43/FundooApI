@@ -155,6 +155,7 @@ public class NoteServiceImpl implements NoteService {
     	
       note.setTitle(noteDto.getTitle());
       note.setDescription(noteDto.getDescription());
+      note.setColor(noteDto.getColor());
       note.setUpdatedDate(LocalDateTime.now());
       long dbUserId=note.getUser().getId();
       System.out.println(dbUserId);
@@ -300,6 +301,7 @@ public Response isArchive(long noteId,String token)
 public Response isPin(long noteId,String token)
 
 {
+	System.out.println("hello");
 	  long userId=UserToken.tokenVerify(token);
       System.out.println(userId);
 

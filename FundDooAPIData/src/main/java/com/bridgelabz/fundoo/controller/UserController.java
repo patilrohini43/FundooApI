@@ -91,7 +91,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/Login", method = RequestMethod.PUT)
-	public ResponseEntity<Response> login(@Valid @RequestBody LoginDto loginDto , BindingResult bindingResult) throws UserException, UnsupportedEncodingException
+	public ResponseEntity<Response> login(@Valid @RequestBody LoginDto loginDto , BindingResult bindingResult) 
 	{
 		//System.out.println("Hello");
 
