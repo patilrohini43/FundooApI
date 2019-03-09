@@ -16,7 +16,7 @@ import com.bridgelabz.fundoo.note.model.Note;
 public interface NoteService {
 	
 	public Response createNote(NoteDto noteDto,String token);
-	public List<Note> getAllNotes(String token);
+	public List<Note> getAllNotes(String token,boolean archived,boolean trashed);
 	//public List<Note> getAllNote(String token);
 	 public Response getNoteById(long noteId,String token);
 	// public Response deleteNote(long noteId, String token);

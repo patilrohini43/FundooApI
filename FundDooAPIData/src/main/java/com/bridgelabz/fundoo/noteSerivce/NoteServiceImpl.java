@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,13 +84,18 @@ public class NoteServiceImpl implements NoteService {
 //	}
 	
 	
-	public List<Note> getAllNotes(String token) {
+	public List<Note> getAllNotes(String token,boolean archived,boolean trashed) {
 	
 		long userId=UserToken.tokenVerify(token);
 	 //User user=userRepository.findById(userId)
 			 //.orElseThrow(() ->new NoteException(405, environment.getProperty("note.userid.message"),userId));
 			 System.out.println("hello");
-	List<Note> notes=noteRepository.findAll();
+	List<Note> notes=noteRepository.findAll().stream()
+			  .filter(note-> note.getUser().getId().equals(userId)
+					  	&& note.isArchive()==archived
+					  	&& note.isTrash()==trashed)
+.collect(Collectors.toList());
+	
 	List<Note> list = new ArrayList<>();
 	
 	for (int i = 0; i < notes.size(); i++) {

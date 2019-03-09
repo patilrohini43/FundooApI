@@ -63,10 +63,10 @@ public class NoteController {
 //	}
 	@ResponseBody
 	@GetMapping("/note/list")
-	public List<Note> getNote(@RequestHeader(value="jwt_token") String token)
+	public List<Note> getNote(@RequestHeader(value="jwt_token") String token, @RequestParam boolean archived, @RequestParam boolean trashed)
 	{
 		
-		List<Note> response=noteService.getAllNotes(token);
+		List<Note> response=noteService.getAllNotes(token,archived,trashed);
 		 System.out.println(response);
 		
 	     return response;
