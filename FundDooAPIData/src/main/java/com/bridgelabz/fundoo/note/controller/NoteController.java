@@ -84,7 +84,7 @@ public class NoteController {
 		
 	}
 	@PutMapping("/note/update/{id}")
-	public ResponseEntity<Response> updateNote(@RequestHeader(value="jwt_token") String token,@Valid @RequestBody NoteDto noteDto,@PathVariable(value="id") long noteId)
+	public ResponseEntity<Response> updateNote(@PathVariable(value="id") long noteId,@RequestHeader(value="jwt_token") String token,@Valid @RequestBody NoteDto noteDto)
 	{
 		
 		Response response=noteService.updateNote(noteId,noteDto,token);
@@ -105,7 +105,18 @@ public class NoteController {
 	}
 	
 	
-	@PutMapping("/note/isTrash/{id}")
+	@PutMapping("/note1/{id}")
+	public ResponseEntity<Response> updateNote(@RequestHeader String token,@PathVariable(value="id") long noteId)
+	{
+		
+		Response response=noteService.isArchive(noteId,token);
+		
+	     return new ResponseEntity<Response>(response,HttpStatus.OK);
+		 
+	}
+	
+	
+	@DeleteMapping("/note/isTrash/{id}")
 	public ResponseEntity<Response> trashNote(@RequestHeader(value="jwt_token") String token,@PathVariable(value="id") long noteId)
 	{
 		
@@ -116,8 +127,8 @@ public class NoteController {
 	}
 	
 	
-	@PutMapping("/note/isArchive/{id}")
-	public ResponseEntity<Response> isArchiveNote(@RequestHeader String token,@PathVariable(value="id") long noteId)
+	@DeleteMapping("/noted/{id}")
+	public ResponseEntity<Response> isArchiveNote(@RequestHeader(value="jwt_token") String token,@PathVariable(value="id") long noteId)
 	{
 		
 		Response response=noteService.isArchive(noteId,token);
@@ -126,10 +137,10 @@ public class NoteController {
 		 
 	}
 	
-	@PutMapping("/note/isPin/{id}")
+	@DeleteMapping("/note/isPin/{id}")
 	public ResponseEntity<Response> isPinNote(@RequestHeader(value="jwt_token")  String token,@PathVariable(value="id") long noteId)
 	{
-		
+		System.out.println("hello");
 		Response response=noteService.isPin(noteId,token);
 		
 		 return new ResponseEntity<Response>(response,HttpStatus.OK);
