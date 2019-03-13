@@ -1,4 +1,4 @@
-package com.bridgelabz.fundoo.service;
+package com.bridgelabz.fundoo.user.service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -12,14 +12,14 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.bridgelabz.fundoo.dto.LoginDto;
-import com.bridgelabz.fundoo.dto.UserDto;
 import com.bridgelabz.fundoo.exception.EmailException;
 import com.bridgelabz.fundoo.exception.PasswordException;
 import com.bridgelabz.fundoo.exception.TokenException;
 import com.bridgelabz.fundoo.exception.UserException;
-import com.bridgelabz.fundoo.model.*;
-import com.bridgelabz.fundoo.repository.UserRepository;
+import com.bridgelabz.fundoo.user.dto.LoginDto;
+import com.bridgelabz.fundoo.user.dto.UserDto;
+import com.bridgelabz.fundoo.user.model.*;
+import com.bridgelabz.fundoo.user.repository.UserRepository;
 import com.bridgelabz.fundoo.util.EmailUtil;
 import com.bridgelabz.fundoo.util.UserToken;
 import com.bridgelabz.fundoo.util.Utility;

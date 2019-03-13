@@ -1,14 +1,14 @@
-package com.bridgelabz.fundoo.service;
+package com.bridgelabz.fundoo.user.service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
 
-import com.bridgelabz.fundoo.dto.LoginDto;
-import com.bridgelabz.fundoo.dto.UserDto;
 import com.bridgelabz.fundoo.exception.UserException;
-import com.bridgelabz.fundoo.model.Response;
-import com.bridgelabz.fundoo.model.User;
+import com.bridgelabz.fundoo.user.dto.LoginDto;
+import com.bridgelabz.fundoo.user.dto.UserDto;
+import com.bridgelabz.fundoo.user.model.Response;
+import com.bridgelabz.fundoo.user.model.User;
 
 public interface UserService {
 	

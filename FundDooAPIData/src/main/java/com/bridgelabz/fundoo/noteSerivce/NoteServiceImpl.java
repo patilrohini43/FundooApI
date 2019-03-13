@@ -15,15 +15,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.modelmapper.ModelMapper;
 
-import com.bridgelabz.fundoo.dto.UserDto;
 import com.bridgelabz.fundoo.exception.NoteException;
 import com.bridgelabz.fundoo.exception.UserException;
-import com.bridgelabz.fundoo.model.Response;
-import com.bridgelabz.fundoo.model.User;
 import com.bridgelabz.fundoo.note.dto.NoteDto;
+import com.bridgelabz.fundoo.note.dto.NoteDto1;
 import com.bridgelabz.fundoo.note.model.Note;
 import com.bridgelabz.fundoo.note.repository.NoteRepository;
-import com.bridgelabz.fundoo.repository.UserRepository;
+import com.bridgelabz.fundoo.user.dto.UserDto;
+import com.bridgelabz.fundoo.user.model.Response;
+import com.bridgelabz.fundoo.user.model.User;
+import com.bridgelabz.fundoo.user.repository.UserRepository;
 import com.bridgelabz.fundoo.util.EmailUtil;
 import com.bridgelabz.fundoo.util.UserToken;
 import com.bridgelabz.fundoo.util.Utility;
@@ -102,6 +103,7 @@ public class NoteServiceImpl implements NoteService {
 		
 		if(notes.get(i).getUser().getId()==userId)
 		{
+			
 			list.add(notes.get(i));
 			System.out.println(list.add(notes.get(i)));
 		
@@ -176,55 +178,6 @@ public class NoteServiceImpl implements NoteService {
     }
    
     
-//    public Response deleteNote(long noteId, String token) throws NoteException
-//    {
-//             
-//        	 long userId=UserToken.tokenVerify(token);
-//        	 System.out.println(userId);
-//        
-//        	 
-//        
-//           Note note=noteRepository.findById(noteId)
-//					.orElseThrow(() ->new NoteException(405, environment.getProperty("note.id.message"),noteId));             
-//    //  User user=userRepository.findById(userId).get();  
-////      System.out.println("User Details : "+optionalUser.get());
-////     	System.out.println(optionalUser.get().getNote());
-////     	
-////     	Optional<Note> optionalNote = null;
-////        for(Note note: optionalUser.get().getNote()) {
-////        	if(note.getNoteId()==noteId) {
-////        		System.out.println("Working 1");
-////        		optionalNote = noteRepository.findById(noteId);
-////        		System.out.println(optionalNote.get());
-////        		System.out.println(note);
-////        		System.out.println("Working 2");
-////        		noteRepository.delete(note);
-////        		break;
-////        	}
-////        }
-//     
-//	    // user.getNote().forEach(data -> {
-//	    //	 if(((long)(data.getNoteId())) == (noteId)) 
-//	    //	 {
-//	    		 
-//	    	//	 
-//	    	//	 noteRepository.deleteById(noteId);
-//	    	//	 System.out.println(noteId);
-////    		   System.out.println("Hello");
-////    		   Optional<Note> optionalNote = noteRepository.findById(noteId);
-////    	       noteRepository.delete(optionalNote.get());    	 
-////    		  
-//       // }
-//	   //  });
-//	     
-//     	noteRepository.delete(note);
-//     			  
-//             Response response=Utility.statusResponse(401, environment.getProperty("note.delete.message"));
-//		      return response;
-//	
-//    }
-//    
-//    
     
     public Response deleteNote(long noteId, String token) 
     {
@@ -253,7 +206,7 @@ public class NoteServiceImpl implements NoteService {
     }
     
     
-    public Response isTrash(long noteId,String token)
+    public Response isTrash(long noteId,String token,NoteDto1 noteDto)
     
     {
     	  long userId=UserToken.tokenVerify(token);
@@ -267,19 +220,22 @@ public class NoteServiceImpl implements NoteService {
         if(note.isTrash())
     	{
     		note.setTrash(false);
+    		
     	}
         else
         {
         	note.setTrash(true);
+        	
         }
         
+       
         Response response=Utility.statusResponse(401, environment.getProperty("note.isTrash.message"));
 	      return response;
     	
     }
     
     
-public Response isArchive(long noteId,String token)
+public Response isArchive(long noteId,String token,NoteDto1 noteDto)
     
     {
     	  long userId=UserToken.tokenVerify(token);
@@ -293,18 +249,26 @@ public Response isArchive(long noteId,String token)
         if(note.isArchive())
     	{
     		note.setArchive(false);
+    		 noteRepository.save(note);
+    		  Response response=Utility.statusResponse(401, environment.getProperty("note.isUNArchive.message"));
+    	  	  return response;
     	}
         else
         {
-        	note.setArchive(true);
+        note.setArchive(true);
+        noteRepository.save(note);
+      
+  	   Response response=Utility.statusResponse(401, environment.getProperty("note.isArchive.message"));
+	     return response;
         }
         
-        Response response=Utility.statusResponse(401, environment.getProperty("note.isArchive.message"));
-	      return response;
+       
+        
+        
     	
     }
 
-public Response isPin(long noteId,String token)
+public Response isPin(long noteId,String token,boolean pin)
 
 {
 	System.out.println("hello");
@@ -318,15 +282,19 @@ public Response isPin(long noteId,String token)
     System.out.println(note.isPin());
     if(note.isPin())
 	{
-		note.setPin(false);
+	 note.setPin(false);
+	 Response response=Utility.statusResponse(401, environment.getProperty("note.isPin.message"));
+		return response;
 	}
     else
     {
-    	note.setPin(true);
+     note.setPin(true);
+     Response response=Utility.statusResponse(401, environment.getProperty("note.isUnPin.message"));
+     return response;
     }
     
-    Response response=Utility.statusResponse(401, environment.getProperty("note.isPin.message"));
-      return response;
+   
+     
 	
 }
 

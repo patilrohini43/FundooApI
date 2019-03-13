@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.bridgelabz.fundoo.model.User;
 import com.bridgelabz.fundoo.note.model.Note;
+import com.bridgelabz.fundoo.user.model.User;
 
 @Repository
 public interface NoteRepository extends JpaRepository<Note,Long>{

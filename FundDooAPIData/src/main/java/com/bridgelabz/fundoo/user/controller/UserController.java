@@ -1,4 +1,4 @@
-package com.bridgelabz.fundoo.controller;
+package com.bridgelabz.fundoo.user.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -23,13 +23,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bridgelabz.fundoo.dto.LoginDto;
-import com.bridgelabz.fundoo.dto.UserDto;
-import com.bridgelabz.fundoo.exception.DataException;
+
 import com.bridgelabz.fundoo.exception.UserException;
-import com.bridgelabz.fundoo.model.Response;
-import com.bridgelabz.fundoo.model.User;
-import com.bridgelabz.fundoo.service.UserService;
+import com.bridgelabz.fundoo.user.dto.LoginDto;
+import com.bridgelabz.fundoo.user.dto.UserDto;
+import com.bridgelabz.fundoo.user.model.Response;
+import com.bridgelabz.fundoo.user.model.User;
+import com.bridgelabz.fundoo.user.service.UserService;
 
 
 @RestController
@@ -78,7 +78,7 @@ public class UserController {
 	    if(bindingResult.hasErrors())
 	    {
 			logger.error("Error in Binding The User Details");
-		   throw new UserException(201,environment.getProperty("data.message"));
+		 //  throw new UserException(201,environment.getProperty("data.message"));
 			
 	    }
 		

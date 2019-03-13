@@ -2,8 +2,8 @@ package com.bridgelabz.fundoo.util;
 
 import java.util.List;
 
-import com.bridgelabz.fundoo.model.Response;
 import com.bridgelabz.fundoo.note.model.Note;
+import com.bridgelabz.fundoo.user.model.Response;
 
 public class Utility {
 	

@@ -1,4 +1,4 @@
-package com.bridgelabz.fundoo.dto;
+package com.bridgelabz.fundoo.user.dto;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;

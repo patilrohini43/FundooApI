@@ -1,12 +1,18 @@
 package com.bridgelabz.fundoo.note.dto;
 
+import javax.validation.constraints.NotNull;
+
 public class NoteDto {
 	
 	
 	
-	
+	@NotNull(message="Can not be null")
 	private String title;
+	
+	@NotNull(message="Can not be null")
 	private String description;
+	
+	@NotNull(message="Can not be null")
     private String color;
     
 	   

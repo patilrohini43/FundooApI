@@ -2,8 +2,9 @@ package com.bridgelabz.fundoo.note.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,12 +12,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.bridgelabz.fundoo.model.User;
+import com.bridgelabz.fundoo.label.model.Label;
+import com.bridgelabz.fundoo.user.model.User;
 
 @Entity
 public class Note{
@@ -64,7 +68,27 @@ public class Note{
 	@JoinColumn(name="Id")
     private User user=new User();
 
+public Note()
+{
+	
+}
 
+public Note(long noteId)
+{
+	this.noteId=noteId;
+}
+	
+// @OneToMany(mappedBy="note",cascade=CascadeType.ALL)   
+// private List<Label> labels;
+	
+
+//	public List<Label> getLabels() {
+//		return labels;
+//	}
+//
+//	public void setLabels(List<Label> labels) {
+//		this.labels = labels;
+//	}
 
 	public User getUser() {
 		return user;
