@@ -28,6 +28,8 @@ public interface NoteService {
 	    public Response isTrash(long noteId,String token,NoteDto1 noteDto);
 	    public Response isArchive(long noteId,String token,NoteDto1 noteDto);
 	    public Response isPin(long noteId,String token,boolean pin);
-		
+	   // public Response addLabel(long noteId,long labelId);
+	    public Response addLabel(long noteId,long labelId);
+	  //  public List<Label> getAllNoteLabel(long noteId);
 
 }

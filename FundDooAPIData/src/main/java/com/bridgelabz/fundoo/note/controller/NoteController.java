@@ -173,18 +173,35 @@ public class NoteController {
 		 
 	}
 	
+//
+//	@PostMapping("/note/createLabel/{id}")
+//	public ResponseEntity<?> createLabel(@PathVariable(value="id") long noteId,@Valid @RequestBody LabelDto labelDto,@RequestHeader("jwt_token") String token,BindingResult result) 
+//
+//       {
+//		
+//	    validate(labelDto);
+//		System.out.println("Label Created");
+//	    Response response= labelService.createLabel(noteId,labelDto,token);
+//		
+//	     return new ResponseEntity<>(response,HttpStatus.OK);	
+//	}
+//	
+//	
+	
+	
 
-	@PostMapping("/note/createLabel/{id}")
-	public ResponseEntity<?> createLabel(@PathVariable(value="id") long noteId,@Valid @RequestBody LabelDto labelDto,@RequestHeader("jwt_token") String token,BindingResult result) 
+	@PostMapping("/note/addLabel")
+	public ResponseEntity<?> createLabel(@Valid @RequestBody LabelDto labelDto,@RequestHeader("jwt_token") String token,BindingResult result) 
 
        {
 		
 	    validate(labelDto);
 		System.out.println("Label Created");
-	    Response response= labelService.createLabel(noteId,labelDto,token);
+	    Response response= labelService.addLabel(labelDto,token);
 		
 	     return new ResponseEntity<>(response,HttpStatus.OK);	
 	}
+	
 	
 
 	@PutMapping("/note/editLabel/{id}")
@@ -224,6 +241,20 @@ public class NoteController {
 		 
 	}
 	
+	@ResponseBody
+	@PostMapping("/note/addLabelToNote")
+	public ResponseEntity<?> createLabelToNote(@RequestParam long noteId,@RequestParam long labelId) 
+
+       {
+		
+	   // validate(labelDto);
+		System.out.println("Label Created");
+	    Response response= noteService.addLabel(noteId,labelId);
+		
+	     return new ResponseEntity<>(response,HttpStatus.OK);	
+	}
+	
+
 
 	 public void validate(LabelDto labelDto) {
 	        if (labelDto.getLabelName().isEmpty()) {

@@ -14,5 +14,7 @@ public interface LabelService {
 	public Response updateLabel(long labelId,LabelDto labelDto,String token);
 	public Response deleteLabel(long labelId,String token);
 	public List<Label> getAllLabels(String token);
+	public Response addLabel(LabelDto labelDto,String token);
+	
 
 }

@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -17,6 +18,9 @@ import org.modelmapper.ModelMapper;
 
 import com.bridgelabz.fundoo.exception.NoteException;
 import com.bridgelabz.fundoo.exception.UserException;
+import com.bridgelabz.fundoo.label.model.Label;
+import com.bridgelabz.fundoo.label.model.LabelDto;
+import com.bridgelabz.fundoo.label.repository.LabelRepository;
 import com.bridgelabz.fundoo.note.dto.NoteDto;
 import com.bridgelabz.fundoo.note.dto.NoteDto1;
 import com.bridgelabz.fundoo.note.model.Note;
@@ -35,6 +39,11 @@ public class NoteServiceImpl implements NoteService {
 	
 	@Autowired
 	private NoteRepository noteRepository;
+	
+	
+	
+	@Autowired
+	private LabelRepository labelRepository;
 	
 	@Autowired
     private ModelMapper modelMapper;
@@ -67,7 +76,13 @@ public class NoteServiceImpl implements NoteService {
 	  
 		
 	  }
-		
+	
+	
+	
+	
+	
+	
+
 		
 
 //	public List<Note> getAllNotes(Long userId) {
@@ -298,6 +313,93 @@ public Response isPin(long noteId,String token,boolean pin)
 	
 }
 
+
+
+//public Response addLabel(long noteId,long labelId)
+//{
+//	
+//	
+//	   noteRepository.findById(noteId).map(note ->{
+//		Label label=labelRepository.findById(labelId).get();
+//		note.getLabels().add(label);
+//
+//		System.out.println(note);
+//		return note;
+//	
+//	}).ifPresent(noteRepository::save);
+//			
+//
+//Response response=Utility.statusResponse(401, environment.getProperty("note.LabelToNote.message"));
+//return response;
+//	
+//}
+
+
+
+public Response addLabel(long noteId,long labelId)
+{
+	System.out.println("hello");
+	//long userId=UserToken.tokenVerify(token);
+	
+	Note note=noteRepository.findById(noteId).get();
+	Label label=labelRepository.findById(labelId).get();
+	note.getLabel().add(label);
+	label.getNotes().add(note);
+	
+	noteRepository.save(note);
+
+    Response response=Utility.statusResponse(401, environment.getProperty("Label.success.message"));
+    return response;
+	
+}
+
+
+
+
+
+
+
+
+//
+//@Override
+//public List<Label> getAllNoteLabel(long noteId) {
+//	// TODO Auto-generated method stub
+//	
+//	Optional<Note> userNote = noteRepository.findById(noteId);
+//	Note note = userNote.get();
+//	List<Label> label = note.getLabel();
+//	return label;
+//}
+
+
+
+
+
+//@Override
+//public List<TotalNotesDto> getLabeledNotes(String labelValue, String token) {
+//	Long userId= TokenUtil.verifyToken(token);
+//	
+//	Label label= labelRepo.findAll()
+//					.stream()
+//					.filter(lbl-> lbl.getUserId().equals(userId)
+//							&& lbl.getLabelValue().equals(labelValue))
+//					.findFirst()
+//					.orElseThrow(()-> new NoteException(404, "Label Not found...."));
+//	Set<Note> notes=label.getNotes();
+//	List<Long> noteIds=collabRepo.findNoteIdByUserId(userId).orElse(new ArrayList<Long>());
+//	
+//	if(noteIds.size()>0) {
+//		notes.addAll(notesRepo.findNoteByNoteIdIn(noteIds).orElse(new ArrayList<Note>()));
+//	}
+//	List<TotalNotesDto> allNotes=new ArrayList<TotalNotesDto>();
+//	for(Note note:notes)
+//	{
+//		List<BigInteger> userIds=collabRepo.findUserIdByNoteId(note.getNoteId()).orElse(new ArrayList<BigInteger>());
+//		List<CollabUserInfo> collabUserInfos=this.getCollaborator(userIds);
+//		allNotes.add(new TotalNotesDto(note, collabUserInfos));
+//	}
+//	return allNotes;
+//}
 
 
 

@@ -2,8 +2,11 @@ package com.bridgelabz.fundoo.note.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
+import java.util.Set;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,7 +26,10 @@ import com.bridgelabz.fundoo.label.model.Label;
 import com.bridgelabz.fundoo.user.model.User;
 
 @Entity
-public class Note{
+public class Note implements Serializable{
+	
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO) 
@@ -39,6 +45,48 @@ public class Note{
 	public String getTitle() {
 		return title;
 	}
+	
+	
+
+
+//@ManyToMany(cascade=CascadeType.ALL)
+//@JoinColumn(name="labelId")
+//public Set<Label> labels;
+//  
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//	public Set<Label> getLabels() {
+//	return labels;
+//}
+//
+//public void setLabels(Set<Label> labels) {
+//	this.labels = labels;
+//}
+
+
+	@Access(AccessType.PROPERTY)
+	@ManyToMany(mappedBy="notes")
+    private Set<Label> label;
+	
+	
+	
+	
+	
+//	@OneToMany
+//	@JoinColumn(name="labelId")
+//    private Label label=new Label();
+	
+	
+	
+
+
 
 
 
@@ -46,6 +94,23 @@ public class Note{
 	@Column(name="Description")
 	private String description;
 	
+
+
+
+
+
+
+
+	public Set<Label> getLabel() {
+		return label;
+	}
+
+	public void setLabel(Set<Label> label) {
+		this.label = label;
+	}
+
+
+
 
 	@Column(name="Color")
     private String color;
@@ -67,7 +132,9 @@ public class Note{
 	@ManyToOne
 	@JoinColumn(name="Id")
     private User user=new User();
-
+	
+	 
+	
 public Note()
 {
 	
@@ -203,6 +270,7 @@ public Note(long noteId)
 				+ ", updatedDate=" + updatedDate + ", reminder=" + reminder + ", createDate=" + createDate + "]";
 	}
 
+	
 
     
 

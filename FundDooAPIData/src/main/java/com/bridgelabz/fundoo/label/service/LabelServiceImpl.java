@@ -40,19 +40,41 @@ public class LabelServiceImpl implements LabelService{
 	
 	public Response createLabel(long noteId,LabelDto labelDto,String token)
 	{
+		System.out.println("hello");
 		long userId=UserToken.tokenVerify(token);
 		Label label=modelMapper.map(labelDto, Label.class);
-		Note note=new Note(noteId);
-		label.setNote(note);
-		//note.setNoteId(noteId);
-		label.setUserId(userId);
-	    
+		//Note note=new Note(noteId);
+		//label.setNote(note);
+		///note.setNoteId(noteId);
+		//label.setUserId(userId);
+		//long dbUserId=label.getUser().setId(userId);
+		//System.out.println(dbUserId);
 		labelRepository.save(label);
 
         Response response=Utility.statusResponse(401, environment.getProperty("Label.success.message"));
         return response;
 		
 	}
+	
+	
+	public Response addLabel(LabelDto labelDto,String token)
+	{
+		System.out.println("hello");
+		long userId=UserToken.tokenVerify(token);
+		Label label=modelMapper.map(labelDto, Label.class);
+		//label.setUserId(userId);
+	   // long dbUserId=label.getUser().setId(userId);
+		User user=new User(userId);
+		label.setUser(user);
+		
+		System.out.println("helloq");
+		labelRepository.save(label);
+
+        Response response=Utility.statusResponse(401, environment.getProperty("Label.success.message"));
+        return response;
+		
+	}
+	
 	
 	
 	public Response updateLabel(long labelId,LabelDto labelDto,String token)
@@ -63,7 +85,7 @@ public class LabelServiceImpl implements LabelService{
 				.orElseThrow(() ->new NoteException(405, environment.getProperty("note.id.message"),labelId));
 		
 	    label.setLabelName(labelDto.getLabelName());
-	    long dbUserId=label.getNote().getUser().getId();
+	    long dbUserId=label.getUser().getId();
 	    System.out.println(dbUserId);
 	    
 	    if(dbUserId==userId)
@@ -91,7 +113,7 @@ public class LabelServiceImpl implements LabelService{
            		.orElseThrow(() -> new NoteException(405, environment.getProperty("note.id.message"),labelId));        
            System.out.println(label);
          
-           long dbUserId=label.getNote().getUser().getId();
+           long dbUserId=label.getUser().getId();
            
            System.out.println(dbUserId);
          //  System.out.println(user.getId());
@@ -118,7 +140,7 @@ public class LabelServiceImpl implements LabelService{
 	
 	for (int i = 0; i < notes.size(); i++) {
 		
-		long dbuser=notes.get(i).getNote().getUser().getId();
+		long dbuser=notes.get(i).getUser().getId();
 		
 		if(dbuser==userId)
 		{
@@ -133,6 +155,7 @@ public class LabelServiceImpl implements LabelService{
 	return notes;
     
 }
+
 
 	
 	
