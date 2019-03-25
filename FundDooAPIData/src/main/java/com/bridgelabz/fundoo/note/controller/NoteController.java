@@ -229,6 +229,18 @@ public class NoteController {
 	}
 	
 	
+	@DeleteMapping("/label/remove")
+	public ResponseEntity<Response> deleteNoteLabel(@RequestParam long noteId,@RequestParam long labelId) 
+	{
+		//System.out.println(token);
+		//System.out.println(noteId);
+		Response response=noteService.removeNoteToLabel(noteId,labelId);
+		
+		 return new ResponseEntity<Response>(response,HttpStatus.OK);
+		
+	}
+	
+	
 	@ResponseBody
 	@GetMapping("/label/list")
 	public List<Label> getLabel(@RequestHeader(value="jwt_token") String token)

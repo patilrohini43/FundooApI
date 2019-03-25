@@ -353,12 +353,32 @@ public Response addLabel(long noteId,long labelId)
 	
 }
 
+public Response removeNote(Note note,Label label)
+{
+	label.getNotes().remove(note);
+	noteRepository.save(note);
+	 Response response=Utility.statusResponse(401, environment.getProperty("Label.remove.message"));
+	    return response;
+}
 
 
+public Response removeNoteToLabel(long noteId,long labelId)
+{
+	System.out.println("hello");
+	//long userId=UserToken.tokenVerify(token);
+	
+	Note note=noteRepository.findById(noteId).get();
+	Label label=labelRepository.findById(labelId).get();
+	note.getLabel().remove(label);
+	label.getNotes().remove(note);
+	
+	noteRepository.save(note);
 
-
-
-
+	labelRepository.save(label);
+    Response response=Utility.statusResponse(401, environment.getProperty("Label.remove.message"));
+    return response;
+	
+}
 
 //
 //@Override

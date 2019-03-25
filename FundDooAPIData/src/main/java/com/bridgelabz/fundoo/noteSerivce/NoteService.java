@@ -30,6 +30,8 @@ public interface NoteService {
 	    public Response isPin(long noteId,String token,boolean pin);
 	   // public Response addLabel(long noteId,long labelId);
 	    public Response addLabel(long noteId,long labelId);
+	    public Response removeNoteToLabel(long noteId,long labelId);
+
 	  //  public List<Label> getAllNoteLabel(long noteId);
 
 }
