@@ -72,6 +72,10 @@ public class User implements Serializable {
 
 	private LocalDateTime createDate=LocalDateTime.now();
 	
+	@Column(name="Image")
+	private String image;
+	
+	
 	
 	public User(Long id)
 	{
@@ -97,6 +101,14 @@ public class User implements Serializable {
 
 
 
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
 
 	public void setCreateDate(LocalDateTime createDate) {
 		this.createDate = createDate;

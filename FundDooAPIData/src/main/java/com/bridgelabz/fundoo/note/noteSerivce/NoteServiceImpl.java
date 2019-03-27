@@ -1,4 +1,4 @@
-package com.bridgelabz.fundoo.noteSerivce;
+package com.bridgelabz.fundoo.note.noteSerivce;
 
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.modelmapper.ModelMapper;
@@ -394,32 +395,6 @@ public Response removeNoteToLabel(long noteId,long labelId)
 
 
 
-
-//@Override
-//public List<TotalNotesDto> getLabeledNotes(String labelValue, String token) {
-//	Long userId= TokenUtil.verifyToken(token);
-//	
-//	Label label= labelRepo.findAll()
-//					.stream()
-//					.filter(lbl-> lbl.getUserId().equals(userId)
-//							&& lbl.getLabelValue().equals(labelValue))
-//					.findFirst()
-//					.orElseThrow(()-> new NoteException(404, "Label Not found...."));
-//	Set<Note> notes=label.getNotes();
-//	List<Long> noteIds=collabRepo.findNoteIdByUserId(userId).orElse(new ArrayList<Long>());
-//	
-//	if(noteIds.size()>0) {
-//		notes.addAll(notesRepo.findNoteByNoteIdIn(noteIds).orElse(new ArrayList<Note>()));
-//	}
-//	List<TotalNotesDto> allNotes=new ArrayList<TotalNotesDto>();
-//	for(Note note:notes)
-//	{
-//		List<BigInteger> userIds=collabRepo.findUserIdByNoteId(note.getNoteId()).orElse(new ArrayList<BigInteger>());
-//		List<CollabUserInfo> collabUserInfos=this.getCollaborator(userIds);
-//		allNotes.add(new TotalNotesDto(note, collabUserInfos));
-//	}
-//	return allNotes;
-//}
 
 
 

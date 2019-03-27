@@ -23,4 +23,6 @@ public interface UserService {
     public Response resetPassword(String token,String password);
     //public String Login1(LoginDto loginDto) throws UserException;
     public Response Login(LoginDto loginDto);
+	public Response imageUpload(String image,String token);
+	public String getImage(long id);
 }

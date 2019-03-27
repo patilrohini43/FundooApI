@@ -1,7 +1,8 @@
-package com.bridgelabz.fundoo.noteSerivce;
+package com.bridgelabz.fundoo.note.noteSerivce;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -31,7 +32,7 @@ public interface NoteService {
 	   // public Response addLabel(long noteId,long labelId);
 	    public Response addLabel(long noteId,long labelId);
 	    public Response removeNoteToLabel(long noteId,long labelId);
-
+	
 	  //  public List<Label> getAllNoteLabel(long noteId);
 
 }

@@ -2,6 +2,8 @@ package com.bridgelabz.fundoo.label.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -16,6 +18,7 @@ import com.bridgelabz.fundoo.exception.UserException;
 import com.bridgelabz.fundoo.label.model.Label;
 import com.bridgelabz.fundoo.label.model.LabelDto;
 import com.bridgelabz.fundoo.label.repository.LabelRepository;
+import com.bridgelabz.fundoo.note.dto.NoteDto1;
 import com.bridgelabz.fundoo.note.model.Note;
 import com.bridgelabz.fundoo.note.repository.NoteRepository;
 import com.bridgelabz.fundoo.user.model.Response;
@@ -35,6 +38,10 @@ public class LabelServiceImpl implements LabelService{
 	
 	@Autowired
 	UserRepository userRepository;
+	
+	
+	@Autowired
+	NoteRepository noteRepository;
 	@Autowired
 	private Environment environment;
 	
@@ -157,6 +164,17 @@ public class LabelServiceImpl implements LabelService{
 }
 
 
+	public List<Note> labelNote(String token,long labelId)
+	{
+		
+		long userId=UserToken.tokenVerify(token);
+		//Optional<Long> labelId=labelRepository.findIdByLabelName(labelName);
+		Label label = labelRepository.findById(labelId).get();
+		List<Note> note=label.getNotes().stream().collect(Collectors.toList());
+       
+		return note;
+		
+	}
 	
 	
 	

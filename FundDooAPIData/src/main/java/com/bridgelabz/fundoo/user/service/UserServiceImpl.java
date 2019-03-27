@@ -227,8 +227,31 @@ public String getUrl(String service, Long id) {
       
 
 
+	public Response imageUpload(String token,String image)
+	{
+		
+		long userID = UserToken.tokenVerify(token);
+		
+		   User user=userRepository.findById(userID)
+				   .orElseThrow(() -> new TokenException( 400,"User is not valid........."));
+		   
+	 user.setImage(image);
+	 userRepository.save(user);
+	Response response=Utility.statusResponse(102,environment.getProperty("user.upload.message"));
+		
+		return  response;
+	}
 	
-	
+
+	public String getImage(long id)
+	{
+		
+		
+		   User user=userRepository.findById(id)
+				   .orElseThrow(() -> new TokenException( 400,"User is not valid........."));
+		
+		return user.getImage();
+	}
 	
 }
 	
