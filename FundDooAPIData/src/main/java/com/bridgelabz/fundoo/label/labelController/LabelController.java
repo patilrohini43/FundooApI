@@ -136,6 +136,20 @@ public class LabelController{
 	     return response;
 		 
 	}
+	
+	
+
+	@ResponseBody
+	@GetMapping("/label/labelNotes")
+	public List<Note> getLabelNote(@RequestHeader(value="jwt_token") String token,@RequestParam String labelName )
+	{
+		
+		List<Note> response=labelService.labelNote(token,labelName);
+		 System.out.println(response);
+		
+	     return response;
+		 
+	}
 
 	
 	

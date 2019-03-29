@@ -14,8 +14,8 @@ import com.bridgelabz.fundoo.note.model.Note;
 @Repository
 public interface LabelRepository extends JpaRepository<Label,Long> {
 
-	@Query(value="select id from label where labelName=:labelName",nativeQuery=true)
-	Optional<Long> findIdByLabelName(@Param("labelName") String labelName);
+	@Query(value="select label_id from label where label_name=?",nativeQuery=true)
+	Long findIdByLabelName(@Param("labelName") String labelName);
 
 
 }

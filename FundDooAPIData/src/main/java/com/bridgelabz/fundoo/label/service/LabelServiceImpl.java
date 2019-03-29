@@ -176,7 +176,17 @@ public class LabelServiceImpl implements LabelService{
 		
 	}
 	
-	
+	public List<Note> labelNote(String token,String labelName)
+	{
+		
+		long userId=UserToken.tokenVerify(token);
+		Long labelId=labelRepository.findIdByLabelName(labelName);
+		Label label = labelRepository.findById(labelId).get();
+		List<Note> note=label.getNotes().stream().collect(Collectors.toList());
+       
+		return note;
+		
+	}
 	
 
 }

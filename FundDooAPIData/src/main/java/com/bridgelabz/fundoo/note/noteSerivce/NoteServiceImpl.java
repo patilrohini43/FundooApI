@@ -236,17 +236,20 @@ public class NoteServiceImpl implements NoteService {
         if(note.isTrash())
     	{
     		note.setTrash(false);
+    		 Response response=Utility.statusResponse(401, environment.getProperty("note.isunTrash.message"));
+   	      return response;
     		
     	}
         else
         {
         	note.setTrash(true);
+        	 Response response=Utility.statusResponse(401, environment.getProperty("note.isTrash.message"));
+   	      return response;
         	
         }
         
        
-        Response response=Utility.statusResponse(401, environment.getProperty("note.isTrash.message"));
-	      return response;
+       
     	
     }
     

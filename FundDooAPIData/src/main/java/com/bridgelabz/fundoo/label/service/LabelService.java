@@ -19,5 +19,6 @@ public interface LabelService {
 	public Response addLabel(LabelDto labelDto,String token);
 
 	public List<Note> labelNote(String token,long labelId);
+	public List<Note> labelNote(String token,String labelName);
 
 }
