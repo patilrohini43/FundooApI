@@ -49,6 +49,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -83,13 +84,25 @@ public class UserController {
 	
 	private final Path pathlocation=Paths.get("/home/admin1/Documents/workspace-sts-3.9.7.RELEASE/FundDooAPIData/src/main/resources/image");
 	
-	@RequestMapping("/user")
+	@ResponseBody
+	@GetMapping("/user")
 	public List<User> getAllUser()
 	{
+	
 		return userService.getAll();
 		
 	}
 
+	
+
+	@ResponseBody
+	@GetMapping("/users")
+	public List<User> getUserBYId(@RequestHeader(value="jwt_token") String token)
+	{
+	
+		return userService.getById(token);
+		
+	}
 	
 //	@RequestMapping(method=RequestMethod.POST,value="/register")
 //	public void addUser(@RequestBody UserDto userDto) throws UnsupportedEncodingException, UserException

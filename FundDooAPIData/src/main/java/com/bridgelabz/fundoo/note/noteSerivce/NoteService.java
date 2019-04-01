@@ -1,6 +1,7 @@
 package com.bridgelabz.fundoo.note.noteSerivce;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +33,8 @@ public interface NoteService {
 	   // public Response addLabel(long noteId,long labelId);
 	    public Response addLabel(long noteId,long labelId);
 	    public Response removeNoteToLabel(long noteId,long labelId);
+	    public Response ReminderSet(long noteId,LocalDateTime time);
+		public Response ReminderRemove(long noteId,LocalDateTime time);
 	
 	  //  public List<Label> getAllNoteLabel(long noteId);
 

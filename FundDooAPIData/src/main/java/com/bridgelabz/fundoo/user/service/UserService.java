@@ -13,6 +13,7 @@ import com.bridgelabz.fundoo.user.model.User;
 public interface UserService {
 	
 	public List<User> getAll();
+	public List<User> getById(String token);
 	public Response registerUser(UserDto userDto);
     public User findByEmail(String email);
 	//public User registerUser1(UserDto userDto) throws UserException, UnsupportedEncodingException;

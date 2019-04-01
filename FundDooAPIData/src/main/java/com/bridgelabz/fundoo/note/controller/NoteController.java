@@ -1,6 +1,7 @@
 package com.bridgelabz.fundoo.note.controller;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.core.env.Environment;
-
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.bridgelabz.fundoo.exception.UserException;
 import com.bridgelabz.fundoo.label.model.Label;
@@ -74,6 +75,43 @@ public class NoteController {
 		
 	     return new ResponseEntity<Response>(response,HttpStatus.OK);	
 	}
+	
+	
+	
+	@PostMapping("/notes/{id}")
+	public ResponseEntity<Response> addReminder(@PathVariable(value="id") long noteId,@RequestParam  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime time) 
+
+       {
+			
+		System.out.println("Note Created");
+	    Response response= noteService.ReminderSet(noteId,time);
+		
+	     return new ResponseEntity<Response>(response,HttpStatus.OK);	
+	}
+	
+	
+
+	@PostMapping("/notes/remove/{id}")
+	public ResponseEntity<Response> removeReminder(@PathVariable(value="id") long noteId,@RequestParam  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime time) 
+
+       {
+			
+		System.out.println("Note Created");
+	    Response response= noteService.ReminderRemove(noteId,time);
+		
+	     return new ResponseEntity<Response>(response,HttpStatus.OK);	
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 //	
 //	@GetMapping("/notes")
 //	public String getAllNote()

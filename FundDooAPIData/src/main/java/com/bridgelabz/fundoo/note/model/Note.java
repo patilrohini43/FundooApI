@@ -176,7 +176,11 @@ public Note(long noteId)
 	
 
 
-    public LocalDateTime getReminder() {
+
+
+	
+
+	public LocalDateTime getReminder() {
 		return reminder;
 	}
 

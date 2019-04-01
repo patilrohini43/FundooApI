@@ -78,12 +78,37 @@ public class NoteServiceImpl implements NoteService {
 		
 	  }
 	
-	
-	
-	
-	
-	
+	public Response ReminderSet(long noteId,LocalDateTime time) 
+	{
+		//Long userId=UserToken.tokenVerify(token);
+		
+		Note note=noteRepository.findById(noteId).get();
+		note.setReminder(time);
+	    noteRepository.save(note);
+	    Response response=Utility.statusResponse(401, environment.getProperty("note.reminder.message"));
+		return response;
 
+	
+	  }
+	
+	
+	public Response ReminderRemove(long noteId,LocalDateTime time) 
+	{
+		//Long userId=UserToken.tokenVerify(token);
+		
+		Note note=noteRepository.findById(noteId).get();
+		note.setReminder(null);
+	    noteRepository.save(note);
+	    Response response=Utility.statusResponse(401, environment.getProperty("note.removeReminder.message"));
+		return response;
+
+	
+	  }
+	
+	
+	
+	
+	
 		
 
 //	public List<Note> getAllNotes(Long userId) {
@@ -181,6 +206,7 @@ public class NoteServiceImpl implements NoteService {
       note.setDescription(noteDto.getDescription());
       note.setColor(noteDto.getColor());
       note.setUpdatedDate(LocalDateTime.now());
+     // note.setReminder(LocalDateTime.now());
       long dbUserId=note.getUser().getId();
       System.out.println(dbUserId);
     //  System.out.println(user.getId());
@@ -349,7 +375,13 @@ public Response addLabel(long noteId,long labelId)
 	Label label=labelRepository.findById(labelId).get();
 	note.getLabel().add(label);
 	label.getNotes().add(note);
+	// stream the list and use the set to filter it
+	List<Label> labels = note.getLabel().stream()
+	            .filter(e -> (e.getLabelId()==labelId))
+	            .collect(Collectors.toList());
 	
+	
+	System.out.println(labels);
 	noteRepository.save(note);
 
     Response response=Utility.statusResponse(401, environment.getProperty("Label.success.message"));
@@ -383,17 +415,6 @@ public Response removeNoteToLabel(long noteId,long labelId)
     return response;
 	
 }
-
-//
-//@Override
-//public List<Label> getAllNoteLabel(long noteId) {
-//	// TODO Auto-generated method stub
-//	
-//	Optional<Note> userNote = noteRepository.findById(noteId);
-//	Note note = userNote.get();
-//	List<Label> label = note.getLabel();
-//	return label;
-//}
 
 
 

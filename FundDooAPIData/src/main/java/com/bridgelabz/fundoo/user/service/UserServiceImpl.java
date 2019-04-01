@@ -51,9 +51,25 @@ public class UserServiceImpl implements UserService{
 	List<User> userList=new ArrayList<>();
 	userRepository.findAll()   //getting the all the instance from the table
 	.forEach(userList::add);
+	
+	System.out.println(userList);
 	return userList;
 	}
 	
+	
+	public List<User> getById(String token){
+		List<User> userList=new ArrayList<>();
+		Long userID = UserToken.tokenVerify(token);
+		
+ 	   User user=userRepository.findById(userID)
+			   .orElseThrow(() -> new TokenException(401, "token.error"));
+		userRepository.findById(userID)
+		.ifPresent(userList::add);
+		
+		System.out.println(userList);
+		return userList;
+		
+	}
 
 	public Response registerUser(UserDto userDto) 
 	{
