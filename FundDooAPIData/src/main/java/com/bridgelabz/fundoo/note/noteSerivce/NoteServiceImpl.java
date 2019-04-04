@@ -420,6 +420,114 @@ public Response removeNoteToLabel(long noteId,long labelId)
 
 
 
+public Response add(String token,long noteId,String email)
+{
+	System.out.println("hello");
+	long userId=UserToken.tokenVerify(token);
+	
+	Note note=noteRepository.findById(noteId).get();
+	User user=userRepository.findById(userId).get();
+	User userid=userRepository.findByEmail(email);
+	boolean useremail=user.getEmail().equals(email);
+	
+	// stream the list and use the set to filter it
+	List<User> uservalue = note.getCollabuser().stream()
+	            .filter(e -> (e.getEmail().equals(email)))
+	            .collect(Collectors.toList());
+	
+	
+	System.out.println(note.getCollabuser());
+	System.out.println("collab user"+uservalue);
+	if(uservalue.isEmpty())
+	{
+      System.out.println("hello");
+		
+      note.getCollabuser().add(userid);
+	
+	  userid.getCollabnote().add(note);
+	  User value=	userRepository.save(userid);
+	  System.out.println("check"+value);
+	  noteRepository.save(note);
+		Response response=Utility.statusResponse(401, environment.getProperty("collabrator.success.message"));
+		    return response;
+	}
+	
+	else
+	{
+		Response response=Utility.statusResponse(401, environment.getProperty("collabrator.error.message"));
+	    return response;
+	}
+	
+
+  
+	
+}
+
+
+
+
+public Response removeCollbrator(String token,long noteId,String email)
+{
+	System.out.println("hello");
+	long userId=UserToken.tokenVerify(token);
+	
+	Note note=noteRepository.findById(noteId).get();
+	User user=userRepository.findById(userId).get();
+	User userid=userRepository.findByEmail(email);
+	boolean useremail=user.getEmail().equals(email);
+	
+	// stream the list and use the set to filter it
+	List<User> uservalue = note.getCollabuser().stream()
+	            .filter(e -> (e.getEmail().equals(email)))
+	            .collect(Collectors.toList());
+	
+	
+	System.out.println(note.getCollabuser());
+	System.out.println("collab user"+uservalue);
+	if(!uservalue.isEmpty())
+	{
+      System.out.println("hello");
+		
+      note.getCollabuser().remove(userid);
+	 boolean userss= userid.getCollabnote().remove(note);
+	 System.out.println(userss);
+	 
+	  User value=userRepository.save(userid);
+	  System.out.println("check"+value);
+	  noteRepository.save(note);
+		
+	}
+	
+
+	Response response=Utility.statusResponse(401, environment.getProperty("collabrator.success.remove.message"));
+    return response;
+	
+}
+
+
+
+
+
+
+
+public List<Note> getCollabratorNotes(String token)
+{
+	Long userId=UserToken.tokenVerify(token);
+	Optional<List<Long>> collab=noteRepository.findNoteAllById(userId);
+	//Optional<List<Long>> collab=Repository.findAllById(userId);
+
+	if(collab.isPresent())
+	{
+        return noteRepository.findCollabratorNotes(collab.get()).get();
+		
+	}
+	
+	return new ArrayList<Note>();
+	
+}
+
+
+
 
 
 
@@ -427,3 +535,9 @@ public Response removeNoteToLabel(long noteId,long labelId)
 
    
 }
+
+
+
+
+
+

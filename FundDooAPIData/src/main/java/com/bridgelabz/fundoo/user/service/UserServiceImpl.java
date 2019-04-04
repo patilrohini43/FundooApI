@@ -198,6 +198,32 @@ public String getUrl(String service, Long id) {
 }
 
 
+public Response getUserData(String email)
+{
+	
+	User user=userRepository.findUserByEmail(email)
+			.orElseThrow(()-> new UserException( 400,"Email Id Not Exist........."));
+	
+	Response response=Utility.statusResponse(102,environment.getProperty("user.find.message"));
+	
+	return  response;
+	
+}
+
+
+
+public List<User> getByEmail(String email){
+	List<User> userList=new ArrayList<>();
+	//Long userID = UserToken.tokenVerify(token);
+	
+	   User user=userRepository.findUserByEmail(email)
+			   .orElseThrow(()-> new UserException( 400,"Email Id Not Exist........."));
+     userRepository.findUserByEmail(email)
+	.ifPresent(userList::add);
+	System.out.println(userList);
+	return userList;
+	
+}
 
   public Response Login(LoginDto loginDto) {
 	//Response respone = new Response();
@@ -269,6 +295,8 @@ public String getUrl(String service, Long id) {
 		return user.getImage();
 	}
 	
+	
+
 }
 	
 

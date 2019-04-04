@@ -112,7 +112,15 @@ public class UserController {
 //		userService.registerUser(userDto);
 //	}
 //	
+
+	@ResponseBody
+	@GetMapping("/users/findemail")
+	public List<User> collabInfo(@RequestParam String email)
+	{
 	
+		return userService.getByEmail(email);
+		
+	}
 	
 	
 	
@@ -136,6 +144,23 @@ public class UserController {
 	
 		
 	}
+	
+	
+	
+	
+	
+	@RequestMapping(value = "/findemailId", method = RequestMethod.GET)	
+	public ResponseEntity<Response> findEmailId(@RequestParam String email)   
+
+       {
+		
+	    
+			Response response= userService.getUserData(email);
+		
+		
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	
+       }
 
 	@RequestMapping(value = "/Login", method = RequestMethod.PUT)
 	public ResponseEntity<Response> login(@Valid @RequestBody LoginDto loginDto , BindingResult bindingResult) 
@@ -252,6 +277,8 @@ public class UserController {
 	            throw new UploadFileNotFoundException("Could not read file: " + filename, e);
 	        }
 	    }
+	   
+	   
 	   
 	   
 	   

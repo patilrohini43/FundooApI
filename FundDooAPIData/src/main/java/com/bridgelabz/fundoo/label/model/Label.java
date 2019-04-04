@@ -56,7 +56,6 @@ public class Label implements Serializable {
 	
 	
 	@ManyToMany()
-
 	@JoinTable(name="Note_Labels",
 	joinColumns= @JoinColumn(name="labelId",referencedColumnName="labelId"),
 	inverseJoinColumns= @JoinColumn(name ="noteId",referencedColumnName="noteId"))
@@ -140,7 +139,7 @@ public Set<Note> getNotes() {
 //	}
 //
 //
-//
+//	
 //	public void setUserId(long userId) {
 //		this.userId = userId;
 //	}

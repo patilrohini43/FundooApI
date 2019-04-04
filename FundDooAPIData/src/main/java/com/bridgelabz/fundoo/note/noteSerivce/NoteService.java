@@ -35,6 +35,9 @@ public interface NoteService {
 	    public Response removeNoteToLabel(long noteId,long labelId);
 	    public Response ReminderSet(long noteId,LocalDateTime time);
 		public Response ReminderRemove(long noteId,LocalDateTime time);
+		public Response add(String token,long noteId,String email);
+		public Response removeCollbrator(String token,long noteId,String email);
+		public List<Note> getCollabratorNotes(String token);
 	
 	  //  public List<Label> getAllNoteLabel(long noteId);
 

@@ -26,4 +26,6 @@ public interface UserService {
     public Response Login(LoginDto loginDto);
 	public Response imageUpload(String image,String token);
 	public String getImage(long id);
+	public Response getUserData(String email);
+	public List<User> getByEmail(String email);
 }

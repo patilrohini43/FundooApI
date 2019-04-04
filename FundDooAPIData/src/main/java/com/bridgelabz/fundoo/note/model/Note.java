@@ -2,7 +2,7 @@ package com.bridgelabz.fundoo.note.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Access;
@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -22,8 +23,10 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.bridgelabz.fundoo.collabrator.model.Collabrator;
 import com.bridgelabz.fundoo.label.model.Label;
 import com.bridgelabz.fundoo.user.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Note implements Serializable{
@@ -42,63 +45,23 @@ public class Note implements Serializable{
 	private String title;
 	
 
+	
+
 	public String getTitle() {
 		return title;
 	}
 	
 	
 
-
-//@ManyToMany(cascade=CascadeType.ALL)
-//@JoinColumn(name="labelId")
-//public Set<Label> labels;
-//  
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//	public Set<Label> getLabels() {
-//	return labels;
-//}
-//
-//public void setLabels(Set<Label> labels) {
-//	this.labels = labels;
-//}
-
+	
 
 	@Access(AccessType.PROPERTY)
 	@ManyToMany(mappedBy="notes")
     private Set<Label> label;
 	
-	
-	
-	
-	
-//	@OneToMany
-//	@JoinColumn(name="labelId")
-//    private Label label=new Label();
-	
-	
-	
-
-
-
-
-
 
 	@Column(name="Description")
 	private String description;
-	
-
-
-
-
-
 
 
 	public Set<Label> getLabel() {
@@ -135,8 +98,10 @@ public class Note implements Serializable{
 	
 	 
 	
+	
 public Note()
 {
+	
 	
 }
 
@@ -157,9 +122,33 @@ public Note(long noteId)
 //		this.labels = labels;
 //	}
 
+
+
+
+
+@ManyToMany(mappedBy="collabnote")
+private Set<User> collabuser;
+
+
+
+
+
+
+
+
+	public Set<User> getCollabuser() {
+	return collabuser;
+}
+
+public void setCollabuser(Set<User> collabuser) {
+	this.collabuser = collabuser;
+}
+
 	public User getUser() {
 		return user;
 	}
+
+
 
 	public void setUser(User user) {
 		this.user = user;

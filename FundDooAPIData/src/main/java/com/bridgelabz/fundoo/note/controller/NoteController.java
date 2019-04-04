@@ -89,7 +89,7 @@ public class NoteController {
 	     return new ResponseEntity<Response>(response,HttpStatus.OK);	
 	}
 	
-	
+	 
 
 	@PostMapping("/notes/remove/{id}")
 	public ResponseEntity<Response> removeReminder(@PathVariable(value="id") long noteId,@RequestParam  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime time) 
@@ -108,8 +108,29 @@ public class NoteController {
 	
 	
 	
+	@PostMapping("/collabrator/addCollab1")
+	public ResponseEntity<?> addCollab(@RequestHeader(value="jwt_token") String token,@RequestParam long noteId,@RequestParam String email) 
+
+       {
+		
+	 
+		System.out.println("Collbrator Created");
+	    Response response=noteService.add(token, noteId, email);
+	     return new ResponseEntity<>(response,HttpStatus.OK);	
+	}
 	
 	
+	
+	@DeleteMapping("/collabrator/removeCollabrator")
+	public ResponseEntity<?> removeCollab(@RequestHeader(value="jwt_token") String token,@RequestParam long noteId,@RequestParam String email) 
+
+       {
+		
+	 
+		System.out.println("Collbrator Created");
+	    Response response=noteService.removeCollbrator(token, noteId, email);
+	     return new ResponseEntity<>(response,HttpStatus.OK);	
+	}
 	
 
 //	
@@ -133,6 +154,21 @@ public class NoteController {
 	     return response;
 		 
 	}
+	
+	
+	
+	@ResponseBody
+	@GetMapping("/note/list/collab")
+	public List<Note> getNote(@RequestHeader(value="jwt_token") String token)
+	{
+		
+		List<Note> response=noteService.getCollabratorNotes(token);
+		 System.out.println(response);
+		
+	     return response;
+		 
+	}
+	
 	
 	
 	
@@ -212,104 +248,7 @@ public class NoteController {
 		 
 	}
 	
-//
-//	@PostMapping("/note/createLabel/{id}")
-//	public ResponseEntity<?> createLabel(@PathVariable(value="id") long noteId,@Valid @RequestBody LabelDto labelDto,@RequestHeader("jwt_token") String token,BindingResult result) 
-//
-//       {
-//		
-//	    validate(labelDto);
-//		System.out.println("Label Created");
-//	    Response response= labelService.createLabel(noteId,labelDto,token);
-//		
-//	     return new ResponseEntity<>(response,HttpStatus.OK);	
-//	}
-//	
-//	
-	
-	
-//
-//	@PostMapping("/note/addLabel")
-//	public ResponseEntity<?> createLabel(@Valid @RequestBody LabelDto labelDto,@RequestHeader("jwt_token") String token,BindingResult result) 
-//
-//       {
-//		
-//	    validate(labelDto);
-//		System.out.println("Label Created");
-//	    Response response= labelService.addLabel(labelDto,token);
-//		
-//	     return new ResponseEntity<>(response,HttpStatus.OK);	
-//	}
-//	
-//	
-//
-//	@PutMapping("/note/editLabel/{id}")
-//	public ResponseEntity<Response> updateLabel(@PathVariable(value="id") long labelId,@Valid @RequestBody LabelDto labelDto,@RequestHeader("jwt_token") String token,BindingResult result) 
-//
-//       {
-//		
-//	    validate(labelDto);
-//		System.out.println("Label Created");
-//	    Response response= labelService.updateLabel(labelId,labelDto,token);
-//		
-//	     return new ResponseEntity<Response>(response,HttpStatus.OK);	
-//	}
-//	
-//	
-//	@DeleteMapping("/label/{id}")
-//	public ResponseEntity<Response> deleteLabel(@RequestHeader(value="jwt_token") String token,@PathVariable(value="id") long labelId) 
-//	{
-//		//System.out.println(token);
-//		//System.out.println(noteId);
-//		Response response=labelService.deleteLabel(labelId,token);
-//		
-//		 return new ResponseEntity<Response>(response,HttpStatus.OK);
-//		
-//	}
-//	
-//	
-//	@DeleteMapping("/label/remove")
-//	public ResponseEntity<Response> deleteNoteLabel(@RequestParam long noteId,@RequestParam long labelId) 
-//	{
-//		//System.out.println(token);
-//		//System.out.println(noteId);
-//		Response response=noteService.removeNoteToLabel(noteId,labelId);
-//		
-//		 return new ResponseEntity<Response>(response,HttpStatus.OK);
-//		
-//	}
-//	
-//	
-//	@ResponseBody
-//	@GetMapping("/label/list")
-//	public List<Label> getLabel(@RequestHeader(value="jwt_token") String token)
-//	{
-//		
-//		List<Label> response=labelService.getAllLabels(token);
-//		 System.out.println(response);
-//		
-//	     return response;
-//		 
-//	}
-//	
-//	
-//	
-//
-//	
-//	
-//	@ResponseBody
-//	@PostMapping("/note/addLabelToNote")
-//	public ResponseEntity<?> createLabelToNote(@RequestParam long noteId,@RequestParam long labelId) 
-//
-//       {
-//		
-//	   // validate(labelDto);
-//		System.out.println("Label Created");
-//	    Response response= noteService.addLabel(noteId,labelId);
-//		
-//	     return new ResponseEntity<>(response,HttpStatus.OK);	
-//	}
-//	
+
 
 
 	 public void validate(LabelDto labelDto) {
