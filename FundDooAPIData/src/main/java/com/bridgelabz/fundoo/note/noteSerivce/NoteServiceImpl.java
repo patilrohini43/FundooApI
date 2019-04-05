@@ -129,6 +129,7 @@ public class NoteServiceImpl implements NoteService {
 	public List<Note> getAllNotes(String token,boolean archived,boolean trashed) {
 	
 		long userId=UserToken.tokenVerify(token);
+		
 	 //User user=userRepository.findById(userId)
 			 //.orElseThrow(() ->new NoteException(405, environment.getProperty("note.userid.message"),userId));
 			 System.out.println("hello");
@@ -136,20 +137,23 @@ public class NoteServiceImpl implements NoteService {
 			  .filter(note-> note.getUser().getId().equals(userId)
 					  	&& note.isArchive()==archived
 					  	&& note.isTrash()==trashed)
-.collect(Collectors.toList());
+                     .collect(Collectors.toList());
+	
+	List<Note> sharedNotes = userRepository.findById(userId).get().getCollabnote().stream().collect(Collectors.toList());
 	
 	List<Note> list = new ArrayList<>();
+	notes.addAll(sharedNotes);
 	
-	for (int i = 0; i < notes.size(); i++) {
-		
-		if(notes.get(i).getUser().getId()==userId)
-		{
-			
-			list.add(notes.get(i));
-			System.out.println(list.add(notes.get(i)));
-		
-	    }
-	}
+//	for (int i = 0; i < notes.size(); i++) {
+//		
+//		if(notes.get(i).getUser().getId()==userId)
+//		{
+//			
+//			list.add(notes.get(i));
+//			System.out.println(list.add(notes.get(i)));
+//		
+//	    }
+//	}
    
 	  System.out.println(notes);
      //Response response=Utility.statusResponseNote2(401, environment.getProperty("note.id.sucess"),notes);
@@ -157,25 +161,6 @@ public class NoteServiceImpl implements NoteService {
     
 }
 
-
-//	public List<Note> getAllNote(String token) 
-//	{
-//	Long userId=UserToken.tokenVerify(token);
-//	List<Note> notelist=noteRepository.findAll();
-//	
-//	List<Note> list = new ArrayList<>();
-//	for (int i = 0; i < notelist.size(); i++) {
-//		
-//		if(notelist.get(i).getUser().getId()==userId)
-//		{
-//			list.add(notelist.get(i));
-//		
-//	}
-//	}
-//	
-//		return list;
-//
-//}
 
 
 	
@@ -454,7 +439,7 @@ public Response add(String token,long noteId,String email)
 	
 	else
 	{
-		Response response=Utility.statusResponse(401, environment.getProperty("collabrator.error.message"));
+		Response response=Utility.statusResponse(403, environment.getProperty("collabrator.error.message"));
 	    return response;
 	}
 	
@@ -530,10 +515,29 @@ public List<Note> getCollabratorNotes(String token)
 
 
 
+public List<User> getCollabNote(String token,long noteId,String email)
+{
+	
+	long userId=UserToken.tokenVerify(token);
+	Note note=noteRepository.findById(noteId).get();
+	User user=userRepository.findUserByEmail(email).orElseThrow(()->
+	new UserException(401,"This Email Id Not Exist"));
+	
+	if(user.getEmail().equals(email))
+	{
+		List<User> userinfo=note.getCollabuser().stream().collect(Collectors.toList());
+		//user.setCollabnote(collabnote);	
+        return userinfo;
+	
+    }
+	
+	return null;
+	
+	
 
 
+}
 
-   
 }
 
 

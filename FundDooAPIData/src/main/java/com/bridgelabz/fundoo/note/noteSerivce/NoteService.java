@@ -14,6 +14,7 @@ import com.bridgelabz.fundoo.note.dto.NoteDto;
 import com.bridgelabz.fundoo.note.dto.NoteDto1;
 import com.bridgelabz.fundoo.note.model.Note;
 import com.bridgelabz.fundoo.user.model.Response;
+import com.bridgelabz.fundoo.user.model.User;
 
 
 
@@ -38,6 +39,7 @@ public interface NoteService {
 		public Response add(String token,long noteId,String email);
 		public Response removeCollbrator(String token,long noteId,String email);
 		public List<Note> getCollabratorNotes(String token);
+		public List<User> getCollabNote(String token,long noteId,String email);
 	
 	  //  public List<Label> getAllNoteLabel(long noteId);
 

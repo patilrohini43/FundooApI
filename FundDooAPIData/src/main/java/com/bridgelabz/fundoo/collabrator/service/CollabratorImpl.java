@@ -129,7 +129,7 @@ public class CollabratorImpl implements CollabratorService{
 		}
 		else
 		{
-			Response response=Utility.statusResponse(402, environment.getProperty("collabrator.error.message"));
+			Response response=Utility.statusResponse(401, environment.getProperty("collabrator.error.message"));
 		    return response;
 		}
 	   

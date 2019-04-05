@@ -40,6 +40,7 @@ import com.bridgelabz.fundoo.note.dto.NoteDto1;
 import com.bridgelabz.fundoo.note.model.Note;
 import com.bridgelabz.fundoo.note.noteSerivce.NoteService;
 import com.bridgelabz.fundoo.user.model.Response;
+import com.bridgelabz.fundoo.user.model.User;
 import com.bridgelabz.fundoo.util.Utility;
 
 @Controller
@@ -159,10 +160,10 @@ public class NoteController {
 	
 	@ResponseBody
 	@GetMapping("/note/list/collab")
-	public List<Note> getNote(@RequestHeader(value="jwt_token") String token)
+	public List<User> getNote(@RequestHeader(value="jwt_token") String token,@RequestParam long noteId,@RequestParam String email)
 	{
 		
-		List<Note> response=noteService.getCollabratorNotes(token);
+		List<User> response=noteService.getCollabNote(token,noteId,email);
 		 System.out.println(response);
 		
 	     return response;
