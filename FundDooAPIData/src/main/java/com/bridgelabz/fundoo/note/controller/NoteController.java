@@ -1,6 +1,7 @@
 package com.bridgelabz.fundoo.note.controller;
 
 
+import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -80,7 +81,7 @@ public class NoteController {
 	
 	
 	@PostMapping("/notes/{id}")
-	public ResponseEntity<Response> addReminder(@PathVariable(value="id") long noteId,@RequestParam  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime time) 
+	public ResponseEntity<Response> addReminder(@PathVariable(value="id") long noteId,@RequestParam String time) throws ParseException 
 
        {
 			
@@ -93,7 +94,7 @@ public class NoteController {
 	 
 
 	@PostMapping("/notes/remove/{id}")
-	public ResponseEntity<Response> removeReminder(@PathVariable(value="id") long noteId,@RequestParam  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime time) 
+	public ResponseEntity<Response> removeReminder(@PathVariable(value="id") long noteId,@RequestParam String time) 
 
        {
 			
@@ -160,10 +161,10 @@ public class NoteController {
 	
 	@ResponseBody
 	@GetMapping("/note/list/collab")
-	public List<User> getNote(@RequestHeader(value="jwt_token") String token,@RequestParam long noteId,@RequestParam String email)
+	public List<User> getNote(@RequestHeader(value="jwt_token") String token,@RequestParam long noteId)
 	{
 		
-		List<User> response=noteService.getCollabNote(token,noteId,email);
+		List<User> response=noteService.getCollabNote(token,noteId);
 		 System.out.println(response);
 		
 	     return response;

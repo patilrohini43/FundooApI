@@ -1,9 +1,14 @@
 package com.bridgelabz.fundoo.note.noteSerivce;
 
 import java.io.UnsupportedEncodingException;
+
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -78,12 +83,16 @@ public class NoteServiceImpl implements NoteService {
 		
 	  }
 	
-	public Response ReminderSet(long noteId,LocalDateTime time) 
+	public Response ReminderSet(long noteId,String time) throws ParseException 
 	{
 		//Long userId=UserToken.tokenVerify(token);
+	
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+		  Date date =dateFormat.parse(time);
 		
 		Note note=noteRepository.findById(noteId).get();
-		note.setReminder(time);
+		note.setReminder(date);
 	    noteRepository.save(note);
 	    Response response=Utility.statusResponse(401, environment.getProperty("note.reminder.message"));
 		return response;
@@ -92,7 +101,7 @@ public class NoteServiceImpl implements NoteService {
 	  }
 	
 	
-	public Response ReminderRemove(long noteId,LocalDateTime time) 
+	public Response ReminderRemove(long noteId,String time) 
 	{
 		//Long userId=UserToken.tokenVerify(token);
 		
@@ -415,6 +424,11 @@ public Response add(String token,long noteId,String email)
 	User userid=userRepository.findByEmail(email);
 	boolean useremail=user.getEmail().equals(email);
 	
+	
+	if(!user.getEmail().equals(email))
+	{
+		throw new UserException(302,"Email Id Not Present");
+	}
 	// stream the list and use the set to filter it
 	List<User> uservalue = note.getCollabuser().stream()
 	            .filter(e -> (e.getEmail().equals(email)))
@@ -515,15 +529,15 @@ public List<Note> getCollabratorNotes(String token)
 
 
 
-public List<User> getCollabNote(String token,long noteId,String email)
+public List<User> getCollabNote(String token,long noteId)
 {
 	
 	long userId=UserToken.tokenVerify(token);
 	Note note=noteRepository.findById(noteId).get();
-	User user=userRepository.findUserByEmail(email).orElseThrow(()->
+	User user=userRepository.findById(userId).orElseThrow(()->
 	new UserException(401,"This Email Id Not Exist"));
 	
-	if(user.getEmail().equals(email))
+	if(user.getId().equals(userId))
 	{
 		List<User> userinfo=note.getCollabuser().stream().collect(Collectors.toList());
 		//user.setCollabnote(collabnote);	

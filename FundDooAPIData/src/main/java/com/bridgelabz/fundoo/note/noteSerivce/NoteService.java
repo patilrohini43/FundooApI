@@ -1,6 +1,7 @@
 package com.bridgelabz.fundoo.note.noteSerivce;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -34,12 +35,12 @@ public interface NoteService {
 	   // public Response addLabel(long noteId,long labelId);
 	    public Response addLabel(long noteId,long labelId);
 	    public Response removeNoteToLabel(long noteId,long labelId);
-	    public Response ReminderSet(long noteId,LocalDateTime time);
-		public Response ReminderRemove(long noteId,LocalDateTime time);
+	    public Response ReminderSet(long noteId,String time) throws ParseException ;
+		public Response ReminderRemove(long noteId,String time);
 		public Response add(String token,long noteId,String email);
 		public Response removeCollbrator(String token,long noteId,String email);
 		public List<Note> getCollabratorNotes(String token);
-		public List<User> getCollabNote(String token,long noteId,String email);
+		public List<User> getCollabNote(String token,long noteId);
 	
 	  //  public List<Label> getAllNoteLabel(long noteId);
 

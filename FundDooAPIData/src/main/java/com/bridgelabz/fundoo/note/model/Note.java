@@ -1,7 +1,9 @@
 package com.bridgelabz.fundoo.note.model;
 
 import java.io.Serializable;
+
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -23,7 +25,6 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.bridgelabz.fundoo.collabrator.model.Collabrator;
 import com.bridgelabz.fundoo.label.model.Label;
 import com.bridgelabz.fundoo.user.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -159,7 +160,7 @@ public void setCollabuser(Set<User> collabuser) {
 
 	private LocalDateTime updatedDate=LocalDateTime.now();
 	
-	private LocalDateTime reminder;
+	private Date reminder;
 
 	private LocalDateTime createDate=LocalDateTime.now();
 	
@@ -169,11 +170,13 @@ public void setCollabuser(Set<User> collabuser) {
 
 	
 
-	public LocalDateTime getReminder() {
+	
+
+	public Date getReminder() {
 		return reminder;
 	}
 
-	public void setReminder(LocalDateTime reminder) {
+	public void setReminder(Date reminder) {
 		this.reminder = reminder;
 	}
 
