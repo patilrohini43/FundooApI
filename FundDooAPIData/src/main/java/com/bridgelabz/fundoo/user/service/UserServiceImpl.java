@@ -16,6 +16,8 @@ import com.bridgelabz.fundoo.exception.EmailException;
 import com.bridgelabz.fundoo.exception.PasswordException;
 import com.bridgelabz.fundoo.exception.TokenException;
 import com.bridgelabz.fundoo.exception.UserException;
+import com.bridgelabz.fundoo.rabbitmq.MessageProducer;
+import com.bridgelabz.fundoo.rabbitmq.RabbitMqBody;
 import com.bridgelabz.fundoo.user.dto.LoginDto;
 import com.bridgelabz.fundoo.user.dto.UserDto;
 import com.bridgelabz.fundoo.user.model.*;
@@ -39,6 +41,9 @@ public class UserServiceImpl implements UserService{
     private ModelMapper modelMapper;
     
    
+    @Autowired
+  private MessageProducer producer;
+    
 	@Autowired
 	private Environment environment;
     
@@ -89,10 +94,22 @@ public class UserServiceImpl implements UserService{
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		userRepository.save(user);
 		String url =this.getUrl("loginVerify", user.getId());
-   	    EmailUtil.sendEmail(userDto.getEmail(),"Successfully send","click on link "+ url);
+   	   // EmailUtil.sendEmail(userDto.getEmail(),"Successfully send","click on link "+ url);
 		//EmailUtil.sendEmail(userDto.getEmail(), "Successfully send", getBody(user));
    	    //response.setStatusCode(100);
    	    //response.setStatusMessage("Registered Succssfully");
+   	    
+   	    
+   	Long userId = user.getId();
+   	System.out.println("hello.......");
+   	RabbitMqBody messageBody = new RabbitMqBody();
+   	messageBody.setEmailId(userDto.getEmail());
+   	messageBody.setSubject("Successfully send");
+   	messageBody.setUrl("click on link "+ url);
+  //send messageBody to rabbitMq queue
+   //	producer.sendMessage("hiii");
+   	producer.sendMessage(messageBody);
+	System.out.println("hello1.......");
 		 Response response1=Utility.statusResponse(200, environment.getProperty("user.register.success.message"));
 		 return response1;
 		
