@@ -253,11 +253,6 @@ public void setCollabuser(Set<User> collabuser) {
 		this.isArchive = isArchive;
 	}
 
-	public boolean isPresent() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 
 	@Override
 	public String toString() {

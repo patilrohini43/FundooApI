@@ -22,6 +22,8 @@ public class RobbitMqConfig {
  
  public static final String ROUTING_KEY = "my.queue.key";
  
+ public static final String Exchange = "my_queue_exchange";
+ 
  @Bean
  Queue queue() {
   return new Queue(ROUTING_KEY, true);
@@ -30,7 +32,7 @@ public class RobbitMqConfig {
 
  @Bean
  TopicExchange exchange() {
-  return new TopicExchange("my_queue_exchange");
+  return new TopicExchange("Exchange");
  }
 
 

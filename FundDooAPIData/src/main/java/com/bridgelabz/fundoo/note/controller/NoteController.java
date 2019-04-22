@@ -1,6 +1,7 @@
 package com.bridgelabz.fundoo.note.controller;
 
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -62,7 +63,7 @@ public class NoteController {
 	Response response=new Response();
 
 	@PostMapping("/note")
-	public ResponseEntity<Response> createNote(@Valid @RequestBody NoteDto noteDto,@RequestHeader("jwt_token") String token,BindingResult result) throws MethodArgumentNotValidException 
+	public ResponseEntity<Response> createNote(@Valid @RequestBody NoteDto noteDto,@RequestHeader("jwt_token") String token,BindingResult result) throws MethodArgumentNotValidException, IOException 
 
        {
 		  if(result.hasErrors())
@@ -192,6 +193,18 @@ public class NoteController {
 		 
 	}
 	
+	
+	
+	@PutMapping("/note/update/color/{id}")
+	public ResponseEntity<Response> updateColor(@PathVariable(value="id") long noteId,@RequestHeader(value="jwt_token") String token,@RequestBody NoteDto noteDto)
+	{
+		
+		Response response=noteService.changeColor(noteId,noteDto,token);
+		
+	     return new ResponseEntity<Response>(response,HttpStatus.OK);
+		 
+	}
+	
 	@DeleteMapping("/note/{id}")
 	public ResponseEntity<Response> deleteNote(@RequestHeader(value="jwt_token") String token,@PathVariable(value="id") long noteId) 
 	{
@@ -251,7 +264,17 @@ public class NoteController {
 	}
 	
 
-
+	@ResponseBody
+	@GetMapping("/note/search")
+	public List<User> getNote(@RequestParam String title,@RequestParam String description)
+	{
+		return null;
+		
+		
+		
+	   //  return response;
+		 
+	}
 
 	 public void validate(LabelDto labelDto) {
 	        if (labelDto.getLabelName().isEmpty()) {

@@ -19,7 +19,9 @@ public class MessageProducer {
  
  public void sendMessage(RabbitMqBody messageBody) {
   System.out.println(new Date());
-  rabbitTemplate.convertAndSend(RobbitMqConfig.ROUTING_KEY, messageBody);
+ 
+  rabbitTemplate.convertAndSend(RobbitMqConfig.Exchange,RobbitMqConfig.ROUTING_KEY, messageBody);
+
      System.out.println("Is listener returned ::: "+rabbitTemplate.isReturnListener());
      System.out.println(new Date());
  }

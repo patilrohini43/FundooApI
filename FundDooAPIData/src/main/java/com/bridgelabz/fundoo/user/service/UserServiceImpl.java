@@ -4,7 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,10 +45,6 @@ public class UserServiceImpl implements UserService{
     
 	@Autowired
 	private Environment environment;
-    
-    private Response response;
-    
-    private Utility util;
 	
 	public List<User> getAll()
 	{
@@ -99,8 +94,7 @@ public class UserServiceImpl implements UserService{
    	    //response.setStatusCode(100);
    	    //response.setStatusMessage("Registered Succssfully");
    	    
-   	    
-   	Long userId = user.getId();
+
    	System.out.println("hello.......");
    	RabbitMqBody messageBody = new RabbitMqBody();
    	messageBody.setEmailId(userDto.getEmail());

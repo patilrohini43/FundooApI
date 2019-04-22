@@ -2,6 +2,7 @@ package com.bridgelabz.fundoo.rabbitmq;
 
 import java.io.Serializable;
 
+
 public class RabbitMqBody implements Serializable  {
 
 	

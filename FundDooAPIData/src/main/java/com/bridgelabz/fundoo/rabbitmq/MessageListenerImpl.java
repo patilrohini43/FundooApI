@@ -38,8 +38,8 @@ public class MessageListenerImpl implements MessageListener{
        String subject = body.getSubject();
        String url = body.getUrl();
        EmailUtil.sendEmail(toEmail,subject,url);
-      // mailService.send(emailid, subject, url);
-  System.out.println("Message Received:"+message);
+   
+  System.out.println("Message Received:"+msg);
   System.out.println(new Date());
   
  }

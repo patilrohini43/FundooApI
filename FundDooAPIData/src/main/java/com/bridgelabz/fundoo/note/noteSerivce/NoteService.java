@@ -1,5 +1,6 @@
 package com.bridgelabz.fundoo.note.noteSerivce;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
@@ -21,13 +22,14 @@ import com.bridgelabz.fundoo.user.model.User;
 
 public interface NoteService {
 	
-	public Response createNote(NoteDto noteDto,String token);
+	public Response createNote(NoteDto noteDto,String token) throws IOException;
 	public List<Note> getAllNotes(String token,boolean archived,boolean trashed);
 	//public List<Note> getAllNote(String token);
 	 public Response getNoteById(long noteId,String token);
 	// public Response deleteNote(long noteId, String token);
 	 public Response updateNote(long noteId,NoteDto noteDto,String token) ;
 	    public Response deleteNote(long noteId,String token);
+	    public Response changeColor(long noteId,NoteDto dto,String token);
 	//public boolean registerUser(@Valid NoteDto noteDto, long noteId);
 	    public Response isTrash(long noteId,String token,NoteDto1 noteDto);
 	    public Response isArchive(long noteId,String token,NoteDto1 noteDto);
@@ -41,7 +43,7 @@ public interface NoteService {
 		public Response removeCollbrator(String token,long noteId,String email);
 		public List<Note> getCollabratorNotes(String token);
 		public List<User> getCollabNote(String token,long noteId);
-	
+		public List<Note> searchNote(String title,String description);
 	  //  public List<Label> getAllNoteLabel(long noteId);
 
 }
