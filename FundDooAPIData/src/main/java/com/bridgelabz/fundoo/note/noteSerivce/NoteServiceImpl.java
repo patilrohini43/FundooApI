@@ -34,6 +34,8 @@ import com.bridgelabz.fundoo.note.dto.NoteDto1;
 import com.bridgelabz.fundoo.note.model.Note;
 import com.bridgelabz.fundoo.note.repository.NoteRepository;
 import com.bridgelabz.fundoo.rabbitmq.MessageProducer;
+import com.bridgelabz.fundoo.rabbitmq.NoteContainer;
+import com.bridgelabz.fundoo.rabbitmq.NoteOperation;
 import com.bridgelabz.fundoo.rabbitmq.RabbitMqBody;
 import com.bridgelabz.fundoo.user.dto.UserDto;
 import com.bridgelabz.fundoo.user.model.Response;
@@ -53,6 +55,7 @@ public class NoteServiceImpl implements NoteService {
 	@Autowired
 	private MessageProducer producer;
 
+	
 
 	@Autowired
 	private ElasticSearch elasticSearch;
@@ -74,20 +77,24 @@ public class NoteServiceImpl implements NoteService {
 
 		Long userId=UserToken.tokenVerify(token);
 		Note note=modelMapper.map(noteDto, Note.class);
-
-		User user=new User(userId);
-		note.setUser(user);
-		//           
-		//		User user=userRepository.findById(userId)
-		//				.orElseThrow(() ->new NoteException(405, environment.getProperty("note.userid.message"),userId));
-		//			
-		//		//User user=new User(userId);
-		//		user.getNote().add(note);
-		//		
-		//		userRepository.save(user);
-		Note elasticnote= noteRepository.save(note);
-		System.out.println("hello");
-		elasticSearch.save(elasticnote);
+       Optional<User> user=userRepository.findById(userId);
+		//User user=new User(userId);
+		System.out.println("hello"+user);
+	//	note.setUser(user);
+		note.setUser(user.get());
+		//note.setCreateDate(LocalDateTime.now());
+		//note.setUpdatedDate(LocalDateTime.now());
+				note=noteRepository.save(note);
+		
+		System.out.println("hjhg");		
+		System.out.println(note);
+		
+		NoteContainer noteContainer=new NoteContainer();
+		noteContainer.setNote(note);
+		noteContainer.setNoteoperation(NoteOperation.CREATE);
+		producer.sendNote(noteContainer);
+		System.out.println("welcome");
+		//elasticSearch.save(note);
 
 		Response response=Utility.statusResponse(401, environment.getProperty("note.success.message"));
 		return response;
@@ -165,16 +172,6 @@ public class NoteServiceImpl implements NoteService {
 		List<Note> list = new ArrayList<>();
 		notes.addAll(sharedNotes);
 
-		//	for (int i = 0; i < notes.size(); i++) {
-		//		
-		//		if(notes.get(i).getUser().getId()==userId)
-		//		{
-		//			
-		//			list.add(notes.get(i));
-		//			System.out.println(list.add(notes.get(i)));
-		//		
-		//	    }
-		//	}
 
 		System.out.println(notes);
 		//Response response=Utility.statusResponseNote2(401, environment.getProperty("note.id.sucess"),notes);
@@ -591,9 +588,12 @@ public class NoteServiceImpl implements NoteService {
 	}
 
 	@Override
-	public List<Note> searchNote(String title, String description) {
+	public List<Note> searchNote(String query,String token) {
 		// TODO Auto-generated method stub
-		return null;
+		long userId=UserToken.tokenVerify(token);
+		List<Note> data=elasticSearch.searchData(query,userId);
+		System.out.println("dataata"+data);
+		return data;
 	}
 
 }

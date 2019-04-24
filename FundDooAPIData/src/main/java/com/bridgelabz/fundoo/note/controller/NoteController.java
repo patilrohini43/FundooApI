@@ -266,13 +266,16 @@ public class NoteController {
 
 	@ResponseBody
 	@GetMapping("/note/search")
-	public List<User> getNote(@RequestParam String title,@RequestParam String description)
+	public List<Note> getNote(@RequestParam String query,@RequestHeader(value="jwt_token") String token)
 	{
-		return null;
+		  System.out.println("hiii");
+		List<Note> response=noteService.searchNote(query,token);
 		
-		
-		
-	   //  return response;
+	  System.out.println(response);
+
+	  System.out.println("hiii");
+			return response;
+
 		 
 	}
 

@@ -22,15 +22,20 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 //import com.bridgelabz.fundoo.collabrator.model.Collabrator;
 import com.bridgelabz.fundoo.label.model.Label;
 import com.bridgelabz.fundoo.note.model.Note;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
-public class User implements Serializable {
+public class User {
 	
-	private static final long serialVersionUID = 1L;
+	///private static final long serialVersionUID = 1L;
 	//@GeneratedValue(strategy = GenerationType.AUTO)
 	@Id
 	@Column(name = "Id")
@@ -55,18 +60,16 @@ public class User implements Serializable {
 	@Column(name="Verification")
     private boolean isVerify;
 	
-
-
+	@JsonIgnore
 	private LocalDateTime updatedDate=LocalDateTime.now();
 	
 	//private LocalDateTime reminder;
-
+	@JsonIgnore
 	private LocalDateTime createDate=LocalDateTime.now();
 	
 	@Column(name="Image")
 	private String image;
-	
-	
+
 
 
 	@ManyToMany()
@@ -77,11 +80,6 @@ public class User implements Serializable {
 	
     private Set<Note> collabnote;
 	
-	
-	
-
-	
-
 	
 
 	public Set<Note> getCollabnote() {

@@ -10,5 +10,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 public interface MessageListener {
 	 
 	 public void onMessage(byte[] message) throws JsonParseException, JsonMappingException, IOException;
-	 
+	// public void operation(NoteContainer notecontainer);
+//	void operation(byte[] message);
+	public void operation(NoteContainer notecontainer);
 	}

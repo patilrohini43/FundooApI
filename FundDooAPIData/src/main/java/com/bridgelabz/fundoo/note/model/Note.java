@@ -28,42 +28,56 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.bridgelabz.fundoo.label.model.Label;
 import com.bridgelabz.fundoo.user.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Note implements Serializable{
-	
-	
+
 	private static final long serialVersionUID = 1L;
-	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO) 
-	
 	@Column(name="NoteId")
 	private Long noteId;
-	
-	
 	@Column(name="Title")
 	private String title;
-	
-
-	
-
 	public String getTitle() {
 		return title;
 	}
-	
-	
-
-	
-
 	@Access(AccessType.PROPERTY)
 	@ManyToMany(mappedBy="notes")
-    private Set<Label> label;
-	
-
+	private Set<Label> label;
 	@Column(name="Description")
 	private String description;
+	@Column(name="Color")
+	private String color;
 
+
+	@Column(name="Pin")
+	private boolean isPin;
+
+
+	@Column(name="Trash")
+	private boolean isTrash;
+
+
+	@Column(name="Archive")
+	private boolean isArchive;
+
+	@ManyToOne
+	@JoinColumn(name="Id")
+	private User user=new User();
+
+	@ManyToMany(mappedBy="collabnote")
+	private Set<User> collabuser;
+	@JsonProperty
+	private LocalDateTime updatedDate;
+	@JsonProperty
+	private LocalDateTime createDate;
+	private Date reminder;
+	//constructor
+	public Note()
+	{
+	}
 
 	public Set<Label> getLabel() {
 		return label;
@@ -73,77 +87,17 @@ public class Note implements Serializable{
 		this.label = label;
 	}
 
-
-
-
-	@Column(name="Color")
-    private String color;
-	
-
-	@Column(name="Pin")
-    private boolean isPin;
-	
-	
-	@Column(name="Trash")
-    private boolean isTrash;
-	
-
-	@Column(name="Archive")
-    private boolean isArchive;
-	
-	
-	
-	@ManyToOne
-	@JoinColumn(name="Id")
-    private User user=new User();
-	
-	 
-	
-	
-public Note()
-{
-	
-	
-}
-
-public Note(long noteId)
-{
-	this.noteId=noteId;
-}
-	
-// @OneToMany(mappedBy="note",cascade=CascadeType.ALL)   
-// private List<Label> labels;
-	
-
-//	public List<Label> getLabels() {
-//		return labels;
-//	}
-//
-//	public void setLabels(List<Label> labels) {
-//		this.labels = labels;
-//	}
-
-
-
-
-
-@ManyToMany(mappedBy="collabnote")
-private Set<User> collabuser;
-
-
-
-
-
-
-
-
+	public Note(long noteId)
+	{
+		this.noteId=noteId;
+	}
 	public Set<User> getCollabuser() {
-	return collabuser;
-}
+		return collabuser;
+	}
 
-public void setCollabuser(Set<User> collabuser) {
-	this.collabuser = collabuser;
-}
+	public void setCollabuser(Set<User> collabuser) {
+		this.collabuser = collabuser;
+	}
 
 	public User getUser() {
 		return user;
@@ -154,23 +108,6 @@ public void setCollabuser(Set<User> collabuser) {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
-
-
-
-	private LocalDateTime updatedDate=LocalDateTime.now();
-	
-	private Date reminder;
-
-	private LocalDateTime createDate=LocalDateTime.now();
-	
-
-
-
-
-	
-
-	
 
 	public Date getReminder() {
 		return reminder;
@@ -196,9 +133,9 @@ public void setCollabuser(Set<User> collabuser) {
 		this.updatedDate = updatedDate;
 	}
 
-	
-	
-	
+
+
+
 	public Long getNoteId() {
 		return noteId;
 	}
@@ -260,9 +197,4 @@ public void setCollabuser(Set<User> collabuser) {
 				+ ", color=" + color + ", isPin=" + isPin + ", isTrash=" + isTrash + ", isArchive=" + isArchive
 				+ ", updatedDate=" + updatedDate + ", reminder=" + reminder + ", createDate=" + createDate + "]";
 	}
-
-	
-
-    
-
 }

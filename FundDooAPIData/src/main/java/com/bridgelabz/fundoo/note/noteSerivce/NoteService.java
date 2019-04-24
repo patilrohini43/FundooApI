@@ -43,7 +43,7 @@ public interface NoteService {
 		public Response removeCollbrator(String token,long noteId,String email);
 		public List<Note> getCollabratorNotes(String token);
 		public List<User> getCollabNote(String token,long noteId);
-		public List<Note> searchNote(String title,String description);
+		public List<Note> searchNote(String query,String token);
 	  //  public List<Label> getAllNoteLabel(long noteId);
 
 }

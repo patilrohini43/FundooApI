@@ -20,9 +20,18 @@ public class MessageProducer {
  public void sendMessage(RabbitMqBody messageBody) {
   System.out.println(new Date());
  
-  rabbitTemplate.convertAndSend(RobbitMqConfig.Exchange,RobbitMqConfig.ROUTING_KEY, messageBody);
+  rabbitTemplate.convertAndSend(RobbitMqConfig.Exchange,RobbitMqConfig.ROUTING_KEY1, messageBody);
 
      System.out.println("Is listener returned ::: "+rabbitTemplate.isReturnListener());
+     System.out.println(new Date());
+ }
+ 
+ 
+ 
+ public void sendNote(NoteContainer noteContainer)
+ {
+	 rabbitTemplate.convertAndSend(RobbitMqConfig.Exchange,RobbitMqConfig.ROUTING_KEY2, noteContainer);
+	 System.out.println("Is listener returned ::: "+rabbitTemplate.isReturnListener());
      System.out.println(new Date());
  }
 
