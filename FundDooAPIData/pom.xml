@@ -119,13 +119,13 @@
 			<artifactId>elasticsearch-rest-client-sniffer</artifactId>
 			<version>6.1.2</version>
 		</dependency>
-		<!-- dev tools -->
+		<!-- dev tools 
 		
 		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
-		</dependency>
+		</dependency>-->
 	</dependencies>
 
 	<build>

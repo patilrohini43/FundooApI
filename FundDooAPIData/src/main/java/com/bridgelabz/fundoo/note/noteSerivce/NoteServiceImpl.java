@@ -82,8 +82,8 @@ public class NoteServiceImpl implements NoteService {
 		System.out.println("hello"+user);
 	//	note.setUser(user);
 		note.setUser(user.get());
-		//note.setCreateDate(LocalDateTime.now());
-		//note.setUpdatedDate(LocalDateTime.now());
+		note.setCreateDate(LocalDateTime.now());
+		note.setUpdatedDate(LocalDateTime.now());
 				note=noteRepository.save(note);
 		
 		System.out.println("hjhg");		
@@ -202,7 +202,7 @@ public class NoteServiceImpl implements NoteService {
 		note.setTitle(noteDto.getTitle());
 		note.setDescription(noteDto.getDescription());
 		note.setColor(noteDto.getColor());
-		note.setUpdatedDate(LocalDateTime.now());
+		//note.setUpdatedDate(LocalDateTime.now());
 		// note.setReminder(LocalDateTime.now());
 
 		long dbUserId=note.getUser().getId();
@@ -210,7 +210,12 @@ public class NoteServiceImpl implements NoteService {
 		if(dbUserId==userId)
 		{
 			note = noteRepository.save(note);
-			elasticSearch.updateNote(note);
+			NoteContainer noteContainer=new NoteContainer();
+			noteContainer.setNote(note);
+			noteContainer.setNoteoperation(NoteOperation.UPDATE);
+			producer.sendNote(noteContainer);
+		
+			
 		}
 
 		Response response=Utility.statusResponse(401, environment.getProperty("note.update.message"));
@@ -238,7 +243,13 @@ public class NoteServiceImpl implements NoteService {
 		if(dbUserId==userId)
 		{
 		noteRepository.delete(note);
-		 elasticSearch.deleteNote(noteId);
+		
+		NoteContainer noteContainer=new NoteContainer();
+		noteContainer.setNote(note);
+		noteContainer.setNoteoperation(NoteOperation.DELETE);
+		producer.sendNote(noteContainer);
+	
+		// elasticSearch.deleteNote(noteId);
 		}
 
 		Response response=Utility.statusResponse(401, environment.getProperty("note.delete.message"));
@@ -443,8 +454,6 @@ public class NoteServiceImpl implements NoteService {
 		User userid=userRepository.findUserByEmail(email).orElseThrow(()->
 		new UserException(401,"This Email Id Not Exist"));
 		boolean useremail=user.getEmail().equals(email);
-
-
 		//	if(useremail)
 		//	{
 		//		throw new UserException(302,"Email Id Not Present");

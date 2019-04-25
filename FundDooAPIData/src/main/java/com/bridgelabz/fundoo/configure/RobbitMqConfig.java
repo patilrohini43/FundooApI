@@ -56,22 +56,22 @@ public class RobbitMqConfig {
 		return new Jackson2JsonMessageConverter();
 	}
 
-	/*
-	 * @Bean(name="userListner") SimpleMessageListenerContainer
-	 * container(ConnectionFactory connectionFactory, MessageListenerAdapter
-	 * listenerAdapter) { SimpleMessageListenerContainer container = new
-	 * SimpleMessageListenerContainer();
-	 * container.setConnectionFactory(connectionFactory);
-	 * container.setQueueNames(USER_QUEUE);
-	 * container.setMessageListener(listenerAdapter); return container; }
-	 */
+
+	  @Bean(name="userListner") SimpleMessageListenerContainer
+	 container(ConnectionFactory connectionFactory, MessageListenerAdapter
+	 listenerAdapter) { SimpleMessageListenerContainer container = new
+	 SimpleMessageListenerContainer();
+	 container.setConnectionFactory(connectionFactory);
+	 container.setQueueNames(USER_QUEUE);
+	  container.setMessageListener(listenerAdapter); return container; }
+	 
 
 
-	// @Bean
-	// @Primary
-	// MessageListenerAdapter myQueueListener(MessageListener listener) {
-	//  return new MessageListenerAdapter(listener, "onMessage");
-	// }
+     @Bean
+	@Primary
+	 MessageListenerAdapter myQueueListener(MessageListener listener) {
+	  return new MessageListenerAdapter(listener, "onMessage");
+	 }
 
 	//for elasticSearch
 	
@@ -87,18 +87,5 @@ public class RobbitMqConfig {
 		return BindingBuilder.bind(noteQueue).to(exchange).with(ROUTING_KEY2);
 	}
 
-	/*
-	 * @Bean(name="noteListner") SimpleMessageListenerContainer
-	 * container1(ConnectionFactory connectionFactory, MessageListenerAdapter
-	 * listenerAdapter) { SimpleMessageListenerContainer container = new
-	 * SimpleMessageListenerContainer();
-	 * container.setConnectionFactory(connectionFactory);
-	 * container.setQueueNames(NOTE_QUEUE);
-	 * container.setMessageListener(listenerAdapter); return container; }
-	 */
 
-	/*
-	 * @Bean MessageListenerAdapter myQueueListener1(MessageListener listener) {
-	 * return new MessageListenerAdapter(listener, "operation"); }
-	 */
 }

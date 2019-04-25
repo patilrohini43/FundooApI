@@ -69,9 +69,10 @@ public class Note implements Serializable{
 
 	@ManyToMany(mappedBy="collabnote")
 	private Set<User> collabuser;
-	@JsonProperty
+	
+	@JsonIgnore
 	private LocalDateTime updatedDate;
-	@JsonProperty
+	@JsonIgnore
 	private LocalDateTime createDate;
 	private Date reminder;
 	//constructor
