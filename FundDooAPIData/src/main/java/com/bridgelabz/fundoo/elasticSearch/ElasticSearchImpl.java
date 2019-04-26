@@ -16,8 +16,9 @@ import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.QueryBuilder;
 
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -117,10 +118,18 @@ System.out.println(note);
 				SearchRequest searchRequest = new SearchRequest(INDEX).types(TYPE);
 		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 		QueryBuilder queryBuilder = QueryBuilders.boolQuery()
-				.must(QueryBuilders.queryStringQuery(query).analyzeWildcard(true).field("title", 2.0f)
+				.must(QueryBuilders.queryStringQuery("*"+query+"*").analyzeWildcard(true).field("title", 2.0f)
 				.field("description").field("labels"))
+				
 				.filter(QueryBuilders.termsQuery("user.id", String.valueOf(userId)));
 
+//	
+//		BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
+//		queryBuilder.filter(QueryBuilders.multiMatchQuery(query, "content.query.*"));
+//		
+		
+		
+		
 		System.out.println();
 		searchSourceBuilder.query(queryBuilder);
 
