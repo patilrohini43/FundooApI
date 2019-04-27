@@ -89,11 +89,7 @@ public class UserServiceImpl implements UserService{
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		userRepository.save(user);
 		String url =this.getUrl("loginVerify", user.getId());
-   	   // EmailUtil.sendEmail(userDto.getEmail(),"Successfully send","click on link "+ url);
-		//EmailUtil.sendEmail(userDto.getEmail(), "Successfully send", getBody(user));
-   	    //response.setStatusCode(100);
-   	    //response.setStatusMessage("Registered Succssfully");
-   	    
+   	  
 
    	System.out.println("hello.......");
    	RabbitMqBody messageBody = new RabbitMqBody();

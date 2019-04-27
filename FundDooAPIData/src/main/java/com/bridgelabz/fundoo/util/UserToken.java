@@ -54,53 +54,6 @@ public class UserToken {
 
 
 
-/**
-	private static String TOKEN_SECRET="gh2we43jue";
-	public static String createToken(Long id) throws UserException
-	{
-		try {
-			Algorithm algorithm= Algorithm.HMAC256(TOKEN_SECRET);
-			String token=JWT.create()
-							.withClaim("ID", id)
-							.sign(algorithm);
-			return token;		
-		}
-		catch(Exception exception)
-		{
-			throw new UserException(100,"Token Not Generated");
-		}
-	}
-
-	public static long tokenVerify(String token) throws IllegalArgumentException, UnsupportedEncodingException
-	{
-		Long userid;
-		//try {
-
-			Verification verification=JWT.require(Algorithm.HMAC256(TOKEN_SECRET));
-			JWTVerifier jwtverifier=verification.build();
-			DecodedJWT decodedjwt=jwtverifier.verify(token);
-			Claim claim=decodedjwt.getClaim("ID");
-			userid=claim.asLong();	
-			System.out.println(userid);
-		//}
-//		?
-
-			return userid;
-	}
-
-
-
-
-
-
-
-
- **/
-
-
-
-
-
 
 
 

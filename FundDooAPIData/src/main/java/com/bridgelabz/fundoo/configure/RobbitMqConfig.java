@@ -57,9 +57,11 @@ public class RobbitMqConfig {
 	}
 
 
-	  @Bean(name="userListner") SimpleMessageListenerContainer
-	 container(ConnectionFactory connectionFactory, MessageListenerAdapter
-	 listenerAdapter) { SimpleMessageListenerContainer container = new
+	  @Bean(name="userListner") 
+	 SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter
+	 listenerAdapter) 
+	  { 
+     SimpleMessageListenerContainer container = new
 	 SimpleMessageListenerContainer();
 	 container.setConnectionFactory(connectionFactory);
 	 container.setQueueNames(USER_QUEUE);
