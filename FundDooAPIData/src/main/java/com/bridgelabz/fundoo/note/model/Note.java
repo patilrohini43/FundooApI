@@ -67,6 +67,8 @@ public class Note implements Serializable{
 	@JoinColumn(name="Id")
 	private User user=new User();
 
+	
+	
 	@ManyToMany(mappedBy="collabnote")
 	private Set<User> collabuser;
 	

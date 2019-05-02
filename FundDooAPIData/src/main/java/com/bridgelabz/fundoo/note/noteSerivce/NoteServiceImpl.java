@@ -469,10 +469,12 @@ public class NoteServiceImpl implements NoteService {
 		if(uservalue.isEmpty()&& !useremail)
 		{
 			System.out.println("hello");
-
+			System.out.println("collab user"+note.getCollabuser().add(user));
+			System.out.println("collab add"+user.getCollabnote().add(note));
 			note.getCollabuser().add(userid);
 
 			userid.getCollabnote().add(note);
+			
 			User value=userRepository.save(userid);
 			System.out.println("check"+value);
 			String url =this.getUrl("loginVerify", user.getId());
@@ -548,26 +550,6 @@ public class NoteServiceImpl implements NoteService {
 	}
 
 
-
-
-
-
-
-	public List<Note> getCollabratorNotes(String token)
-	{
-		Long userId=UserToken.tokenVerify(token);
-		Optional<List<Long>> collab=noteRepository.findNoteAllById(userId);
-		//Optional<List<Long>> collab=Repository.findAllById(userId);
-
-		if(collab.isPresent())
-		{
-			return noteRepository.findCollabratorNotes(collab.get()).get();
-
-		}
-
-		return new ArrayList<Note>();
-
-	}
 
 
 
